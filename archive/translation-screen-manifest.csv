@@ -1,0 +1,68 @@
+﻿screen_id,screen_title,screen_type,source_file,container_or_selector,manual_review,flow_order,unit_count
+01-01-00,בחירת דמות מלווה (TwoOptionSelection),TwoOptionSelection,methodica-science-body-matter-01-01/index.html,#s0,,0,5
+01-01-01,שאלה פתוחה עם שדה כתיבה חופשי,HookOpenQuestion,methodica-science-body-matter-01-01/index.html,#s1,,1,16
+01-01-02,מסך מעבר (TransitionScreen),TransitionScreen,methodica-science-body-matter-01-01/index.html,#s2,,2,5
+01-01-03,בחירת מסלול למידה: וידאו/קריאה (TwoOptionSelection),TwoOptionSelection,methodica-science-body-matter-01-01/index.html,#s3,,3,9
+01-01-04,קלפים מתהפכים (FlipCardsReveal),FlipCardsReveal,methodica-science-body-matter-01-01/index.html,#s4,,4,13
+01-01-05,"""גוף אחד - חומרים רבים"" (Text Content Layout + כרטיסים)",,methodica-science-body-matter-01-01/index.html,#s5,,5,14
+01-01-06,"""תכונות"" (2 כרטיסי מידע)",,methodica-science-body-matter-01-01/index.html,#s6,,6,8
+01-01-07,הקדמה לניסוי חוט הנחושת,FlipCardsReveal,methodica-science-body-matter-01-01/index.html,#s7,,7,12
+01-01-08,"שאלת תפריט נפתח (Dropdown), חוט נחושת",DropdownQuestion,methodica-science-body-matter-01-01/index.html,#s8,6 unit(s) with manual-review notes,8,33
+01-01-09,מסך מעבר: מסקנה (TransitionScreen),TransitionScreen,methodica-science-body-matter-01-01/index.html,#s9,,9,5
+01-01-10,צפייה בסרטון (VideoIntro),VideoWatchAndContinue,methodica-science-body-matter-01-01/index.html,#s10,,10,11
+01-01-11,"התכנסות נתיבים: ""אותו חומר - מה בכל זאת שונה?""",VideoWatchAndContinue,methodica-science-body-matter-01-01/index.html,#s11,,11,4
+01-01-12,גוף מעובד או גוף שאינו מעובד?,,methodica-science-body-matter-01-01/index.html,#s12,,12,8
+01-01-13,שאלת גרירה: גוף מעובד/לא מעובד (DragAndDropQuestion),DragAndDropQuestion,methodica-science-body-matter-01-01/index.html,#s13,,13,35
+01-01-14,סיכום מושגים,,methodica-science-body-matter-01-01/index.html,#s14,,14,4
+01-01-15,מסך מעבר: טבלאות ותרשימי זרימה,TransitionScreen,methodica-science-body-matter-01-01/index.html,#s15,,15,4
+01-01-16,טבלת השוואה: 2 חוטי נחושת (2026-08-03),,methodica-science-body-matter-01-01/index.html,#s16,,16,18
+01-01-17,מסך 18 (s17) — תרשים זרימה: גוף/חומר/תכונה,,methodica-science-body-matter-01-01/index.html,#s17,,17,16
+01-01-18,"מסך מעבר ""חימום"" לפני שתי שאלות התרגול",TransitionScreen,methodica-science-body-matter-01-01/index.html,#s18,,18,5
+01-01-19,שאלה רב-ברירה מלווה בתמונה (שאלה 1/2),SingleChoiceQuestion,methodica-science-body-matter-01-01/index.html,#s19,,19,29
+01-01-20,שאלת גרירה טקסטואלית מלווה בתמונה (שאלה 2/2),DragAndDropQuestion,methodica-science-body-matter-01-01/index.html,#s20,,20,38
+01-01-99,"Global / shared chrome (title, flag button, report & zoom modals, shared JS strings)",,methodica-science-body-matter-01-01/index.html + script.js,outside .screen / shared JS,1 unit(s) with manual-review notes,,7
+01-02-00,מסך מעבר לפני תרגול סטנדרטי (5 שאלות),TransitionScreen,methodica-science-body-matter-01-02/index.html,#s21,,0,5
+01-02-01,"מסך הוטספוטים (3 חומרים, שקף 35)",,methodica-science-body-matter-01-02/index.html,#s22,2 unit(s) with manual-review notes,1,18
+01-02-02,שאלה 1 סעיף א' מתוך 5 (בחירה יחידה + טבלה),SingleChoiceQuestion,methodica-science-body-matter-01-02/index.html,#s23,,2,45
+01-02-03,שאלה 1 סעיף ב' מתוך 5 (בחירה יחידה + טבלה),SingleChoiceQuestion,methodica-science-body-matter-01-02/index.html,#s24,,3,44
+01-02-04,שאלה 2 מתוך 5 (בחירה יחידה + תמונה),SingleChoiceQuestion,methodica-science-body-matter-01-02/index.html,#s25,,4,35
+01-02-05,שאלה 3 מתוך 5 (בחירה מרובה + טבלה),MultipleChoiceQuestion,methodica-science-body-matter-01-02/index.html,#s26,,5,58
+01-02-06,"שאלה 4 מתוך 5 (גרירה + היפוך קלפים, שקפים 40-41)",DragAndDropQuestion,methodica-science-body-matter-01-02/index.html,#s27,,6,56
+01-02-07,"שאלה 5 מתוך 5 (גרירה לתוך טבלה, שקף 42)",DragAndDropQuestion,methodica-science-body-matter-01-02/index.html,#s28,2 unit(s) with manual-review notes,7,69
+01-02-99,"Global / shared chrome (title, flag button, report & zoom modals, shared JS strings)",,methodica-science-body-matter-01-02/index.html + script.js,outside .screen / shared JS,1 unit(s) with manual-review notes,,7
+01-03-00,"מסך מעבר לפני תרגול (6 שאלות), שקף 44",TransitionScreen,methodica-science-body-matter-01-03/index.html,#s0,,0,5
+01-03-01,"שאלה 1 מתוך 5 (בחירה מרובה + תמונה, שקף 45)",MultipleChoiceQuestion,methodica-science-body-matter-01-03/index.html,#s1,,1,43
+01-03-02,"שאלה 2 מתוך 5 (בחירה מרובה + תמונה, שקף 46)",MultipleChoiceQuestion,methodica-science-body-matter-01-03/index.html,#s2,,2,49
+01-03-03,"שאלה 3 מתוך 5 (בחירה יחידה + טבלה, שקף 47)",SingleChoiceQuestion,methodica-science-body-matter-01-03/index.html,#s3,,3,37
+01-03-04,"שאלה 4 מתוך 5 (תפריט נפתח, שקף 48)",DropdownQuestion,methodica-science-body-matter-01-03/index.html,#s4,9 unit(s) with manual-review notes,4,46
+01-03-05,"שאלה 5 מתוך 5 (בחירת תמונה, שקף 49)",SingleChoiceQuestion,methodica-science-body-matter-01-03/index.html,#s5,,5,33
+01-03-06,"מסך מעבר: דמות + בועית (סיום התרגול הבסיסי, שקף 50)",TransitionScreen,methodica-science-body-matter-01-03/index.html,#s6,,6,6
+01-03-07,"שאלה 1 מתוך 2 (בחירה יחידה + תמונה, שקף 51)",SingleChoiceQuestion,methodica-science-body-matter-01-03/index.html,#s7,,7,25
+01-03-08,"שאלה 2 מתוך 2 (גרירה למיון + טבלה, שקף 52)",,methodica-science-body-matter-01-03/index.html,#s8,,8,51
+01-03-99,"Global / shared chrome (title, flag button, report & zoom modals, shared JS strings)",,methodica-science-body-matter-01-03/index.html + script.js,outside .screen / shared JS,1 unit(s) with manual-review notes,,7
+01-04-00,"מסך מעבר: סיום תרגול, פתיחה למשימת כיתה (שקף 54)",TransitionScreen,methodica-science-body-matter-01-04/index.html,#s0,,0,5
+01-04-01,משימת כיתה (שקף 55),,methodica-science-body-matter-01-04/index.html,#s1,,1,9
+01-04-99,"Global / shared chrome (title, flag button, report & zoom modals, shared JS strings)",,methodica-science-body-matter-01-04/index.html + script.js,outside .screen / shared JS,,,6
+01-05-00,"מסך מעבר לפני תרגול מתקדם (4 שאלות), שקף 57",TransitionScreen,methodica-science-body-matter-01-05/index.html,#s0,,0,5
+01-05-01,מעבדת הבקבוקים: משימה מלווה ביישומון (שקף 58),,methodica-science-body-matter-01-05/index.html,#s1,,1,14
+01-05-02,"שאלה 1 מתוך 4 (בחירה יחידה + יישומון, שקף 59)",SingleChoiceQuestion,methodica-science-body-matter-01-05/index.html,#s2,,2,24
+01-05-03,מעבדת הבקבוקים: קולקציית משרד (שקף 60),,methodica-science-body-matter-01-05/index.html,#s3,,3,14
+01-05-04,"שאלה 2 סעיף א' מתוך 4 (בחירה יחידה + יישומון, שקף 61)",SingleChoiceQuestion,methodica-science-body-matter-01-05/index.html,#s4,,4,24
+01-05-05,"שאלה 2 סעיף ב' מתוך 4 (גרירת השלמת משפטים + יישומון, שקף 62)",DragAndDropQuestion,methodica-science-body-matter-01-05/index.html,#s5,,5,34
+01-05-06,"שאלה 3 מתוך 4 (בחירה יחידה + טבלה, שקף 63)",SingleChoiceQuestion,methodica-science-body-matter-01-05/index.html,#s6,,6,49
+01-05-07,"שאלה 4 מתוך 4 (שאלת התאמה, שקף 64)",DragAndDropQuestion,methodica-science-body-matter-01-05/index.html,#s7,,7,38
+01-05-08,"הוטספוטים (4 חומרים בנעל ריצה, שקף 65)",,methodica-science-body-matter-01-05/index.html,#s8,2 unit(s) with manual-review notes,8,23
+01-05-98,יישומון מעבדת הבקבוקים (מוטמע ב-iframe במסכים 1-5 של חלק 05),Applet (embedded iframe),methodica-science-body-matter-01-05/יישומון יעד 11 מעבדת הבקבוקים/index.html,iframe → יישומון יעד 11 מעבדת הבקבוקים/index.html,embedded applet — screen id 98 chosen by the exporter; confirm numbering; 4 unit(s) with manual-review notes,,27
+01-05-99,"Global / shared chrome (title, flag button, report & zoom modals, shared JS strings)",,methodica-science-body-matter-01-05/index.html + script.js,outside .screen / shared JS,1 unit(s) with manual-review notes,,14
+01-06-00,מסך מעבר לפני שאלת השיא (שקף 67),TransitionScreen,methodica-science-body-matter-01-06/index.html,#s0,,0,6
+01-06-01,"שאלת שיא מועד א, סעיף א' (בחירה יחידה + טבלה, שקף 68)",SingleChoiceQuestion,methodica-science-body-matter-01-06/index.html,#s1,,1,50
+01-06-02,"שאלת שיא מועד א, סעיף ב' (תפריט נפתח + תמונה, שקף 69)",DropdownQuestion,methodica-science-body-matter-01-06/index.html,#s2,12 unit(s) with manual-review notes,2,52
+01-06-03,"שאלת שיא מועד א, סעיף ג' (בחירה יחידה + טבלה, שקף 70)",SingleChoiceQuestion,methodica-science-body-matter-01-06/index.html,#s3,,3,48
+01-06-04,"שאלת שיא מועד א, סעיף ד' (גרירת השלמת טענה + טבלה, שקף 71)",DragAndDropQuestion,methodica-science-body-matter-01-06/index.html,#s4,,4,53
+01-06-99,"Global / shared chrome (title, flag button, report & zoom modals, shared JS strings)",,methodica-science-body-matter-01-06/index.html + script.js,outside .screen / shared JS,1 unit(s) with manual-review notes,,7
+01-07-00,מסך מעבר לפני שאלת השיא מועד ב (שקף 73),TransitionScreen,methodica-science-body-matter-01-07/index.html,#s0,,0,6
+01-07-01,"שאלת שיא מועד ב, סעיף א' (בחירה יחידה + תמונה, שקף 74)",SingleChoiceQuestion,methodica-science-body-matter-01-07/index.html,#s1,,1,31
+01-07-02,"שאלת שיא מועד ב, סעיף ב' (בחירה יחידה + תמונה, שקף 75)",SingleChoiceQuestion,methodica-science-body-matter-01-07/index.html,#s2,,2,31
+01-07-03,"שאלת שיא מועד ב, סעיף ג' (תפריט נפתח 3-בלוקים + תמונה, שקף 76)",DropdownQuestion,methodica-science-body-matter-01-07/index.html,#s3,12 unit(s) with manual-review notes,3,45
+01-07-04,"שאלת שיא מועד ב, סעיף ד' (בחירה יחידה + תמונה, שקף 77)",SingleChoiceQuestion,methodica-science-body-matter-01-07/index.html,#s4,,4,28
+01-07-99,"Global / shared chrome (title, flag button, report & zoom modals, shared JS strings)",,methodica-science-body-matter-01-07/index.html + script.js,outside .screen / shared JS,1 unit(s) with manual-review notes,,7

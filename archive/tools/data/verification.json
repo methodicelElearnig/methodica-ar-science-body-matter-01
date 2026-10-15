@@ -1,0 +1,633 @@
+{
+ "xml_well_formed": true,
+ "unit_count": 1588,
+ "ids_unique": true,
+ "id_shape_ok": true,
+ "all_targets_empty": true,
+ "every_unit_has_screen_id": true,
+ "id_prefix_matches_screen_id": true,
+ "screens_in_units_not_in_manifest": [],
+ "screens_in_manifest_without_units": [],
+ "manifest_screen_count": 67,
+ "sweep1_classes": {
+  "literal-on-line": 1548,
+  "multi-line-join": 32,
+  "placeholder": 8
+ },
+ "sweep1_exceptions": [
+  [
+   "01-01-01-001",
+   "multi-line-join",
+   "methodica-science-body-matter-01-01/index.html:115",
+   ""
+  ],
+  [
+   "01-01-02-002",
+   "multi-line-join",
+   "methodica-science-body-matter-01-01/index.html:185",
+   ""
+  ],
+  [
+   "01-01-04-005",
+   "multi-line-join",
+   "methodica-science-body-matter-01-01/index.html:299",
+   ""
+  ],
+  [
+   "01-01-04-008",
+   "multi-line-join",
+   "methodica-science-body-matter-01-01/index.html:320",
+   ""
+  ],
+  [
+   "01-01-06-002",
+   "multi-line-join",
+   "methodica-science-body-matter-01-01/index.html:464",
+   ""
+  ],
+  [
+   "01-01-06-003",
+   "multi-line-join",
+   "methodica-science-body-matter-01-01/index.html:475",
+   ""
+  ],
+  [
+   "01-01-09-002",
+   "multi-line-join",
+   "methodica-science-body-matter-01-01/index.html:693",
+   ""
+  ],
+  [
+   "01-01-12-003",
+   "multi-line-join",
+   "methodica-science-body-matter-01-01/index.html:842",
+   ""
+  ],
+  [
+   "01-01-12-005",
+   "multi-line-join",
+   "methodica-science-body-matter-01-01/index.html:851",
+   ""
+  ],
+  [
+   "01-01-12-006",
+   "multi-line-join",
+   "methodica-science-body-matter-01-01/index.html:860",
+   ""
+  ],
+  [
+   "01-01-13-001",
+   "multi-line-join",
+   "methodica-science-body-matter-01-01/index.html:900",
+   ""
+  ],
+  [
+   "01-01-14-002",
+   "multi-line-join",
+   "methodica-science-body-matter-01-01/index.html:1007",
+   ""
+  ],
+  [
+   "01-01-15-001",
+   "multi-line-join",
+   "methodica-science-body-matter-01-01/index.html:1042",
+   ""
+  ],
+  [
+   "01-01-17-001",
+   "multi-line-join",
+   "methodica-science-body-matter-01-01/index.html:1153",
+   ""
+  ],
+  [
+   "01-01-20-004",
+   "placeholder",
+   "methodica-science-body-matter-01-01/index.html:1392",
+   "{dropzone:dqx20-target-1}"
+  ],
+  [
+   "01-01-20-005",
+   "placeholder",
+   "methodica-science-body-matter-01-01/index.html:1399",
+   "{dropzone:dqx20-target-2}"
+  ],
+  [
+   "01-01-20-006",
+   "placeholder",
+   "methodica-science-body-matter-01-01/index.html:1406",
+   "{dropzone:dqx20-target-3}"
+  ],
+  [
+   "01-02-02-007",
+   "multi-line-join",
+   "methodica-science-body-matter-01-02/index.html:145",
+   ""
+  ],
+  [
+   "01-02-03-006",
+   "multi-line-join",
+   "methodica-science-body-matter-01-02/index.html:253",
+   ""
+  ],
+  [
+   "01-02-04-006",
+   "multi-line-join",
+   "methodica-science-body-matter-01-02/index.html:360",
+   ""
+  ],
+  [
+   "01-02-05-006",
+   "multi-line-join",
+   "methodica-science-body-matter-01-02/index.html:461",
+   ""
+  ],
+  [
+   "01-02-07-006",
+   "multi-line-join",
+   "methodica-science-body-matter-01-02/index.html:737",
+   ""
+  ],
+  [
+   "01-05-01-006",
+   "multi-line-join",
+   "methodica-science-body-matter-01-05/index.html:96",
+   ""
+  ],
+  [
+   "01-05-01-010",
+   "multi-line-join",
+   "methodica-science-body-matter-01-05/index.html:103",
+   ""
+  ],
+  [
+   "01-05-02-005",
+   "multi-line-join",
+   "methodica-science-body-matter-01-05/index.html:166",
+   ""
+  ],
+  [
+   "01-05-03-010",
+   "multi-line-join",
+   "methodica-science-body-matter-01-05/index.html:255",
+   ""
+  ],
+  [
+   "01-05-04-005",
+   "multi-line-join",
+   "methodica-science-body-matter-01-05/index.html:313",
+   ""
+  ],
+  [
+   "01-05-05-006",
+   "placeholder",
+   "methodica-science-body-matter-01-05/index.html:398",
+   "{dropzone:dqx5-target-1} {dropzone:dqx5-target-2}"
+  ],
+  [
+   "01-05-05-007",
+   "placeholder",
+   "methodica-science-body-matter-01-05/index.html:413",
+   "{dropzone:dqx5-target-3}"
+  ],
+  [
+   "01-05-06-006",
+   "multi-line-join",
+   "methodica-science-body-matter-01-05/index.html:495",
+   ""
+  ],
+  [
+   "01-05-07-005",
+   "multi-line-join",
+   "methodica-science-body-matter-01-05/index.html:600",
+   ""
+  ],
+  [
+   "01-05-07-010",
+   "multi-line-join",
+   "methodica-science-body-matter-01-05/index.html:615",
+   ""
+  ],
+  [
+   "01-05-07-011",
+   "multi-line-join",
+   "methodica-science-body-matter-01-05/index.html:624",
+   ""
+  ],
+  [
+   "01-05-07-012",
+   "multi-line-join",
+   "methodica-science-body-matter-01-05/index.html:633",
+   ""
+  ],
+  [
+   "01-05-98-018",
+   "placeholder",
+   "methodica-science-body-matter-01-05/יישומון יעד 11 מעבדת הבקבוקים/index.html:425",
+   "{m}"
+  ],
+  [
+   "01-06-03-005",
+   "multi-line-join",
+   "methodica-science-body-matter-01-06/index.html:293",
+   ""
+  ],
+  [
+   "01-06-04-005",
+   "multi-line-join",
+   "methodica-science-body-matter-01-06/index.html:399",
+   ""
+  ],
+  [
+   "01-06-04-006",
+   "placeholder",
+   "methodica-science-body-matter-01-06/index.html:404",
+   "{dropzone:dqx4-target-1}"
+  ],
+  [
+   "01-06-04-007",
+   "placeholder",
+   "methodica-science-body-matter-01-06/index.html:411",
+   "{dropzone:dqx4-target-2} {dropzone:dqx4-target-3} {dropzone:dqx4-target-4}"
+  ],
+  [
+   "01-07-01-005",
+   "multi-line-join",
+   "methodica-science-body-matter-01-07/index.html:78",
+   ""
+  ]
+ ],
+ "bad_source_locations": [],
+ "sweep2": {
+  "fragments": 1765,
+  "covered": 1707,
+  "comment": 531,
+  "deliberate": [
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    296,
+    "src=\"assets/images/כיסא.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    317,
+    "src=\"assets/images/בול עץ.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    387,
+    "src=\"assets/images/כיסא-עץ-ללא-רקע-HD-מתוקן.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    393,
+    "src=\"assets/images/כיסא-פלסטיק.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    399,
+    "src=\"assets/images/כיסא-ברזל.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    540,
+    "src=\"assets/images/חוט א.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    544,
+    "src=\"assets/images/חוט ב.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    627,
+    "onclick=\"s8DdSelect('guf','השתנו')\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    628,
+    "onclick=\"s8DdSelect('guf','לא השתנו')\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    640,
+    "onclick=\"s8DdSelect('homer','השתנו')\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    641,
+    "onclick=\"s8DdSelect('homer','לא השתנו')\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    649,
+    "data-zoom-src=\"assets/images/ילד מחזיק חוט נחושת.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    653,
+    "src=\"assets/images/ילד מחזיק חוט נחושת.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    807,
+    "src=\"assets/images/אבן וטבעת.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    840,
+    "src=\"assets/images/תכשיט אבן חן.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    849,
+    "src=\"assets/images/אבן חן.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    919,
+    "src=\"assets/images/גוש זהב.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    927,
+    "src=\"assets/images/חלוק נחל.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    935,
+    "src=\"assets/images/תיבת עץ.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    943,
+    "src=\"assets/images/קערת אבן.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    1111,
+    "src=\"assets/images/חוט ב.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    1115,
+    "src=\"assets/images/חוט א.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    1325,
+    "data-zoom-src=\"assets/images/אוזניות.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    1329,
+    "src=\"assets/images/אוזניות.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    1422,
+    "data-zoom-src=\"assets/images/גבר_עם_אוזניות.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-01/index.html",
+    1426,
+    "src=\"assets/images/גבר_עם_אוזניות.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-02/index.html",
+    73,
+    "src=\"assets/images/מהנדסות 2.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-02/index.html",
+    384,
+    "data-zoom-src=\"assets/images/אזניות חוטים.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-02/index.html",
+    388,
+    "src=\"assets/images/אזניות חוטים.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-02/index.html",
+    595,
+    "src=\"assets/images/אבן צור.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-02/index.html",
+    609,
+    "src=\"assets/images/שבר עצם.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-02/index.html",
+    623,
+    "src=\"assets/images/שבר כלי חרס.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-02/index.html",
+    637,
+    "src=\"assets/images/לוחית נחושת.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-03/index.html",
+    112,
+    "data-zoom-src=\"assets/images/נער עם נייד.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-03/index.html",
+    116,
+    "src=\"assets/images/נער עם נייד.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-03/index.html",
+    214,
+    "data-zoom-src=\"assets/images/ילד חושב.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-03/index.html",
+    218,
+    "src=\"assets/images/ילד חושב.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-03/index.html",
+    503,
+    "src=\"assets/images/גזע עץ.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-03/index.html",
+    510,
+    "src=\"assets/images/צמר שנגזז.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-03/index.html",
+    517,
+    "src=\"assets/images/קוביית פלסטיק.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-03/index.html",
+    524,
+    "src=\"assets/images/חלוק נחל.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-05/index.html",
+    114,
+    "src=\"יישומון יעד 11 מעבדת הבקבוקים/index.html?v=2\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-05/index.html",
+    190,
+    "src=\"יישומון יעד 11 מעבדת הבקבוקים/index.html?v=2\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-05/index.html",
+    265,
+    "src=\"יישומון יעד 11 מעבדת הבקבוקים/index.html?v=2\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-05/index.html",
+    337,
+    "src=\"יישומון יעד 11 מעבדת הבקבוקים/index.html?v=2\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-05/index.html",
+    433,
+    "src=\"יישומון יעד 11 מעבדת הבקבוקים/index.html?v=2\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-05/index.html",
+    699,
+    "src=\"assets/images/שכבות-נעלי-ספורט.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-05/index.html",
+    790,
+    "src=\"יישומון יעד 11 מעבדת הבקבוקים/index.html?big=1&v=2\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-06/index.html",
+    229,
+    "data-zoom-src=\"assets/images/גג בית ספר.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-06/index.html",
+    233,
+    "src=\"assets/images/גג בית ספר.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-07/index.html",
+    108,
+    "data-zoom-src=\"assets/images/שלוש אבקות.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-07/index.html",
+    112,
+    "src=\"assets/images/שלוש אבקות.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-07/index.html",
+    196,
+    "data-zoom-src=\"assets/images/שלוש אבקות.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-07/index.html",
+    200,
+    "src=\"assets/images/שלוש אבקות.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-07/index.html",
+    299,
+    "data-zoom-src=\"assets/images/מגנט ובדיקת מים.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-07/index.html",
+    303,
+    "src=\"assets/images/מגנט ובדיקת מים.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-07/index.html",
+    408,
+    "data-zoom-src=\"assets/images/כפית אבקה בכוס מים.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ],
+   [
+    "methodica-science-body-matter-01-07/index.html",
+    412,
+    "src=\"assets/images/כפית אבקה בכוס מים.png\"",
+    "event-handler argument / asset path (code, not display text)"
+   ]
+  ],
+  "misses": [],
+  "comments_by_file": {
+   "methodica-science-body-matter-01-01/index.html": 45,
+   "methodica-science-body-matter-01-01/script.js": 95,
+   "methodica-science-body-matter-01-02/index.html": 15,
+   "methodica-science-body-matter-01-02/script.js": 63,
+   "methodica-science-body-matter-01-03/index.html": 17,
+   "methodica-science-body-matter-01-03/script.js": 55,
+   "methodica-science-body-matter-01-04/index.html": 4,
+   "methodica-science-body-matter-01-04/script.js": 17,
+   "methodica-science-body-matter-01-05/index.html": 16,
+   "methodica-science-body-matter-01-05/script.js": 55,
+   "methodica-science-body-matter-01-06/index.html": 11,
+   "methodica-science-body-matter-01-06/script.js": 53,
+   "methodica-science-body-matter-01-07/index.html": 10,
+   "methodica-science-body-matter-01-07/script.js": 36,
+   "methodica-science-body-matter-01-05/יישומון יעד 11 מעבדת הבקבוקים/index.html": 39
+  }
+ }
+}

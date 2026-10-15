@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وحدة تعليمية 720 | الهدف 11 | وحدة 1</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ מסך 1 — בחירת דמות מלווה (TwoOptionSelection) ============
+       שוכפל ממסך 1 (data-screen="0", id="s0") של Methodica-science-mass
+       -measure-02-01 (יעד 2, תיקיית ה-"-linked"): מבנה/עיצוב/פונקציונליות
+       זהים 1:1 (720-templates skill → TwoOptionSelection.md). התאמות
+       מכוונות ומתועדות (לא סטייה מקרית):
+       1) בלי טריק direction:ltr — לא ב-.options-row ולא ב-.bottom-bar-inner
+          (המקור השתמש בו בשניהם כדי לקבע פיזית). כאן ממומש RTL אמיתי:
+          סדר DOM + flex-end/flex-start, לפי מוסכמת הפרויקט הקבועה
+          (ראו סעיף 0.3 בקובץ הסיכום הראשי, ותיקון אנלוגי בפס התחתון
+          שבוצע כבר בסיין 1 של יעד 3).
+       2) ID לוגי לדמות: character-1/character-2 (לא green/orange כמו
+          במקור) — לפי ההמלצה הנוכחית ב-_global-components.md. מיפוי
+          מפורש (לא ניחוש לפי צבע): character-1=ירוקה (green-avatar.png),
+          character-2=טורקיז (Turquoise-avatar.png) — סדר זה שרירותי
+          (אין שתי דמויות "ירוק/כתום" כמו במקור); ניתן להחליף אם תרצי
+          את הצד ההפוך.
+       3) מיקום פיזי: character-1 ראשון ב-DOM → ימין פיזי תחת RTL אמיתי;
+          character-2 שני → שמאל. כפתור "בחרתי" (יחיד, בלי כפתור חזרה —
+          מסך ראשון) ממוקם שמאל פיזי (`#s0 .bottom-bar-inner{justify-
+          content:flex-end}` — flex-end=שמאל פיזי תחת RTL אמיתי, מקביל
+          בתוצאה ל-.s0-bar{justify-content:flex-start} של המקור תחת
+          ה-direction:ltr שלו).
+       4) תמונות הדמות: שתי תמונות generator-output שסופקו
+          (green-avatar.png שקוף כבר; Turquoise-avatar.png הגיע עם רקע
+          כמעט-לבן אפוי + צל מגע מתחת לרגליים — שניהם הוסרו, ראו
+          ARCHITECTURE.md). שתי התמונות מנורמלו לאותו גובה-דמות ואותה
+          baseline בתוך קנבס יחיד ביחס 296:278 (תואם לחלון
+          .option-card-img), כדי שיופיעו באותו קנה-מידה חזותי זה לצד
+          זה (720-templates skill → TwoOptionSelection.md, "Character
+          scale vs. image-window size"). המקורות (עם הרקע/צל) נשמרו
+          ב-assets/images/originals/. -->
+  <section class="screen active" data-screen="0" id="s0">
+    <div class="screen1-content">
+      <div class="screen1-text-group">
+        <h1 class="screen1-title">أي شخصية تريدون أن ترافقكم؟
+        </h1>
+
+      </div>
+
+      <div class="options-row" role="radiogroup" aria-label="اختاروا شخصية">
+        <div class="option-card"
+             data-value="character-1"
+             role="radio"
+             aria-checked="false"
+             tabindex="0"
+             onclick="selectOption(this)"
+             onkeydown="handleCardKey(event, this)">
+          <div class="option-card-frame">
+            <div class="option-card-img">
+              <video class="s0-avatar-video s0-avatar-video--magnifier" src="assets/videos/green-avatar-magnifier.mp4" autoplay loop muted playsinline disablepictureinpicture preload="auto" aria-label="شخصية خضراء"></video>
+            </div>
+          </div>
+        </div>
+
+        <div class="option-card"
+             data-value="character-2"
+             role="radio"
+             aria-checked="false"
+             tabindex="0"
+             onclick="selectOption(this)"
+             onkeydown="handleCardKey(event, this)">
+          <div class="option-card-frame">
+            <div class="option-card-img">
+              <video class="s0-avatar-video s0-avatar-video--cutter" src="assets/videos/turquoise-avatar-cutter.mp4" autoplay loop muted playsinline disablepictureinpicture preload="auto" aria-label="شخصية فيروزية"></video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-actions">
+          <button class="btn-continue" id="s0-continue" disabled onclick="advanceFromS0()">اخترتُ</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 2 — שאלה פתוחה עם שדה כתיבה חופשי ============
+       **תוקן (2026-07-27): מבנה/גודל/מיקום התמונה הוחזרו במדויק
+       למוסכמת הפרויקט** — זהה 1:1 למסך 2 (`id="s1"`) של `Methodica
+       -science-mass-measure-02-01` (יעד 2, "-linked"): `.scq-question`
+       (position:absolute; top:139px; left:40px; right:40px; flex row,
+       gap:16px) מכיל `.scq-content` (flex:1) + `.scq-img`/`.scq-img-inner`
+       (380×380px, padding 8px, גבול 1px rgba(174,174,174,0.5), radius
+       16px, רקע לבן) — **אותן מחלקות CSS גלובליות בדיוק** שכל מסך
+       "שאלה עם תמונה" אחר בפרויקט משתמש בהן, לא מחלקות ייעודיות חדשות.
+       זה מחליף ניסיון קודם (625×628px, לפי Figma "720 - UI Templates"
+       node 730:10392) — הניסיון ההוא היה שגוי: המשתמשת ביקשה
+       שהתמונה תהיה **בדיוק** כמו במסך המקור (יעד 2), לא בגודל/מיקום
+       חדשים. ה-RTL הוא DOM-order (content לפני img — content מקבל ימין,
+       img מקבל שמאל תחת RTL אמיתי, בלי direction:ltr), בדיוק כמו שנקבע
+       כבר לגרסה הקודמת.
+
+       תוכן חדש בתוך `.scq-content` (לא היה במקור): שדה תשובה פתוחה
+       (`.oaq-field`), כפתור מקומי ("צדקתי?") + כפתור גלובלי ("המשך"),
+       ודמות מלווה (וידאו לופ מושתק, לפי מסך 1) + בועית דיבור
+       (placeholder, טרם סופק תוכן). -->
+  <section class="screen" data-screen="1" id="s1">
+    <div class="scq-question">
+      <div class="scq-content">
+        <p class="hoq-title">
+          تخيلوا أنكم تعيشون في عالم حيث 
+         <b>جميع</b>
+           الأشياء مصنوعة من المادة غير المناسبة.
+          <br/>
+          على سبيل المثال - مطرقة مصنوعة من الإسفنج أو قارب من الحجر.
+          <br/>
+          <b>اكتبوا مشكلة واحدة يمكن أن تحدث واشرحوا لماذا.</b>
+        </p>
+        <textarea
+          id="s1-answer"
+          class="oaq-field"
+          placeholder="اكتبوا هنا... "
+          aria-label="إجابة مفتوحة"
+          oninput="oaqOnInput('s1')"></textarea>
+        <button id="s1-check-local" class="btn-continue" onclick="oaqCheck('s1')" disabled>هل إجابتي صحيحة؟</button>
+
+        <!-- דמות מלווה + בועית — לפי Figma "720 - UI Templates" node
+             730:10394 ("character"): flex row, gap 12px, וידאו **ראשון**
+             ב-DOM ובועה **שנייה** — תחת RTL אמיתי (הורה .scq-content
+             direction:rtl) זה נותן וידאו=ימין, בועה=שמאל, בדיוק כמו
+             בפיגמה (אומת מול צילום המסך של הרכיב: בועה משמאל לתמונה
+             האפורה). תוכן הבועה לפי תסריט שקף 5 (לא placeholder עוד). -->
+        <div class="hoq-character-row">
+          <div class="hoq-char-video-wrap">
+            <video class="hoq-char-video" id="s1-char-video" autoplay loop muted playsinline disablepictureinpicture preload="auto" aria-label="شخصية مرافقة"></video>
+          </div>
+          <div class="hoq-bubble">
+            <p class="hoq-bubble-text">برأيي في عالم كهذا سيكون من الصعب معرفة كيفية استخدام الأشياء، لأن المواد لا تتناسب مع وظيفتها.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- תמונה — 380×380px, מסגרת גלובלית זהה לכל מסכי "שאלה עם תמונה"
+           (.scq-img/.scq-img-inner). לופ 7 תמונות "חפץ עשוי מהחומר הלא
+           נכון" (s1StartImageLoop, script.js). ללא כפתור הגדלה (הוסר
+           לפי בקשה — התמונה בלולאה בלבד, בלי zoom). -->
+      <div class="scq-img"><div class="scq-img-inner">
+        <img id="scq-img" src="assets/images/hook-cartoon-chair.png" alt="كرسي مصنوع من الكرتون">
+      </div></div>
+    </div>
+
+    <!-- תוקן (2026-09-28, בקשה מפורשת: "לא צריך משוב בכלל לשאלה הזאת,
+         וניסיון מענה אחד בלבד") — תיבת המשוב שנוספה ב-2026-09-15 הוסרה
+         לגמרי; ראו oaqCheck ב-script.js. -->
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button id="s1-back" class="btn-back" onclick="goTo(0, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="s1-check" class="btn-continue" onclick="oaqContinue('s1')" disabled>متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 3 — מסך מעבר (TransitionScreen) ============
+       שוכפל ממסך 6 (data-screen="5", id="s5") של Methodica-science-mass
+       -measure-02-01 (יעד 2, "-linked"): מבנה/פונקציונליות זהים 1:1.
+       תוכן לפי תסריט (שקף 6). **תוקן (2026-07-28):** דמות עודכנה
+       מ-placeholder (אווטאר סטטי בסיסי) לווידאו אמיתי "מגדלת זכוכית
+       מסתכלת לצופה" (green-avatar-magnifier.mp4/Turquoise-avatar
+       -magnifier.mp4, סופקו בפועל) — לפי בחירת הדמות במסך 1, אותו
+       חוזה בדיוק כמו מסך 2/9/10 (resolveCharBubbleVideo). מחלקות CSS
+       גנריות (.trans-*, לא "s2-*") כי תבנית TransitionScreen חוזרת על
+       עצמה במספר מסכים לאורך היחידה. -->
+  <section class="screen" data-screen="2" id="s2">
+    <div class="trans-content">
+      <p class="trans-instructions">في هذه الوحدة سنتعلم النظر إلى المنتجات المألوفة بعيون العلماء والمهندسين:</p>
+      <p class="trans-message">سنتعلم ما هو الجسم، وما هي المادة، وما هي الخصائص
+        <br/>
+        التي تصفهما.</p>
+      <video class="trans-avatar" id="s2-avatar-video" autoplay loop muted playsinline disablepictureinpicture preload="auto" aria-label="شخصية مرافقة"></video>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(1, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" onclick="goTo(3)">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 4 — בחירת מסלול למידה: וידאו/קריאה (TwoOptionSelection) ============
+       וריאנט של מסך 1 (.options-row/.option-card/.option-card-frame/
+       .option-card-img גלובליים, reuse מלא) — בתוספת תווית שם מתחת לכל
+       כרטיס (.option-card-label), לפי דוגמה ממסך 5 (data-screen="4",
+       id="s4") של methodica-science-mass-measure-03-01 (יעד 3, סיין 1).
+       תוכן לפי תסריט (שקף 7). **הבדל מהותי מהמקור:** במקור שתי התמונות
+       קבועות (לא תלויות בדמות); כאן כל כרטיס מציג תמונה של **הדמות
+       שנבחרה במסך 1** בפוזה המתאימה (צופה בסרטון / קוראת) — לפי בקשה
+       מפורשת, ראו resetScreenState3 ב-script.js. וידאו ראשון ב-DOM
+       (=ימין פיזי תחת RTL אמיתי), קריאה שני (=שמאל) — לפי סדר הטקסט
+       בתסריט ("לצפות בסרטון קצר" מוזכר ראשון). -->
+  <section class="screen" data-screen="3" id="s3">
+    <div class="screen1-content">
+      <div class="screen1-text-group">
+        <h1 class="screen1-title">لنتعلم عن الأجسام والمادة والخصائص</h1>
+        <p class="screen1-subtitle">اختاروا كيف ترغبون في التعلم:</p>
+      </div>
+
+      <div class="options-row" role="radiogroup" aria-label="اختاروا طريقة التعلم">
+        <div class="option-card"
+             data-value="video"
+             role="radio"
+             aria-checked="false"
+             tabindex="0"
+             onclick="s3SelectPath(this)"
+             onkeydown="handleS3CardKey(event, this)">
+          <div class="option-card-frame">
+            <div class="option-card-img">
+              <img id="s3-video-img" alt="مشاهدة فيديو قصير" draggable="false">
+            </div>
+          </div>
+          <p class="option-card-label">مشاهدة فيديو قصير</p>
+        </div>
+
+        <div class="option-card"
+             data-value="read"
+             role="radio"
+             aria-checked="false"
+             tabindex="0"
+             onclick="s3SelectPath(this)"
+             onkeydown="handleS3CardKey(event, this)">
+          <div class="option-card-frame">
+            <div class="option-card-img">
+              <img id="s3-read-img" alt="أقرأ بنفسي" draggable="false">
+            </div>
+          </div>
+          <p class="option-card-label">أقرأ بنفسي</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(2, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" id="s3-continue" disabled onclick="advanceFromS3()">اخترتُ</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 5 — קלפים מתהפכים (FlipCardsReveal) ============
+       מסך ראשון במסלול "קריאה עצמית". הועתק ממסך 3 (data-screen="2",
+       id="s2") של Methodica-science-mass-measure-02-01 (יעד 2, "-linked")
+       — מבנה/CSS/JS (.flip-card וכו') זהים 1:1, מחלקות תוכן גנריות
+       (.flip-*, לא "s3-*" כמו במקור) כי התבנית עשויה לחזור על עצמה.
+       תוכן לפי תסריט (שקף 8): תמונה ימין=כיסא (כיסא.png), תמונה
+       שמאל=בול עץ (בול עץ.png) — לפי מיקום מפורש בהוראות הבנייה. טקסט
+       הגב (לא סופק במפורש בשקף 8 עצמו) נלקח מתוכן שקף 9 הסמוך, שמנסח
+       בדיוק את ה"גוף"/"חומר" של כל תמונה (הגדרה תואמת FlipCardsReveal:
+       תמונה → הסבר טקסטואלי). כפתור "המשך" נדלק רק אחרי הפיכת שני
+       הקלפים — זהה למקור. -->
+  <section class="screen" data-screen="4" id="s4">
+    <div class="flip-content">
+      <div class="flip-text-group">
+        <h2 class="flip-title">ما العلاقة بين جذع شجرة وكرسي، وما الذي يميّز بينهما مع ذلك؟</h2>
+        <p class="flip-instruction">اضغطوا على الصور واكتشفوا</p>
+      </div>
+
+      <div class="flip-cards-row">
+
+        <!-- קלף ימין — כיסא -->
+        <div class="flip-card"
+             id="flip-card-chair"
+             role="button"
+             tabindex="0"
+             aria-label="بطاقة كرسي — اضغطوا للقلب"
+             onclick="s4FlipCard('flip-card-chair')"
+             onkeydown="s4CardKey(event, 'flip-card-chair')">
+          <div class="flip-card-inner">
+            <div class="flip-card-face flip-card-front">
+              <img src="assets/images/כיסא.png" alt="كرسي" class="flip-card-img">
+            </div>
+            <div class="flip-card-face flip-card-back">
+              <p>الكرسي هو جسم.<br/>
+              <strong>الجسم</strong> هو شيء يشغل حيّزًا من الفراغ.<br/>
+              يمكن أن يكون الجسم حيًّا أو جامدًا، طبيعيًا أو مُعالَجًا.<br/>
+              على سبيل المثال: طاولة، كوب، كرة.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- קלף שמאל — בול עץ -->
+        <div class="flip-card"
+             id="flip-card-wood"
+             role="button"
+             tabindex="0"
+             aria-label="بطاقة جذع خشب — اضغطوا للقلب"
+             onclick="s4FlipCard('flip-card-wood')"
+             onkeydown="s4CardKey(event, 'flip-card-wood')">
+          <div class="flip-card-inner">
+            <div class="flip-card-face flip-card-front">
+              <img src="assets/images/בול עץ.png" alt="جذع خشب" class="flip-card-img">
+            </div>
+            <div class="flip-card-face flip-card-back">
+              <p>الخشب مادة.<br/>
+              <strong>المادة</strong> هي ما تصنع منه الأجسام والأشياء.<br/>
+              على سبيل المثال: الطاولة مصنوعة من الخشب،<br/>
+              الكوب مصنوع من الزجاج،<br/>
+              الكرة مصنوعة من البلاستيك.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(3, true)">عودة</button>
+        </div>
+        <!-- מעבר וידאו/קריאה — הועבר לסרגל התחתון (בקשה מפורשת), לפי
+             Figma "720 - UI Templates" node 2638:23999 (FixedNavigationBar
+             עם ModeButtons ממורכז בין כפתורי חזרה/המשך). ראו הערה מלאה
+             ב-styles.css (".rv-toggle"). -->
+        <div class="rv-toggle" role="group" aria-label="التبديل بين مشاهدة الفيديو والقراءة">
+          <button type="button" class="rv-toggle-btn" data-mode="video" onclick="rvGoToVideo()">
+            <span>مشاهدة فيديو</span>
+            <span class="rv-toggle-icon-play" aria-hidden="true">
+              <img class="rv-icon-circle" src="assets/images/toggle-icon-play-circle.svg" alt="">
+              <img class="rv-icon-circle-ring" src="assets/images/toggle-icon-play-circle-ring.svg" alt="">
+              <img class="rv-icon-triangle" src="assets/images/toggle-icon-play-triangle.svg" alt="">
+              <img class="rv-icon-triangle-ring" src="assets/images/toggle-icon-play-triangle-ring.svg" alt="">
+            </span>
+          </button>
+          <button type="button" class="rv-toggle-btn selected" data-mode="read" disabled>
+            <span>أقرأ بنفسي</span>
+            <img class="rv-toggle-icon-file" src="assets/images/toggle-icon-file.svg" alt="" aria-hidden="true">
+          </button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" id="s4-continue" disabled onclick="s4Continue()">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 6 — "גוף אחד - חומרים רבים" (Text Content Layout + כרטיסים) ============
+       מבנה הכרטיסים (.tcl-cards/.tcl-card/.tcl-card-img/.tcl-card-label)
+       הועתק ממסך 14 (data-screen="13", id="s13") של methodica-science
+       -mass-measure-03-01 (יעד 3, סיין 1). כותרת+פסקה עליונה (.tcl-header/
+       .tcl-title/.tcl-body) + השורה המודגשת בתחתית (.tcl-emphasis) לפי
+       רכיב Figma "Text Content Layout" (720 - UI Templates,
+       fileKey eSbp4bKHgBky0rakDb8l9N, node 196:3221) — 3 בלוקים: כותרת
+       Bold 40px, גוף Regular 26px, הדגשה Bold 28px, כולם ישור-ימין
+       (RTL אמיתי, לא מרוכז כמו TransitionScreen). תוכן לפי תסריט
+       (שקף 10). כרטיסים: כיסא-עץ/כיסא-פלסטיק/כיסא-ברזל.png (סופקו
+       במפורש) — סדר לפי התסריט (עץ, פלסטיק, ברזל), עץ ראשון ב-DOM
+       (=ימין תחת RTL אמיתי). **הערת היקף:** שקף 10 מציין "התוכן עולה
+       בהדרגה" (אנימציה), אבל הוראת הבנייה בפועל לא ביקשה זאת במפורש —
+       נבנה כמסך סטטי (הכול מוצג בבת אחת); הוספת אנימציית reveal
+       מדורגת (animation-system skill) יכולה להתווסף בהמשך אם יתבקש. -->
+  <section class="screen" data-screen="5" id="s5">
+    <div class="screen6-content">
+      <div class="screen1-text-group">
+        <h1 class="screen1-title">جسم واحد - مواد كثيرة</h1>
+        <p class="screen1-subtitle">جسم واحد (على سبيل المثال، كرسي) يمكن تصنيعه من مجموعة متنوعة من المواد.</p>
+      </div>
+
+      <div class="tcl-cards">
+        <div class="tcl-card">
+          <div class="tcl-card-img"><img src="assets/images/כיסא-עץ-ללא-רקע-HD-מתוקן.png" alt="كرسي خشبي"></div>
+          <div class="tcl-card-label">
+            <p class="tcl-card-name">كرسي خشبي</p>
+          </div>
+        </div>
+        <div class="tcl-card">
+          <div class="tcl-card-img"><img src="assets/images/כיסא-פלסטיק.png" alt="كرسي بلاستيكي"></div>
+          <div class="tcl-card-label">
+            <p class="tcl-card-name">كرسي بلاستيكي</p>
+          </div>
+        </div>
+        <div class="tcl-card">
+          <div class="tcl-card-img"><img src="assets/images/כיסא-ברזל.png" alt="كرسي من الحديد"></div>
+          <div class="tcl-card-label">
+            <p class="tcl-card-name">كرسي من الحديد</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="tcl-emphasis">لكل مادة <b>خصائص فريدة</b> تؤثر على استخدام الكرسي ومظهره ومتانته.</p>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(4, true)">عودة</button>
+        </div>
+        <!-- מעבר וידאו/קריאה — הועבר לסרגל התחתון (בקשה מפורשת), לפי
+             Figma "720 - UI Templates" node 2638:23999. ראו הערה מלאה
+             ב-styles.css (".rv-toggle"). -->
+        <div class="rv-toggle" role="group" aria-label="التبديل بين مشاهدة الفيديو والقراءة">
+          <button type="button" class="rv-toggle-btn" data-mode="video" onclick="rvGoToVideo()">
+            <span>مشاهدة فيديو</span>
+            <span class="rv-toggle-icon-play" aria-hidden="true">
+              <img class="rv-icon-circle" src="assets/images/toggle-icon-play-circle.svg" alt="">
+              <img class="rv-icon-circle-ring" src="assets/images/toggle-icon-play-circle-ring.svg" alt="">
+              <img class="rv-icon-triangle" src="assets/images/toggle-icon-play-triangle.svg" alt="">
+              <img class="rv-icon-triangle-ring" src="assets/images/toggle-icon-play-triangle-ring.svg" alt="">
+            </span>
+          </button>
+          <button type="button" class="rv-toggle-btn selected" data-mode="read" disabled>
+            <span>أقرأ بنفسي</span>
+            <img class="rv-toggle-icon-file" src="assets/images/toggle-icon-file.svg" alt="" aria-hidden="true">
+          </button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" onclick="goTo(6)">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 7 — "תכונות" (2 כרטיסי מידע) ============
+       **תוקן (2026-07-28): הוחלף מ-placeholder לתוכן אמיתי.** עיצוב
+       לפי Figma "720 - UI Templates" node 405:7776 ("FlipCardsReveal -
+       State 02 - Revealed") — **לפי בקשה מפורשת של המשתמשת ("Figma is
+       the source of truth", סקיל figma-lomda-builder), עם 2 דיוקים
+       ששונים מהרכיב המקורי בפיגמה:** (1) בלי מנגנון הפיכת קלפים (אין
+       "State 01"/לחיצה — הכרטיסים תמיד גלויים, "State 02" בלבד).
+       (2) 2 כרטיסים בלבד (לא 4 כמו ברכיב המקורי). מבנה: כותרת בודדת
+       "תכונות" (bold 40, ישור-ימין, לפי Text Content Layout — בלוק
+       יחיד, שני הבלוקים האחרים לא בשימוש, אין תוכן מתאים) + טוגל
+       וידאו/קריאה (רכיב זה כולל אותו בעצמו בפיגמה) + 2 כרטיסי מידע
+       (283×283, רקע subject-100, גבול 3px subject-500, radius 24).
+       תוכן לפי תסריט (שקף 11), **run-level bold/regular מדויק מה-
+       pptx** (לא ניחוש): כותרת כל כרטיס בבולד ("תכונות גוף:"/"תכונות
+       חומר:"), שאר הטקסט רגיל, כולל שבירות השורה/הפסקאות הריקות
+       בדיוק כפי שהן ב-pptx. -->
+  <section class="screen" data-screen="6" id="s6">
+    <div class="tf-content">
+      <div class="tf-header">
+        <h1 class="tf-title">خصائص</h1>
+      </div>
+
+      <div class="tf-cards">
+        <div class="tf-card">
+          <p class="tf-card-text">
+            <b>خصائص الجسم:</b><br/>
+            تصف الجسم.<br/>
+            يمكن أن تختلف من جسم لآخر،<br/>
+            حتى لو كانت الأجسام مصنوعة من نفس المادة.
+            <br/>
+            على سبيل المثال، الكتلة والحجم والشكل هي خصائص تصف الجسم.
+          </p>
+        </div>
+        <div class="tf-card">
+          <p class="tf-card-text">
+            <b>خصائص المادة:</b><br/>
+            تصف المادة، بغض النظر عن الجسم.<br/>
+            تساعد في التمييز بين مادة وأخرى.
+            <br/>
+            على سبيل المثال، اللون والرائحة وحالة المادة هي خصائص تصف المادة.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(5, true)">عودة</button>
+        </div>
+        <!-- מעבר וידאו/קריאה — הועבר לסרגל התחתון (בקשה מפורשת), לפי
+             Figma "720 - UI Templates" node 2638:23999. ראו הערה מלאה
+             ב-styles.css (".rv-toggle"). -->
+        <div class="rv-toggle" role="group" aria-label="التبديل بين مشاهدة الفيديو والقراءة">
+          <button type="button" class="rv-toggle-btn" data-mode="video" onclick="rvGoToVideo()">
+            <span>مشاهدة فيديو</span>
+            <span class="rv-toggle-icon-play" aria-hidden="true">
+              <img class="rv-icon-circle" src="assets/images/toggle-icon-play-circle.svg" alt="">
+              <img class="rv-icon-circle-ring" src="assets/images/toggle-icon-play-circle-ring.svg" alt="">
+              <img class="rv-icon-triangle" src="assets/images/toggle-icon-play-triangle.svg" alt="">
+              <img class="rv-icon-triangle-ring" src="assets/images/toggle-icon-play-triangle-ring.svg" alt="">
+            </span>
+          </button>
+          <button type="button" class="rv-toggle-btn selected" data-mode="read" disabled>
+            <span>أقرأ بنفسي</span>
+            <img class="rv-toggle-icon-file" src="assets/images/toggle-icon-file.svg" alt="" aria-hidden="true">
+          </button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" onclick="goTo(7)">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 8 — הקדמה לניסוי חוט הנחושת ============
+       **תוקן (2026-07-28): הוחלף מ-placeholder לתוכן אמיתי.** לפי
+       בקשה מפורשת: "לשכפל בדיוק את מסך 5 [FlipCardsReveal, id="s4"],
+       ולהטמיע את התמונות ומתחת לתמונה את השם שלה... במסך הזה לא צריך
+       פליפינג קארדס" — אותו מבנה חזותי בדיוק (.flip-title/.flip
+       -instruction/.rv-toggle + שורת כרטיסים 325×325 באותה מסגרת
+       בדיוק כמו .flip-card-front), אבל **בלי מנגנון ההיפוך**: כל
+       כרטיס מציג תמונה קבועה + שם מתחת לה (לא טקסט נסתר מאחור).
+       תוכן לפי תסריט (שקף 12), run-level bold מדויק — **הפוך ממה
+       שהיה מצופה:** השורה הראשונה ("בוא נראה איך החיתוך...") רגילה,
+       השנייה ("ניקח לדוגמא...") בבולד — נבדק בפועל ב-pptx runs, לא
+       ניחוש. תמונות: חוט א.png/חוט ב.png (סופקו מראש, בדיוק לפי השם
+       "חוט נחושת א'/ב'" מהתסריט). -->
+  <section class="screen" data-screen="7" id="s7">
+    <div class="flip-content">
+      <div class="flip-text-group">
+        <p class="flip-instruction-s8">
+        <b>سنأخذ على سبيل المثال سلكًا نحاسيًا ونقطعه إلى قسمين:</b>
+
+
+        </p>
+      </div>
+
+      <div class="wire-cards-row">
+        <div class="wire-card">
+          <div class="wire-card-img"><img src="assets/images/חוט א.png" alt="سلك نحاسي أ"></div>
+          <p class="wire-card-label">سلك نحاسي أ</p>
+        </div>
+        <div class="wire-card">
+          <div class="wire-card-img"><img src="assets/images/חוט ב.png" alt="سلك نحاسي ب"></div>
+          <p class="wire-card-label">سلك نحاسي ب</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- דמות מלווה + בועית (עודכן, בקשה מפורשת): וידאו לופ מושתק
+         "חותכת" (turquoise-avatar-cutter.mp4/green-avatar-cutter.mp4,
+         סופקו בפועל) — ממוקם בצד שמאל-תחתון של המסך, מעל הפס התחתון.
+         sibling של .flip-content (לא child שלו) כדי שה-position:
+         absolute ימוקם ביחס למסך עצמו (#s7), לא ביחס לעמודת-התוכן
+         הממורכזת (.flip-content, שמתחילה ב-left:190px). מוצג תמיד
+         (visible), בלי גייטינג — למסך הזה אין אינטראקציית-בדיקה
+         שדורשת חשיפה מותנית. -->
+    <div class="hoq-character-row visible" id="s7-character-row">
+      <div class="hoq-char-video-wrap">
+        <video class="hoq-char-video" id="s7-char-video" autoplay loop muted playsinline disablepictureinpicture preload="auto" aria-label="شخصية مرافقة"></video>
+      </div>
+      <div class="hoq-bubble">
+        <p class="hoq-bubble-text">لنر كيف يؤثر القطع على خصائص الجسم وعلى خصائص المادة.</p>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(6, true)">عودة</button>
+        </div>
+        <!-- מעבר וידאו/קריאה — הועבר לסרגל התחתון (בקשה מפורשת), לפי
+             Figma "720 - UI Templates" node 2638:23999. ראו הערה מלאה
+             ב-styles.css (".rv-toggle"). -->
+        <div class="rv-toggle" role="group" aria-label="التبديل بين مشاهدة الفيديو والقراءة">
+          <button type="button" class="rv-toggle-btn" data-mode="video" onclick="rvGoToVideo()">
+            <span>مشاهدة فيديو</span>
+            <span class="rv-toggle-icon-play" aria-hidden="true">
+              <img class="rv-icon-circle" src="assets/images/toggle-icon-play-circle.svg" alt="">
+              <img class="rv-icon-circle-ring" src="assets/images/toggle-icon-play-circle-ring.svg" alt="">
+              <img class="rv-icon-triangle" src="assets/images/toggle-icon-play-triangle.svg" alt="">
+              <img class="rv-icon-triangle-ring" src="assets/images/toggle-icon-play-triangle-ring.svg" alt="">
+            </span>
+          </button>
+          <button type="button" class="rv-toggle-btn selected" data-mode="read" disabled>
+            <span>أقرأ بنفسي</span>
+            <img class="rv-toggle-icon-file" src="assets/images/toggle-icon-file.svg" alt="" aria-hidden="true">
+          </button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" onclick="goTo(8)">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 9 — שאלת תפריט נפתח (Dropdown), חוט נחושת ============
+       **הוחלף (בקשה מפורשת): מ-HookOpenQuestion (שאלה פתוחה/textarea)
+       לשאלת תפריט נפתח (dropdown), 2 שורות** — התמונה המלווה נשארה
+       בדיוק כמו שהייתה ("ילד מחזיק חוט נחושת.png", .scq-img). רכיב
+       ה-dropdown (.dd-wrap/.dd-btn/.dd-val/.dd-arrow/.dd-opts/.dd-opt)
+       + מעטפת השורות (.dd-rows/.dd-row/.dd-label) הובאו מ"מסך 8"
+       (data-screen="7", id="s7") של Methodica-science-mass-measure
+       -02-02 (יעד 2, סיין 2). תוכן (בקשה מפורשת): שורה 1 "תכונות הגוף"
+       (השתנו/לא השתנו, נכון=השתנו) ושורה 2 "תכונות החומר" (השתנו/לא
+       השתנו, נכון=לא השתנו) — כי חיתוך משנה תכונות-גוף (אורך/מסה) אבל
+       לא תכונות-חומר. **בלי כפתור רמז** (בקשה מפורשת) — אותה מוסכמה
+       כמו מסך 14 (ddq13) בפרויקט הזה, ששם גם הוסר כפתור-הרמז לגמרי.
+       מנגנון הבדיקה/משוב (S8/Check/resetScreenState8 ב-script.js)
+       שוכפל מ-S19 (SingleChoiceQuestion) + ddq13 (סימון נכון/שגוי
+       per-row, לא רק per-screen) — 2 ניסיונות, פופ-אפ משוב משותף. -->
+  <section class="screen" data-screen="8" id="s8">
+    <div class="scq-question">
+      <div class="scq-content">
+        <div class="scq-qtext">
+          <p class="scq-qbody"><b>بعد قطع السلك، ما الذي تغيّر وما الذي بقي كما هو؟</b></p>
+        </div>
+        <div class="dd-rows">
+          <div class="dd-row">
+            <span class="dd-label">خصائص الجسم</span>
+            <div class="dd-wrap" id="s8-dd-guf">
+              <button class="dd-btn" type="button" id="s8-dd-guf-btn" onclick="s8DdToggle('guf')" aria-haspopup="listbox" aria-expanded="false">
+                <span class="dd-val" id="s8-dd-guf-val"></span>
+                <span class="dd-arrow" aria-hidden="true"></span>
+              </button>
+              <ul class="dd-opts" id="s8-dd-guf-opts" hidden role="listbox">
+                <li class="dd-opt" role="option" onclick="s8DdSelect('guf','تغيرت')">تغيرت</li>
+                <li class="dd-opt" role="option" onclick="s8DdSelect('guf','لم تتغير')">لم تتغير</li>
+              </ul>
+            </div>
+          </div>
+          <div class="dd-row">
+            <span class="dd-label">خصائص المادة</span>
+            <div class="dd-wrap" id="s8-dd-homer">
+              <button class="dd-btn" type="button" id="s8-dd-homer-btn" onclick="s8DdToggle('homer')" aria-haspopup="listbox" aria-expanded="false">
+                <span class="dd-val" id="s8-dd-homer-val"></span>
+                <span class="dd-arrow" aria-hidden="true"></span>
+              </button>
+              <ul class="dd-opts" id="s8-dd-homer-opts" hidden role="listbox">
+                <li class="dd-opt" role="option" onclick="s8DdSelect('homer','تغيرت')">تغيرت</li>
+                <li class="dd-opt" role="option" onclick="s8DdSelect('homer','لم تتغير')">لم تتغير</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scq-img"><div class="scq-img-inner">
+        <button class="img-zoom-btn" type="button" aria-label="تكبير الصورة"
+                data-zoom-src="assets/images/ילד מחזיק חוט נחושת.png" data-zoom-alt="طفل يمسك سلكًا نحاسيًا">
+          <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
+        </button>
+        <img id="s8-img" src="assets/images/ילד מחזיק חוט נחושת.png" alt="طفل يمسك سلكًا نحاسيًا">
+      </div></div>
+    </div>
+
+    <div id="s8-popup" class="scq-fb-box">
+      <div class="scq-fb-title">
+        <span class="scq-fb-title-text"></span>
+      </div>
+      <p class="scq-fb-body"></p>
+      <button class="scq-fb-reveal-btn" id="s8-reveal-btn" type="button" hidden onclick="s8ToggleReveal()">الانتقال إلى إجابتي</button>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(7, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="s8-check" class="btn-continue" disabled onclick="s8Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 10 — מסך מעבר: מסקנה (TransitionScreen) ============
+       **תוקן (2026-07-28): הוחלף מ-placeholder לתוכן אמיתי**, ומחליף
+       גם את מיקומו הקודם של מסך הוידאו (שהוזז למסך 11). תוכן לפי
+       תסריט (שקף 14), **בדיוק לפי run-level bold/regular מה-pptx**
+       (לא ניחוש): "המסקנה היא:" (בולד, .trans-message) ואז שתי שורות
+       מעורבות (.trans-instructions, כל אחת עם חלק בבולד `<b>` באמצע
+       המשפט — נוסף override `.trans-instructions b` ב-styles.css).
+       דמות: **וידאו** (לא תמונה סטטית כמו מסך 3/`s2`) — לפי הערת
+       ההפקה "הגיף של הדמות עם משקפיים" + נתיבי הוידאו שסופקו במפורש
+       בדוקס, זהים לאלה שכבר בשימוש במסך 2 (S1_CHAR_VIDEO_ASSETS,
+       reuse ישיר, אין נכס חדש). אין טוגל וידאו/קריאה במסך הזה — תבנית
+       TransitionScreen (כמו מסך 3) אינה כוללת טוגל לפי הפיגמה. -->
+  <section class="screen" data-screen="9" id="s9">
+    <div class="trans-content">
+      <p class="trans-message">الاستنتاج هو:</p>
+      <p class="trans-instructions">
+        خصائص الجسم <b>يمكن أن تتغير</b> (الكتلة والحجم وشكل الجسم قابلة للتغيير)
+        <br/>
+        لكن خصائص المادة <b>تبقى ثابتة.</b>
+      </p>
+      <video class="trans-avatar" id="s9-avatar-video" autoplay loop muted playsinline disablepictureinpicture preload="auto" aria-label="شخصية مرافقة"></video>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(8, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <!-- תוקן (2026-07-28): נתיב הקריאה מגיע למסך ההתכנסות (12,
+               data-screen=11) — לא עוד placeholder goTo(TOTAL_SCREENS) -->
+          <button class="btn-continue" onclick="goTo(11)">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 11 — צפייה בסרטון (VideoIntro) ============
+       לפי Figma "720 - UI Templates" node 408:4889 ("Video - state 01 -
+       video start")/408:8541 ("...video end") — 2 states של אותו מסך
+       (לפני/אחרי סיום הוידאו), ראו הערה מלאה ב-styles.css (".vid-*").
+       **תוקן (2026-07-28): הוזז ממסך 10 למסך 11** (data-screen 9→10,
+       id s9→s10) לפי בקשה מפורשת. **תוקן שוב (2026-07-28, לפי הדוקס):**
+       מסך זה מגיע **ישירות** ממסך 4 (בחירת "לצפות בסרטון") — לא דרך
+       מסכים 7-10 (שהם תוכן נתיב-הקריאה בלבד, ראו מסכים 9/10 למעלה).
+       "חזרה" עודכן בהתאם ל-`goTo(3)` (ישירות למסך 4), לא עוד למסך 10.
+       תוכן כותרת לפי תסריט (שקף 15): "לחצו לצפייה:" (אינטרו קטן,
+       מרוכז) + "גוף, חומר ותכונות" (כותרת, bold). בלוק "הדגשה" (28px)
+       של רכיב ה-Text Content Layout לא נכלל — לא היה תוכן מתאים בשקף
+       15 (הבלוקים ב-Text Content Layout הם אופציונליים, לפי הנתונים
+       שנשלפו בפועל מ-Figma, node 196:3219).
+       **עודכן (בקשה מפורשת): סרטון אמיתי סופק** — YouTube
+       (https://youtu.be/ouaidi7S3l8, "אבחנה בין גוף וחומר", משרד
+       החינוך). YouTube לא מאפשר <video src="..."> ישיר, אז ה-placeholder
+       הוחלף ב-YouTube IFrame Player API (`#s10-yt-player`, מוטמע דרך
+       `new YT.Player(...)` ב-script.js) — אותו כפתור-play מותאם-אישית
+       (video-play-circle/triangle.svg) ממשיך לשבת מעליו עד הלחיצה, בדיוק
+       כמו קודם, וה-`onStateChange`/`ENDED` מפעיל את `s10MarkWatched()`
+       (שער "המשך" אמיתי על סיום צפייה, לא סימולציה). -->
+  <section class="screen" data-screen="10" id="s10">
+    <div class="vid-content">
+      <div class="vid-header">
+         <h1 class="vid-title">الجسم والمادة والخصائص</h1>
+        <p class="vid-intro">اضغطوا للمشاهدة:</p>
+
+      </div>
+
+      <div class="vid-body-wrap">
+        <div class="vid-player">
+          <div id="s10-yt-player"></div>
+          <button type="button" class="vid-play-btn" id="s10-play-btn" aria-label="تشغيل الفيديو" onclick="s10PlayVideo()">
+            <img class="vid-play-circle" src="assets/images/video-play-circle.svg" alt="">
+            <img class="vid-play-triangle" src="assets/images/video-play-triangle.svg" alt="">
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(3, true)">عودة</button>
+        </div>
+        <!-- מעבר וידאו/קריאה — הועבר לסרגל התחתון (בקשה מפורשת), לפי
+             Figma "720 - UI Templates" node 2638:23999. במסך הזה
+             "צפייה" נבחר (אנחנו כרגע צופים). **תוקן (בקשה מפורשת):**
+             התווית הוחלפה מ"להקשיב לשיחה" (הגרסה הספציפית מ-Figma node
+             408:4889/408:8541) ל"לצפות בסרטון" הגנרי, כמו בשאר המסכים.
+             ראו הערה מלאה ב-styles.css (".rv-toggle"). -->
+        <div class="rv-toggle" role="group" aria-label="التبديل بين مشاهدة الفيديو والقراءة">
+          <button type="button" class="rv-toggle-btn selected" data-mode="video" disabled>
+            <span>مشاهدة فيديو</span>
+            <span class="rv-toggle-icon-play" aria-hidden="true">
+              <img class="rv-icon-circle" src="assets/images/toggle-icon-play-circle.svg" alt="">
+              <img class="rv-icon-circle-ring" src="assets/images/toggle-icon-play-circle-ring.svg" alt="">
+              <img class="rv-icon-triangle" src="assets/images/toggle-icon-play-triangle.svg" alt="">
+              <img class="rv-icon-triangle-ring" src="assets/images/toggle-icon-play-triangle-ring.svg" alt="">
+            </span>
+          </button>
+          <button type="button" class="rv-toggle-btn" data-mode="read" onclick="rvGoToRead()">
+            <span>أقرأ بنفسي</span>
+            <img class="rv-toggle-icon-file" src="assets/images/toggle-icon-file.svg" alt="" aria-hidden="true">
+          </button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" id="s10-continue" disabled onclick="s10Continue()">للمتابعة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 12 — התכנסות נתיבים: "אותו חומר - מה בכל זאת שונה?" ============
+       לפי Figma "720 - UI Templates" node 196:3276 ("TransitionScreen -
+       Short Video (gif)") — מגיעים לכאן משני הנתיבים (וידאו/קריאה),
+       לפי בקשה מפורשת ("כאשר מסיימים את הלמידה באחד הנתיבים הקודמים,
+       הם מגיעים למסך הזה"). תוכן לפי תסריט (שקף 17). אינטרו קטן
+       ("בואו נגלה", regular 20 מרוכז) + כותרת (bold 40 ישור-ימין) —
+       reuse ישיר של `.vid-intro`/`.vid-title` (זהים בדיוק במידות/
+       משקל-פונט למה שנדרש כאן, כבר קיימים ממסך 11). מדיה: תמונה
+       "אבן וטבעת.png" (1536×1024, יחס 1.5 — קרוב ליחס תיבת המדיה
+       640×360=1.778, cover קל בלי חיתוך דרמטי) — לא placeholder,
+       תמונה אמיתית שסופקה במפורש בדוקס. כפתור "חזרה" הולך ל-
+       `previousScreen` (נשמר אוטומטית ב-goTo) כדי לחזור לנתיב הנכון
+       (11=וידאו או 9=מסקנת-קריאה) בלי תלות באיזה נתיב הביא לכאן. -->
+  <section class="screen" data-screen="11" id="s11">
+    <div class="trans-content">
+      <div class="vid-header">
+      
+        <h1 class="vid-title">المادة نفسها - ما الذي يختلف مع ذلك؟</h1>
+      </div>
+      <img class="conv-media" src="assets/images/אבן וטבעת.png" alt="حجر كريم خام بجانب خاتم جاهز من نفس الحجر">
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(previousScreen, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" onclick="goTo(12)">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 13 — גוף מעובד או גוף שאינו מעובד? ============
+       שוכפל ממסך 7 בסיין הנוכחי (`.tf-content`/`.tf-header`/`.tf-title`/
+       `.tf-cards`) **בלי הטוגל**, לפי בקשה מפורשת. כרטיסים כוללים
+       תמונה (לא רק טקסט כמו במסך 7) — `.tf-card--with-image`,
+       מחלקה חדשה (גודל גדל מ-283×283 ל-320px רוחב, גובה משתנה,
+       כדי להכיל תמונה+טקסט; דיוק סביר, לא נדרש ע"י Figma ספציפי
+       למסך הזה). מתחת לכרטיסים: פסקת טקסט בגודל 24px (`.tf-note`,
+       לפי בקשה מפורשת), המשפט האחרון בכחול #019DE5 (גם הוא, לפי בקשה
+       מפורשת — לא רק בולד כמו ב-pptx). תוכן לפי תסריט (שקף 18),
+       run-level bold מדויק. תמונות: תכשיט אבן חן.png (מעובד)/
+       אבן חן.png (לא מעובד), סופקו מראש. -->
+  <section class="screen" data-screen="12" id="s12">
+    <div class="tf-content">
+      <div class="tf-header">
+        <h1 class="tf-title">جسم مُعالَج أم جسم غير مُعالَج؟</h1>
+      </div>
+
+      <div class="tf-cards">
+        <div class="tf-card tf-card--with-image">
+          <img class="tf-card-img" src="assets/images/תכשיט אבן חן.png" alt="مجوهرات مرصعة بحجر كريم">
+          <p class="tf-card-text">
+            <b>جسم مُعالَج</b><br/>
+            جسم غيّر الإنسان شكله أو بنيته أو خصائصه، لتكييفه مع استخدام معيّن أو لإنتاج منتج منه
+            <br/>
+            على سبيل المثال: حجر كريم مصقول ومركّب في قطعة مجوهرات
+          </p>
+        </div>
+        <div class="tf-card tf-card--with-image">
+          <img class="tf-card-img" src="assets/images/אבן חן.png" alt="حجر كريم">
+          <p class="tf-card-text">
+            <b>جسم غير مُعالَج</b><br/>
+            جسم لم يطرأ عليه تغيير على يد الإنسان.
+            <br/>
+            على سبيل المثال: حجر كريم
+          </p>
+        </div>
+      </div>
+
+      <p class="tf-note">
+        لنقرر ما إذا كان الجسم مُعالَجًا أم لا، نسأل:
+        <br/>
+        <b>هل غيّر الإنسان الجسم عمدًا لإنتاج منتج أو لتكييفه للاستخدام؟</b>
+        <br/>
+        <b class="tf-note-blue">إذا كانت الإجابة نعم – فهو جسم مُعالَج. إذا كانت الإجابة لا – فهو جسم غير مُعالَج.</b>
+      </p>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(11, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" onclick="goTo(13)">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 14 — שאלת גרירה: גוף מעובד/לא מעובד (DragAndDropQuestion) ============
+       **נבנה מחדש פעם שנייה (2026-08-03), לפי תיקון מפורש: "צריך
+       להיות לפי מבנה מסך 21 ביעד 2 סיין 1", לא מסך 5 כמו בסבב הקודם.**
+       מסך 21 (`data-screen="20"`, `id="s20"`, "זיהוי מושגים:
+       ברוטו/נטו/טרה") של Methodica-science-mass-measure-02-01 הוא
+       גרסה מאוחרת/מדויקת יותר של **אותו** תרחיש-אינטראקציה (N פריטי-
+       תמונה נגררים ממאגר-מקור למספר אזורי-יעד, כל אזור מקבל כמה
+       פריטים) — ה-JS כמעט זהה למסך 5, ה-**CSS** שונה: כרטיס-פריט
+       קומפקטי בהרבה בהתחלה (120×120), הוגדל ידנית ע"י המשתמשת בהמשך
+       (150×150, תמונה 200×200 חתוכה בתוך המסגרת — "נראה קטן מדי").
+       **תוקן (2026-08-03):** שם האלמנט **הועבר לתוך** גבול הכרטיס
+       (`.ddq13-item-frame`), לא מחוצה לו כמו קודם — לפי בקשה מפורשת.
+       המסגרת עכשיו flex-column: `.ddq13-item-imgwrap` (חלון-חיתוך קבוע,
+       150×150, overflow:hidden — משמר בדיוק את אפקט ה"זום" שהמשתמשת
+       הגדירה ידנית) + תווית מתחתיו, שניהם בתוך אותו גבול. ראו הערה
+       מלאה ב-styles.css. 2 ניסיונות, בלי כפתור רמז; כפתור הטוגל
+       "מעבר לתשובה שלי/הנכונה" (§9) נוסף בניסיון האחרון השגוי. -->
+  <section class="screen" data-screen="13" id="s13">
+    <div class="ddq13-content">
+      <div class="ddq13-text-group">
+        <p class="ddq13-intro">
+          وصلت إلى مختبر الترميم في المتحف أربع قطع أثرية من حفرية أثرية: سبيكة ذهب، حصاة حجرية، وعاء حجري، وصندوق خشبي مزخرف.
+          <br/>
+          أمينة المتحف:
+          <br/>
+          "اثنتان من القطع هما جسمان عالجهما الإنسان، واثنتان لم يعالجهما. يمكنني معرفة ذلك حتى دون معرفة من أي مادة صنع كل جسم".
+        </p>
+        <p class="ddq13-question">على أي قطعتين أثريتين تتحدث أمينة المتحف؟ اسحبوا كل جسم إلى المجموعة المناسبة.</p>
+      </div>
+
+      <!-- מאגר פריטים לגרירה (source bank) — לפי מבנה מסך 20 יעד 2.
+           הגבול (.ddq13-item-frame) עוטף גם את התמונה (בתוך
+           .ddq13-item-imgwrap, חלון-חיתוך קבוע) וגם את שם האלמנט
+           (דרישה מפורשת בדוקס, לא קיים במסך 20 המקורי) — שניהם בתוך
+           אותו גבול, לפי בקשה מפורשת (2026-08-03). -->
+      <div class="ddq13-source-bank" id="ddq13-source-bank" ondragover="ddq13DragOver(event)" ondrop="ddq13DropToSource(event)">
+        <div class="ddq13-drag-item" id="ddq13-gold" draggable="true" data-correct="unprocessed"
+             ondragstart="ddq13DragStart(event,'ddq13-gold')" ondragend="ddq13DragEnd('ddq13-gold')" onclick="ddq13ItemClick('ddq13-gold')">
+          <div class="ddq13-item-frame">
+            <span class="ddq13-item-badge"></span>
+            <div class="ddq13-item-imgwrap"><img src="assets/images/גוש זהב.png" alt="سبيكة ذهب" draggable="false"></div>
+            <p class="ddq13-item-label">سبيكة ذهب</p>
+          </div>
+        </div>
+        <div class="ddq13-drag-item" id="ddq13-pebble" draggable="true" data-correct="unprocessed"
+             ondragstart="ddq13DragStart(event,'ddq13-pebble')" ondragend="ddq13DragEnd('ddq13-pebble')" onclick="ddq13ItemClick('ddq13-pebble')">
+          <div class="ddq13-item-frame">
+            <span class="ddq13-item-badge"></span>
+            <div class="ddq13-item-imgwrap"><img src="assets/images/חלוק נחל.png" alt="حصاة نهر" draggable="false"></div>
+            <p class="ddq13-item-label">حصاة نهر</p>
+          </div>
+        </div>
+        <div class="ddq13-drag-item" id="ddq13-box" draggable="true" data-correct="processed"
+             ondragstart="ddq13DragStart(event,'ddq13-box')" ondragend="ddq13DragEnd('ddq13-box')" onclick="ddq13ItemClick('ddq13-box')">
+          <div class="ddq13-item-frame">
+            <span class="ddq13-item-badge"></span>
+            <div class="ddq13-item-imgwrap"><img src="assets/images/תיבת עץ.png" alt="صندوق خشبي" draggable="false"></div>
+            <p class="ddq13-item-label">صندوق خشبي</p>
+          </div>
+        </div>
+        <div class="ddq13-drag-item" id="ddq13-bowl" draggable="true" data-correct="processed"
+             ondragstart="ddq13DragStart(event,'ddq13-bowl')" ondragend="ddq13DragEnd('ddq13-bowl')" onclick="ddq13ItemClick('ddq13-bowl')">
+          <div class="ddq13-item-frame">
+            <span class="ddq13-item-badge"></span>
+            <div class="ddq13-item-imgwrap"><img src="assets/images/קערת אבן.png" alt="وعاء حجري" draggable="false"></div>
+            <p class="ddq13-item-label">وعاء حجري</p>
+          </div>
+        </div>
+      </div><!-- /.ddq13-source-bank -->
+
+      <!-- אזורי גרירה — לפי מבנה מסך 20 יעד 2 (.s21-zones-row/.s21-zone-wrap/.s21-zone) -->
+      <div class="ddq13-zones-row">
+        <div class="ddq13-zone-wrap">
+          <div class="ddq13-zone" id="ddq13-zone-unprocessed"
+               ondragover="ddq13DragOver(event)"
+               ondragenter="ddq13DragEnter(event,'ddq13-zone-unprocessed')"
+               ondragleave="ddq13DragLeave(event,'ddq13-zone-unprocessed')"
+               ondrop="ddq13Drop(event,'unprocessed')"></div>
+          <p class="ddq13-zone-label">أجسام غير مُعالَجة</p>
+        </div>
+        <div class="ddq13-zone-wrap">
+          <div class="ddq13-zone" id="ddq13-zone-processed"
+               ondragover="ddq13DragOver(event)"
+               ondragenter="ddq13DragEnter(event,'ddq13-zone-processed')"
+               ondragleave="ddq13DragLeave(event,'ddq13-zone-processed')"
+               ondrop="ddq13Drop(event,'processed')"></div>
+          <p class="ddq13-zone-label">أجسام مُعالَجة</p>
+        </div>
+      </div><!-- /.ddq13-zones-row -->
+    </div>
+
+    <!-- פופ-אפ משוב — Feedback popup system הגלובלי (720-templates skill:
+         _global-components.md). id מסתיים ב-"-popup" כך
+         ש-closeAllPopupsAndHints() (goTo()) סוגר אותו אוטומטית. -->
+    <div class="scq-fb-box" id="ddq13-popup">
+      <div class="scq-fb-title">
+        <p class="scq-fb-title-text"></p>
+      </div>
+      <p class="scq-fb-body"></p>
+      <button class="scq-fb-reveal-btn" id="ddq13-reveal-btn" type="button" hidden onclick="ddq13ToggleReveal()">الانتقال إلى إجابتي</button>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(12, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" id="ddq13-check" disabled onclick="ddq13Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 15 — סיכום מושגים ============
+       עוצב מחדש (בקשה מפורשת, 2026-10-03): במקום AccordionText — משפט
+       כותרת + פסקה אחת, לפי Figma node 4962:45742. תוכן: 6 המושגים
+       משקף 80 בתסריט, run-level מדויק. "המשך" פעיל מיד (אין שער פתיחה). -->
+  <section class="screen" data-screen="14" id="s14">
+    <!-- עוצב מחדש (בקשה מפורשת, 2026-10-03): בלי אקורדיון — משפט כותרת
+         (כחול, Bold) + פסקה (Regular), לפי Figma node 4962:45742
+         (question/Variant6: 24px, 792px, #019DE5 / #303030), באותה
+         מסגרת מיקום כמו מסכי השאלות (.scq-question/.scq-qtext). -->
+    <div class="scq-question">
+      <div class="scq-content">
+        <div class="scq-qtext">
+          <p class="scq-qtitle">قبل التمرين، نتذكر المفاهيم التي درسناها حتى الآن:</p>
+          <p class="scq-qbody">
+            <b>جسم:</b> شيء يشغل حيّزًا من الفراغ. يمكن أن يكون الجسم حيًّا أو جامدًا، طبيعيًا أو مُعالَجًا، ومصنوعًا من مواد مختلفة.<br>
+            <b>جسم غير مُعالَج:</b> جسم لم يطرأ عليه تغيير على يد الإنسان. مثلًا، حجر كريم موجود في الطبيعة، أو جذع شجرة بلوط.<br>
+            <b>جسم مُعالَج:</b> جسم غيّر الإنسان شكله أو بنيته أو خصائصه، لتكييفه مع استخدام معيّن أو لإنتاج منتج منه. مثلًا، حجر كريم مصقول ومركّب في قطعة مجوهرات، أو خشب بلوط منحوت ومصقول.<br>
+            <b>مادة:</b> ما تصنع منه الأجسام والأشياء (مثلًا، البلاستيك والزجاج والسيليكون هي أنواع من المواد).<br>
+            <b>خصائص الجسم:</b> تصف الجسم. مثلًا، الكتلة والحجم والشكل هي خصائص تصف الجسم.<br>
+            <b>خصائص المادة:</b> تصف المادة، وتساعد على التمييز بين مادة وأخرى. مثلًا، اللون والرائحة وحالة المادة هي خصائص تصف المادة.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(13, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" id="at-continue" onclick="goTo(15)">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 16 — מסך מעבר: טבלאות ותרשימי זרימה ============
+       שוכפל ממסך 10 (`.trans-content`/`.trans-message`/`.trans-instructions`/
+       `.trans-avatar` — id="s9") — אותו מבנה בדיוק. תוכן לפי תסריט
+       (שקף 20), run-level bold מדויק: כל התוכן במשפט אחד מעורב
+       (רגיל+בולד+רגיל) + פסקה שנייה רגילה — לכן שתי השורות בתוך
+       `.trans-instructions` (לא `.trans-message`, שאין לו תוכן-בולד-
+       בלבד נפרד לשים בו). דמות: וידאו — reuse ישיר של אותם קבצי
+       "מרכיבה משקפיים" שכבר בשימוש במסכים 2/10 (S1_CHAR_VIDEO_ASSETS,
+       לפי הערת ההפקה "גיף של הדמות שנבחרה מרכיבה משקפיים"). -->
+  <section class="screen" data-screen="15" id="s15">
+    <div class="trans-content">
+      <p class="trans-instructions">
+        والآن، لنتعلم استخدام <b>الجداول والمخططات الانسيابية</b>
+        <br/>
+        لتنظيم وتصنيف خصائص المواد مثل العلماء والعالمات.
+      </p>
+      <video class="trans-avatar" id="s15-avatar-video" autoplay loop muted playsinline disablepictureinpicture preload="auto" aria-label="شخصية مرافقة"></video>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(14, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <!-- תוקן (2026-07-28): ממשיך למסך 17 (data-screen=15) — לא עוד
+               placeholder goTo(TOTAL_SCREENS) -->
+          <button class="btn-continue" onclick="goTo(16)">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 17 — טבלת השוואה: 2 חוטי נחושת (2026-08-03) ============
+       לפי בקשה מפורשת: להשתמש במעטפת המוכחת של מסך 19
+       (`.scq-question`/`.scq-content`/`.scq-qtext`/`.scq-img`/
+       `.scq-img-inner`, זהים 1:1 לאלה שכבר עובדים במסכים 2/9/19/20 —
+       לא שונו), אבל להחליף את תוכן ה-MCQ (שהיה שריד מהעתקת מסך 19)
+       בתוכן האמיתי של המסך הזה: טקסט הקדמה + טבלה, לפי שקף 21 בתסריט.
+       גם ה-qnav (סרגל התקדמות שאלה 1/2) וגם מנגנון הבדיקה/רמז/פופ-אפ
+       הוסרו — אלה שייכים לחידה של מסכים 19-20 בלבד; מסך זה הוא מסך
+       מידע (טבלה), לא שאלה, אז אין מה לבדוק ואין צורך ברמז.
+       **עודכן (בקשה מפורשת של הלקוח, לפי שקף 21 בתסריט: "התוכן עולה
+       בהדרגה"):** כפתור "המשך" **נעול עד שכל התוכן עלה** — אינו מופעל
+       תמיד עוד. חשיפה הדרגתית ב-3 רמות (`data-tw17-level`, resetScreenState16
+       ב-script.js), אותה טכניקה בדיוק כמו מסך 18/s17 (setTimeout מדורג +
+       `cf-visible`/`cf-animate-in`/`cfFloatIn` הגלובליים, לא הומצא מנגנון
+       חדש): 1) טקסט ההקדמה, 2) הטבלה, 3) שתי התמונות (יחד). resume-state
+       זהה ל-s17: אחרי שהרצף רץ פעם אחת אין הרצה חוזרת בחזרה למסך.
+       טבלה (`.tw17-table`): 4 עמודות (שם הגוף/אורך החוט/צבע החומר/
+       מוליכות חשמלית), 2 שורות (חוט א'/חוט ב') — עיצוב הטבלה עצמה
+       (פונט 22px, ריפוד 6px/12px, גובה שורה 56px, רקע כותרת/שורות
+       זוגיות var(--subject-100), משקל SemiBold לכותרת) הוא הרכיב
+       שכבר נבנה ואומת ישירות מול Figma node 507:9307 קודם בפרויקט הזה.
+       עמודת תמונות: שתי תמונות חוט הנחושת (חוט א'/ב', כבר בשימוש
+       במסכים 8-9 של אותו ניסוי) זו-מעל-זו בתוך תיבת `.scq-img` (380px)
+       הגלובלית, 150×150 כל תמונה. -->
+  <section class="screen" data-screen="16" id="s16">
+    <div class="scq-question">
+      <div class="scq-content">
+        <div class="scq-qtext" data-tw17-level="1">
+          <p class="scq-qbody">لتنظيم المعلومات عن الأجسام والمواد وخصائصها – نستخدم <b>الجدول.</b></p>
+          <p class="scq-qbody"><b>على سبيل المثال: جدول مقارنة بين سلكين نحاسيين:</b></p>
+        </div>
+        <table class="tbl-table" dir="rtl" data-tw17-level="2">
+          <thead>
+            <tr>
+              <th class="tbl-th">اسم الجسم</th>
+              <th class="tbl-th">طول السلك بالسنتيمتر</th>
+              <th class="tbl-th">لون المادة</th>
+              <th class="tbl-th">الموصلية الكهربائية</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="tbl-td">سلك أ</td><td class="tbl-td">10</td><td class="tbl-td">برتقالي</td><td class="tbl-td">عالية</td></tr>
+            <tr><td class="tbl-td">سلك ب</td><td class="tbl-td">50</td><td class="tbl-td">برتقالي</td><td class="tbl-td">عالية</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="scq-img">
+        <div class="tw17-img-stack" data-tw17-level="3">
+          <div class="tw17-image-card">
+            <div class="tw17-image-frame"><img src="assets/images/חוט ב.png" alt="سلك أ"></div>
+            <p class="tw17-image-label">سلك أ</p>
+          </div>
+          <div class="tw17-image-card">
+            <div class="tw17-image-frame"><img src="assets/images/חוט א.png" alt="سلك ب"></div>
+            <p class="tw17-image-label">سلك ب</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(15, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" id="s16-continue" onclick="goTo(17)" disabled>متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 18 (s17) — תרשים זרימה: גוף/חומר/תכונה ============
+       שקף 22 בתסריט: "מסך לא בתבנית", תרשים מונפש בהדרגה, כפתור המשך
+       נדלק רק לאחר שכל התרשים עלה. **עודכן (בקשה מפורשת של הלקוח):**
+       הרצף המקורי (4 רמות גסות, כן+לא+שתי התוצאות ביחד בכל שכבה) דווח
+       כקשה לקרוא — הוחלף ב-10 צעדים דקים (עוקבים אחר "כן" עד לתוצאה,
+       ואז "לא" יחד עם השאלה/תוצאה הבאה) בקצב איטי יותר, ראו הערה מלאה
+       ב-resetScreenState17 (script.js) ומיפוי data-cf-level למטה. בנוי
+       לפי פריימי Figma "Chartflow -
+       state 1..5" (עמוד New Version, קובץ "לומדת התנסות") — state 1 הוא
+       הפאנל הריק (לפני שהתרשים עולה), state 5 הוא התרשים המלא. כותרת
+       וגודל/מיקום פאנל-הקנבס (900×480, רדיוס 24, `#f3f4f5`) זהים 1:1
+       לפריים. עץ ההחלטה עצמו (3 שאלות + 4 תוצאות) חולץ בפועל מ-shapes
+       אמיתיים של PowerPoint בקובץ התסריט (לא תמונה) — לא מומצא.
+       צביעת התוצאות (גוף/חומר/תכונה בשלושה גוונים + תגי כן/לא בירוק/
+       אדום) היא רכיב חדש שנוצר במיוחד למסך הזה, לפי הנחיה מפורשת של
+       הלקוחה (כולל שלושת קודי הצבע המדויקים) — אין להם עדיין טוקן
+       רשמי בטבלת ה-Subject/Feedback/Natural של 720-design-guidelines. -->
+  <section class="screen" data-screen="17" id="s17">
+    <p class="cf-header">
+      للتمييز بين <b>جسم</b> و<b>مادة</b> و<b>خاصيّة</b> – يمكن استخدام <b>مخطط انسيابي</b>.<br>
+      في كل مرحلة نطرح سؤالًا ثابتًا، وبحسب الإجابة نتقدّم نحو القرار.
+    </p>
+
+    <div class="cf-canvas" id="s17-canvas">
+      <svg class="cf-edges" viewBox="0 0 900 480" aria-hidden="true">
+        <g class="cf-edge" data-cf-level="2">
+          <line x1="450" y1="84" x2="690" y2="150"></line>
+          <polygon points="690.0,150.0 679.2,151.7 681.6,143.0"></polygon>
+        </g>
+        <g class="cf-edge" data-cf-level="4">
+          <line x1="450" y1="84" x2="310" y2="150"></line>
+          <polygon points="310.0,150.0 317.1,141.7 321.0,149.8"></polygon>
+        </g>
+        <g class="cf-edge" data-cf-level="5">
+          <line x1="310" y1="214" x2="560" y2="280"></line>
+          <polygon points="560.0,280.0 549.2,281.8 551.5,273.1"></polygon>
+        </g>
+        <g class="cf-edge" data-cf-level="7">
+          <line x1="310" y1="214" x2="220" y2="280"></line>
+          <polygon points="220.0,280.0 225.4,270.5 230.7,277.7"></polygon>
+        </g>
+        <g class="cf-edge" data-cf-level="8">
+          <line x1="220" y1="344" x2="345" y2="410"></line>
+          <polygon points="345.0,410.0 334.1,409.3 338.3,401.4"></polygon>
+        </g>
+        <g class="cf-edge" data-cf-level="10">
+          <line x1="220" y1="344" x2="155" y2="410"></line>
+          <polygon points="155.0,410.0 158.8,399.7 165.2,406.0"></polygon>
+        </g>
+      </svg>
+
+      <!-- **עודכן (בקשה מפורשת של הלקוח): חשיפה הדרגתית עדינה יותר,
+           10 צעדים (לא 4) — עוקבים אחר ענף "כן" עד לתוצאה שלו, ואז
+           חושפים את ענף "לא" יחד עם השאלה/תוצאה שאליה הוא מוביל, בכל
+           שכבה. קצב איטי יותר במפורש (resetScreenState17, script.js)
+           כדי שיהיה נוח לקרוא. ראו הערה מלאה למעלה. -->
+      <span class="cf-tag cf-tag--yes" data-cf-level="2" style="left:570px; top:117px;">نعم</span>
+      <span class="cf-tag cf-tag--no"  data-cf-level="4" style="left:380px; top:117px;">لا</span>
+      <span class="cf-tag cf-tag--yes" data-cf-level="5" style="left:435px; top:247px;">نعم</span>
+      <span class="cf-tag cf-tag--no"  data-cf-level="7" style="left:265px; top:247px;">لا</span>
+      <span class="cf-tag cf-tag--yes" data-cf-level="8" style="left:282.5px; top:377px;">نعم</span>
+      <span class="cf-tag cf-tag--no"  data-cf-level="10" style="left:187.5px; top:377px;">لا</span>
+
+      <div class="cf-node cf-node--q" data-cf-level="1" style="left:140px; top:20px; width:620px; height:64px;">
+        هل هو شيء معين يمكن رؤيته أو حمله أو الإشارة إليه؟
+      </div>
+      <div class="cf-node cf-node--gof" data-cf-level="3" style="left:610px; top:150px; width:160px; height:60px;">جسم</div>
+      <div class="cf-node cf-node--q" data-cf-level="4" style="left:70px; top:150px; width:480px; height:64px;">
+        هل هذا ما يصنع منه الجسم؟
+      </div>
+      <div class="cf-node cf-node--chomer" data-cf-level="6" style="left:480px; top:280px; width:160px; height:60px;">مادة</div>
+      <div class="cf-node cf-node--q" data-cf-level="7" style="left:10px; top:280px; width:420px; height:64px;">
+        هل هذه صفة يمكن وصفها أو فحصها؟
+      </div>
+      <div class="cf-node cf-node--tchuna" data-cf-level="9" style="left:270px; top:410px; width:150px; height:60px;">خاصية</div>
+      <div class="cf-node cf-node--neutral" data-cf-level="10" style="left:70px; top:410px; width:170px; height:60px;">تحققوا مرة أخرى</div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(16, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" id="s17-continue" onclick="goTo(18)" disabled>متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 19 — מסך מעבר "חימום" לפני שתי שאלות התרגול ============
+       **תוקן (2026-08-03) — נבנה מחדש לגמרי.** הגרסה הקודמת שוכפלה
+       ממבנה `.trans-content` (מסכים 3/10/15, ממשפחת יעד 2), עם מחלקת
+       "קיקר" מומצאת (`.trans-kicker`) שלא הייתה חלק מאף תבנית קיימת —
+       המשתמשת ציינה שזה "נבנה מאוד פגום" והפנתה לרפרנס תקין: מסך 13
+       (`data-screen="12"`, `id="s12"`) בסיין 1 של **יעד 3**
+       (`methodica-science-mass-measure-03-01`) — משפחת `.transition-*`
+       (`.transition-content`/`.transition-title-block`/`.transition-sub`/
+       `.transition-title`/`.transition-avatar-wrap`/`.transition-avatar`),
+       שכוללת בדיוק 3 שקעים (sub/TITLE/sub) בול המתאימים לתוכן שלנו —
+       לא קיקר מומצא. תוכן לפי שקף 23 (run-level מדויק): שורת-קטגוריה
+       "שאלות חימום בין הקניה לתרגול" (בולד בפועל, שקע sub עליון —
+       בולד נשמר ב-`<b>` כי המקור מסמן אותו כך במפורש, גם אם שקע ה-sub
+       הגנרי רגיל כברירת מחדל) → כותרת "מה נשאר לנו בראש?" (שקע TITLE,
+       בולד 40px) → הנחיה "שתי שאלות קלילות לחימום לפני שנתקדם" (שקע
+       sub תחתון, רגיל). דמות: **תוקן (2026-08-04)** — עודכן מ-placeholder
+       ריק לווידאו אמיתי "מתחממת" (green-avatar-warming-up.mp4/Turquoise
+       -avatar-warming-up.mp4, סופקו בפועל), לפי בחירת הדמות במסך 1, אותו
+       חוזה בדיוק כמו מסך 2/9/10 (resolveCharBubbleVideo). בלי בועית דיבור — לא סופק תוכן בועה לשקף הזה (שלא כמו הרפרנס,
+       ששם יש טקסט בועה אמיתי מהתסריט). כפתור "המשך" עם תווית מותאמת
+       "קחו אותי לשאלות" (shape 'Rectangle 7', שקף 23) — צריך אותו
+       override-רוחב שהרפרנס כבר עשה לתווית הארוכה המקבילה שלו
+       ("אפשר להתחיל!", `#s9-continue`/`#s12-continue` שם). -->
+  <section class="screen" data-screen="18" id="s18">
+    <div class="transition-content">
+      <div class="transition-title-block">
+      
+        <h2 class="transition-title">ماذا بقيَ عالقًا في عقولنا؟</h2>
+        <p class="transition-sub">سؤالان بسيطان للإحماء قبل أن نتقدم</p>
+      </div>
+      <div class="transition-avatar-wrap">
+        <video class="transition-avatar" id="s18-avatar-video" autoplay loop muted playsinline disablepictureinpicture preload="auto" aria-label="شخصية مرافقة"></video>
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(17, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" id="s18-continue" onclick="goTo(19)">خذوني إلى الأسئلة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 20 — שאלה רב-ברירה מלווה בתמונה (שאלה 1/2) ============
+       שוכפל מ"מסך 16" (data-screen=15) של Methodica-science-mass
+       -measure-02-01 (יעד 2, "-linked") — אותו מבנה מדויק
+       (.scq-question/.scq-img/.scq-content/.scq-answers/.scq-opt,
+       כולם גלובליים וקיימים כבר בפרויקט הזה מאז שלב התשתית, טרם
+       חוברו לתוכן עד עכשיו). תוכן לפי שקפים 24-28 בתסריט, run-level
+       בדיוק. תמונה: "אוזניות.png" — חולצה בפועל מתוך ה-pptx עצמו
+       (shape 'תמונה 19', שקף 24; אין נתיב נפרד בדוקס למסך הזה, אבל
+       ה-pptx מכיל את התמונה המוטמעת בפועל). 2 ניסיונות, כפתור "אפשר
+       רמז?" מוסתר עד ניסיון ראשון שגוי — לפי בקשה מפורשת. סרגל
+       התקדמות (`.qnav`) — שאלה 1 מתוך 2, ראו הערה מלאה ב-styles.css. -->
+  <section class="screen" data-screen="19" id="s19">
+    <div class="qnav" id="s19-qnav">
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s19-qnav-icon-2"></div>
+        <span class="qnav-label" id="s19-qnav-label-2">سؤال 2</span>
+      </div>
+      <div class="qnav-line" id="s19-qnav-line-1"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s19-qnav-icon-1"></div>
+        <span class="qnav-label" id="s19-qnav-label-1">سؤال 1</span>
+      </div>
+    </div>
+
+    <div class="scq-question">
+      <!-- תוקן (2026-08-03): .scq-content לפני .scq-img ב-DOM — לא ההפך.
+           .scq-question הזה (בפרויקט הזה בלבד) בכוונה בלי direction:ltr
+           (ראו הערה למעלה ב-index.html/מסך 2) — סדר ה-DOM עצמו קובע
+           "תמונה שמאל, תוכן ימין" תחת RTL אמיתי. סדר הפוך (תמונה
+           קודם) הפך את כל הפריסה: תמונה ימין, תוכן שמאל — מראה
+           הפוך/"על הפנים" מול הפיגמה ומול מסכים 2/9 (שבנויים נכון). -->
+      <div class="scq-content">
+        <div class="scq-qtext">
+          <p class="scq-qbody"><b>وفقًا للتعريف الذي تعلمناه، أي مثال من سماعات الرأس هو جسم؟</b></p>
+        </div>
+        <div class="scq-answers" role="radiogroup" aria-label="خيارات الإجابة">
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s19Select('a')">
+            <span class="scq-opt-text"><b>قوس سماعات الرأس،</b> لأنه جزء محدد يمكن الإشارة إليه.</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s19Select('b')">
+            <span class="scq-opt-text"><b>بلاستيك سماعات الرأس،</b> لأنه تصنع منه أجزاء مختلفة في المنتج.</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s19Select('c')">
+            <span class="scq-opt-text"><b>ليونة القوس،</b> لأنها تشرح كيف ينثني القوس.</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="d" onclick="s19Select('d')">
+            <span class="scq-opt-text"><b>موصلية المعدن،</b> لأنها مرتبطة بوظيفة المكوّن الداخلي.</span>
+            <span class="scq-radio"></span>
+          </div>
+        </div>
+      </div>
+      <div class="scq-img"><div class="scq-img-inner">
+        <button class="img-zoom-btn" type="button" aria-label="تكبير الصورة"
+                data-zoom-src="assets/images/אוזניות.png" data-zoom-alt="سماعات الرأس">
+          <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
+        </button>
+        <img id="s19-img" src="assets/images/אוזניות.png" alt="سماعات الرأس"></div></div>
+    </div>
+
+    <div id="s19-popup" class="scq-fb-box">
+      <div class="scq-fb-title">
+        <span class="scq-fb-title-text"></span>
+      </div>
+      <p class="scq-fb-body"></p>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(18, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="s19-hint" class="btn-hint" onclick="s19OpenHint()" hidden>
+            <img class="scq-hint-icon" src="assets/images/icon-hint-blue.svg" alt="">
+            هل يمكنني الحصول على تلميح؟
+          </button>
+          <button id="s19-check" class="btn-continue" disabled onclick="s19Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 21 — שאלת גרירה טקסטואלית מלווה בתמונה (שאלה 2/2) ============
+       "המבנה של המסך צריך להיות בדיוק כמו המבנה של המסך הקודם" (לפי
+       בקשה מפורשת) — כלומר אותו מעטפת `.scq-question`/`.scq-img`/
+       `.scq-content` כמו מסך 19, לא מבנה עמודה-יחידה כמו מסך 3 המקור
+       (יעד 2 סיין 5, ששם הייתה סימולציית iframe בעמודת השמאל, לא
+       תמונה). ה-**לוגיקה/state-machine** של הגרירה כן שוכפלו ממסך 3
+       שם (makeDragQuestion factory). עיצוב תיבת התשובה (`.dqx-*`)
+       מותאם מחדש לפי Figma node 196:3401/196:3393 (הדוקס הפנה
+       במפורש) — ראו הערה מלאה ב-styles.css למה זה שונה ממסך 3 המקור
+       (מיקום אייקון V/X). תוכן לפי שקפים 29-33 בתסריט. תמונה: לא
+       סופקה (הערת הפקה: "לעשות כגיף של איש מקשיב למוזיקה וקצת זז") —
+       placeholder מתועד (`.scq-img-placeholder`, אותה מחלקה שכבר
+       הוגדרה), לא הומצא נכס. 3 מילים במחסן, מעורבבות (Math.random
+       shuffle, לפי בקשה מפורשת "תערבב את התשובות"), בלי מסיחים (3
+       מילים בדיוק ל-3 מקומות). 2 ניסיונות, כפתור "אפשר רמז?" מוסתר
+       עד ניסיון ראשון שגוי. סרגל התקדמות — שאלה 2 מתוך 2. -->
+  <section class="screen" data-screen="20" id="s20">
+    <div class="qnav" id="s20-qnav">
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s20-qnav-icon-2"></div>
+        <span class="qnav-label" id="s20-qnav-label-2">سؤال 2</span>
+      </div>
+      <div class="qnav-line" id="s20-qnav-line-1"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s20-qnav-icon-1"></div>
+        <span class="qnav-label" id="s20-qnav-label-1">سؤال 1</span>
+      </div>
+    </div>
+
+    <div class="scq-question">
+      <!-- תוקן (2026-08-03): .scq-content לפני .scq-img ב-DOM — אותו
+           תיקון כמו מסך 20 (s19), אותה סיבה: בלי direction:ltr על
+           .scq-question בפרויקט הזה, סדר ה-DOM קובע את הצד הפיזי. -->
+      <div class="scq-content" id="dqx20-panel">
+        <p class="dqx-instruction-bold">أكمِلوا الجُمل بمساعدة مخزن الكلمات:</p>
+
+        <div class="dqx-sentences">
+          <p class="dqx-sentence">السماعات هي
+            <span class="dqx-drop" id="dqx20-target-1"
+                  ondragover="dqx20DragOver(event,'dqx20-target-1')"
+                  ondragenter="dqx20DragEnter(event,'dqx20-target-1')"
+                  ondragleave="dqx20DragLeave(event,'dqx20-target-1')"
+                  ondrop="dqx20Drop(event,'dqx20-target-1')"></span>.
+          </p>
+          <p class="dqx-sentence">البلاستيك الذي يصنع منه جسم السماعة هو
+            <span class="dqx-drop" id="dqx20-target-2"
+                  ondragover="dqx20DragOver(event,'dqx20-target-2')"
+                  ondragenter="dqx20DragEnter(event,'dqx20-target-2')"
+                  ondragleave="dqx20DragLeave(event,'dqx20-target-2')"
+                  ondrop="dqx20Drop(event,'dqx20-target-2')"></span>.
+          </p>
+          <p class="dqx-sentence">ليونة القوس هي
+            <span class="dqx-drop" id="dqx20-target-3"
+                  ondragover="dqx20DragOver(event,'dqx20-target-3')"
+                  ondragenter="dqx20DragEnter(event,'dqx20-target-3')"
+                  ondragleave="dqx20DragLeave(event,'dqx20-target-3')"
+                  ondrop="dqx20Drop(event,'dqx20-target-3')"></span>.
+          </p>
+        </div>
+
+        <div class="dqx-word-bank" id="dqx20-word-bank" ondragover="event.preventDefault()" ondrop="dqx20DropToBank(event)">
+          <div class="dqx-source-slot" id="slot-dqx20-drag-guf"></div>
+          <div class="dqx-source-slot" id="slot-dqx20-drag-homer"></div>
+          <div class="dqx-source-slot" id="slot-dqx20-drag-tehuna"></div>
+        </div>
+      </div>
+      <div class="scq-img"><div class="scq-img-inner">
+        <button class="img-zoom-btn" type="button" aria-label="تكبير الصورة"
+                data-zoom-src="assets/images/גבר_עם_אוזניות.png" data-zoom-alt="رجل يستمع إلى الموسيقى بسماعات الرأس">
+          <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
+        </button>
+        <img id="dqx20-img" src="assets/images/גבר_עם_אוזניות.png" alt="رجل يستمع إلى الموسيقى بسماعات الرأس"></div></div>
+    </div>
+
+    <div id="dqx20-popup" class="scq-fb-box">
+      <div class="scq-fb-title">
+        <span class="scq-fb-title-text"></span>
+      </div>
+      <p class="scq-fb-body"></p>
+      <button class="scq-fb-reveal-btn" id="dqx20-reveal-btn" type="button" hidden onclick="dqx20ToggleReveal()">الانتقال إلى إجابتي</button>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(19, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="dqx20-hint" class="btn-hint" onclick="dqx20OpenHint()" hidden>
+            <img class="scq-hint-icon" src="assets/images/icon-hint-blue.svg" alt="">
+            هل يمكنني الحصول على تلميح؟
+          </button>
+          <button id="dqx20-check" class="btn-continue" disabled onclick="dqx20Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- פופ-אפים של רמז — מחוץ ל-.screen, ישירות ב-#app, לפי מוסכמת הפרויקט -->
+  <div id="s19-hint-overlay" class="scq-hint-overlay" hidden>
+    <div class="scq-hint-popup" role="dialog" aria-modal="true" aria-label="تلميح">
+      <div class="scq-hint-title-row">
+        <p class="scq-hint-title">تلميح</p>
+        <img class="scq-hint-bulb" src="assets/images/icon-idea-white-lg.svg" alt="">
+      </div>
+      <p class="scq-hint-body"><b>فكّروا:</b> <br/>الجسم هو شيء محدّد يمكن رؤيته أو إمساكه أو الإشارة إليه.<br/>اسألوا: ما هو "الشيء نفسه" هنا؟</p>
+      <button class="scq-hint-close scq-hint-back" onclick="s19CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+  <div id="dqx20-hint-overlay" class="scq-hint-overlay" hidden>
+    <div class="scq-hint-popup" role="dialog" aria-modal="true" aria-label="تلميح">
+      <div class="scq-hint-title-row">
+        <p class="scq-hint-title">تلميح</p>
+        <img class="scq-hint-bulb" src="assets/images/icon-idea-white-lg.svg" alt="">
+      </div>
+      <p class="scq-hint-body">تذكروا:<br/><br/><b>الجسم</b> هو الشيء نفسه، أي المجموعة المحددة من المادة التي لها حدود.<br/><br/><b>المادة</b> هي ما يتكوّن منه الجسم.<br/><br/><b>والخاصية</b> هي صفة للجسم أو للمادة، يمكن وصفها أو فحصها.</p>
+      <button class="scq-hint-close scq-hint-back" onclick="dqx20CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- כפתור "מצאתם בעיה?" — רכיב גלובלי יחיד, מחוץ לכל .screen,
+       ישירות ב-#app, לפי 720-templates skill (_global-components.md) -->
+  <button class="flag-btn" aria-label="هل واجهتم مشكلة؟" title="هل واجهتم مشكلة؟">
+    <span class="flag-btn-icon" aria-hidden="true">
+      <img class="flag-btn-icon-default" src="assets/images/flag-default.svg" alt="">
+      <img class="flag-btn-icon-hover" src="assets/images/flag-hover.svg" alt="">
+    </span>
+    <span class="flag-btn-label">هل واجهتم مشكلة؟</span>
+  </button>
+
+  <!-- הגדלת תמונה (img-zoom) — רכיב גלובלי יחיד, מחוץ לכל .screen,
+       ישירות ב-#app, לפי מפרט 720-templates _global-components.md.
+       כל תמונת תוכן שצריכה זום מוסיפה כפתור .img-zoom-btn משלה
+       בתוך ה-wrapper שלה (position:relative, בלי stacking context) -->
+  <div id="img-zoom-modal" class="img-zoom-modal hidden" aria-hidden="true" data-zoom-close="true">
+    <div class="img-zoom-modal__panel" role="dialog" aria-modal="true" aria-label="تكبير الصورة">
+      <button class="img-zoom-close" type="button" data-zoom-close="true" aria-label="إغلاق تكبير الصورة">
+        <svg class="img-zoom-close__icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect class="zc-bg" x="1" y="1" width="38" height="38" rx="19" stroke-width="2"/><path class="zc-x" d="M27.151 12.849C26.9275 12.6255 26.6244 12.5 26.3084 12.5C25.9924 12.5 25.6893 12.6255 25.4658 12.849L20 18.3147L14.5342 12.849C14.3107 12.6255 14.0076 12.5 13.6916 12.5C13.3756 12.5 13.0725 12.6255 12.849 12.849C12.6255 13.0725 12.5 13.3756 12.5 13.6916C12.5 14.0076 12.6255 14.3107 12.849 14.5342L18.3147 20L12.849 25.4658C12.6255 25.6893 12.5 25.9924 12.5 26.3084C12.5 26.6244 12.6255 26.9275 12.849 27.151C13.0725 27.3745 13.3756 27.5 13.6916 27.5C14.0076 27.5 14.3107 27.3745 14.5342 27.151L20 21.6853L25.4658 27.151C25.6893 27.3745 25.9924 27.5 26.3084 27.5C26.6244 27.5 26.9275 27.3745 27.151 27.151C27.3745 26.9275 27.5 26.6244 27.5 26.3084C27.5 25.9924 27.3745 25.6893 27.151 25.4658L21.6853 20L27.151 14.5342C27.3745 14.3107 27.5 14.0076 27.5 13.6916C27.5 13.3756 27.3745 13.0725 27.151 12.849Z"/></svg>
+      </button>
+      <div class="img-zoom-modal__stage"></div>
+    </div>
+  </div>
+
+</div>
+<!-- YouTube IFrame Player API — מסך 11 (s10), ראו הערה מלאה ב-index.html
+     בתוך #s10 וב-script.js (s10PlayVideo/onYouTubeIframeAPIReady). -->
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="script.js"></script>
+</body>
+</html>

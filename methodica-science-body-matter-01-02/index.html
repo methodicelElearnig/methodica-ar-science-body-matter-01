@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وحدة تعليمية 720 | الهدف 11 | وحدة 2</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- סיין 2 (חדש) — מסכים 22-29 של סיין 1 לשעבר (בקשת הלקוח). ה-id-ים הפנימיים
+       (s21..s28, dqx28-*, hs23-* וכו') נשארו כפי שהיו כדי לא לשבור CSS/JS;
+       מספור הניווט (data-screen / goTo) הוא 0..7: s21=0 ... s28=7. -->
+  <!-- ============ מסך 22 — מסך מעבר לפני תרגול סטנדרטי (5 שאלות) ============
+       שוכפל ממסך 13 (`data-screen="-9"`, `id="s12"`) בסיין 1 של יעד 3
+       (methodica-science-mass-measure-03-01) — אותה משפחת `.transition-*`
+       שכבר שימשה למסך 19 (s18) בפרויקט הזה. תוכן לפי שקף 34 בתסריט,
+       run-level מדויק: 4 קטעי טקסט (לא 3 כמו ברפרנס) — נוסף שקע-קיקר
+       ("תרגול סטנדרטי", בולד) מעל שלושת השקעים המקוריים (sub/TITLE/sub),
+       כי לתוכן שלנו יש קטע טקסט רביעי אמיתי שאין לו מקבילה ברפרנס; לא
+       נדרש שינוי CSS כלל — `.transition-title-block` הוא flex-column עם
+       gap קבוע, אז פסקה רביעית עם אותה מחלקה `.transition-sub` פשוט
+       נוספת לעמודה בלי לשבור את המבנה. בשונה מהרפרנס (ששם רק השורה
+       האמצעית TITLE מודגשת), כאן **גם** השורה השלישית ("צריך לענות...")
+       מסומנת bold=True בתסריט בפועל (run-level, לא כמו ברפרנס) — נשמר
+       ב-`<b>` לפי מוסכמת "בולד מדויק לפי התסריט" של כל הפרויקט. **דמות
+       (עודכן): וידאו לופ מושתק אמיתי** (green-avatar-lifting-light-weights.mp4/
+       Turquoise-avatar-lifting-light-eights.mp4, סופקו בפועל) — לפי הערת
+       ההפקה "הדמות הכחולה בגיף של הרמת משקולות", אותו חוזה
+       resolveCharBubbleVideo כמו מסך 2/9/10/18. כפתור
+       "המשך" — התווית "אפשר להתחיל!" זהה לתווית הרפרנס עצמו, אין צורך
+       ב-width override (בשונה ממסך 18, ששם התווית הייתה ארוכה יותר). -->
+  <section class="screen active" data-screen="0" id="s21">
+    <div class="transition-content">
+      <div class="transition-title-block">
+        <p class="transition-sub">أنهينا مرحلة التعلم، سننتقل إلى التمرين الأول ونجيب عن</p>
+        <h2 class="transition-title">5 أسئلة</h2>
+        <p class="transition-sub"><b>يجب الإجابة بشكل صحيح عن 4 أسئلة على الأقل.</b></p>
+      </div>
+      <div class="transition-avatar-wrap">
+        <video class="transition-avatar" id="s21-avatar-video" autoplay loop muted playsinline disablepictureinpicture preload="auto" aria-label="شخصية مرافقة"></video>
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" onclick="goTo(1)">يمكن البدء!</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 23 — מסך הוטספוטים (3 חומרים, שקף 35) ============
+       נבנה ישירות מ-Figma (node 196:3349/196:3357, "PointSelectionHotspot"),
+       אין תבנית 720-templates מוכנה להוטספוט. ראו הערה מלאה ב-styles.css
+       (`.hs23-*`) לפרטי הסטייה מגודל-הרפרנס והחישוב מחדש למיקומי
+       הכפתורים מול assets/images/מהנדסות 2.png (1535×1025, כולל תוויות
+       מודפסות "קצף זיכרון"/"בד רשת פוליאסטר"/"סיליקון גמיש" ששימשו
+       לאימות הסדר/מיקום). לא שאלה (לפי בקשה מפורשת) — בלי סרגל qnav,
+       בלי בדיקת נכון/שגוי; "המשך" מושבת עד שחולף טיימר קצר (טרם קריאה
+       "כפתור המשך נדלק לאחר מספר שניות כדי להבטיח קריאה", ראו
+       resetScreenState22 ב-script.js). -->
+  <section class="screen" data-screen="1" id="s22">
+    <div class="hs23-content">
+      <div class="hs23-text">
+        <p class="scq-qbody">في مصنع لإنتاج سماعات الرأس، يفحص فريق المهندسات ثلاث مواد محتملة لتصنيع وسادات الأذن في سماعات الرأس.</p>
+        <p class="scq-qtitle hs23-instruction-black">اضغطوا على العلب للتعرف على المواد</p>
+      </div>
+      <div class="hs23-image-frame">
+        <img src="assets/images/מהנדסות 2.png" alt="ثلاث مهندسات يفحصن ثلاث مواد محتملة">
+        <button type="button" class="hs23-hotspot" style="left:28.8%;top:82%" onclick="s22OpenHotspot('foam')" aria-label="معلومات عن رغوة الذاكرة"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button>
+        <button type="button" class="hs23-hotspot" style="left:50.2%;top:82%" onclick="s22OpenHotspot('mesh')" aria-label="معلومات عن قماش شبكي من البوليستر"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button>
+        <button type="button" class="hs23-hotspot" style="left:68.5%;top:82%" onclick="s22OpenHotspot('silicone')" aria-label="معلومات عن السيليكون المرن"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button>
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(0, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" id="s22-continue" disabled onclick="goTo(2)">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 24 — שאלה 1 סעיף א' מתוך 5 (בחירה יחידה + טבלה) ============
+       שוכפל ממסך 9 (`data-screen="-13"`, `id="s8"`) בסיין 1 של יעד 3
+       (methodica-science-mass-measure-03-01) — אותו מבנה `.scq-question`/
+       `.scq-content`/`.scq-qtext`/`.scq-answers`/`.scq-fb-box` בדיוק
+       שכבר קיים אצלנו (מסך 20/s19). **סטייה מפורשת אחת, לפי בקשה
+       מפורשת של המשתמשת:** "במקום התמונה שתהיה טבלה" — הרפרנס (s8)
+       שם תמונה ב-`.scq-img`; כאן `.tbl-table` הגלובלי (אותו קומפוננט
+       שנבנה למסך 16) יושב במקום זה, בעטיפה ייעודית `.scq24-table-wrap`
+       (flex-shrink:0, בלי רוחב קבוע — הטבלה ארוכת-כותרות מדי בשביל
+       380px של `.scq-img`, ואין טעם לכפות עליה רוחב קבוע כשהמשתמשת
+       ביקשה "לא לשבור את הראש"). תוכן לפי שקף 36 בתסריט, run-level
+       מדויק (פסקה רגילה + פסקת-שאלה מודגשת — לפי מוסכמת `.scq-qbody`+
+       `<b>` הקיימת בפרויקט הזה, לא `.scq-qtitle`+`.scq-qbody` של
+       הרפרנס). תשובות = שמות 3 העמודות בטבלה (לא מסיחים חדשים): א'
+       אלסטיות (נכון), ב' חדירות לאוויר, ג' עמידות בטמפרטורה גבוהה —
+       לפי הערת ההפקה "תשובה נכונה – א'" ומשוב התשובה הנכונה ("אלסטיות
+       היא התכונה החשובה..."). 2 ניסיונות, רמז מופיע רק אחרי ניסיון
+       ראשון שגוי (כמו הרפרנס). סרגל התקדמות **חדש** (לא משתמש ב-
+       stationProgress/updateQuestionNav הישן של מסכים 19-20, שהוא
+       hardcoded ל-2 שאלות בלבד) — 5 שקעים (שאלה 1-5), שאלה 1 משותפת
+       לשני המסכים 23-24 (סעיפים א/ב, אותו שקע qnav). ראו
+       stationProgress2/updateQuestionNav2/S2324_SLOT_OF ב-script.js. -->
+  <section class="screen" data-screen="2" id="s23">
+    <div class="qnav" id="s23-qnav">
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s23-qnav-icon-5"></div>
+        <span class="qnav-label" id="s23-qnav-label-5">سؤال 5</span>
+      </div>
+      <div class="qnav-line" id="s23-qnav-line-4"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s23-qnav-icon-4"></div>
+        <span class="qnav-label" id="s23-qnav-label-4">سؤال 4</span>
+      </div>
+      <div class="qnav-line" id="s23-qnav-line-3"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s23-qnav-icon-3"></div>
+        <span class="qnav-label" id="s23-qnav-label-3">سؤال 3</span>
+      </div>
+      <div class="qnav-line" id="s23-qnav-line-2"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s23-qnav-icon-2"></div>
+        <span class="qnav-label" id="s23-qnav-label-2">سؤال 2</span>
+      </div>
+      <div class="qnav-line" id="s23-qnav-line-1"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-current" id="s23-qnav-icon-1"></div>
+        <span class="qnav-label qnav-label-active" id="s23-qnav-label-1">سؤال 1</span>
+      </div>
+    </div>
+
+    <div class="scq-question">
+      <div class="scq-content">
+        <div class="scq-qtext">
+          <p class="scq-qbody">أ. نظّمت العالمات المعلومات عن المواد الثلاث في جدول.</p>
+          <p class="scq-qbody"><b>أي خاصية هي الأهم لتكون وسادات سماعات الرأس ناعمة،
+            <br/>
+             وتتلاءم مع شكل الأذن، وتعود إلى شكلها بعد الاستخدام؟</b></p>
+        </div>
+        <div class="scq-answers" role="radiogroup" aria-label="خيارات الإجابة">
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s23Select('a')">
+            <span class="scq-opt-text">مرونة</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s23Select('b')">
+            <span class="scq-opt-text">نفاذية الهواء</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s23Select('c')">
+            <span class="scq-opt-text">مقاومة درجات الحرارة العالية</span>
+            <span class="scq-radio"></span>
+          </div>
+        </div>
+      </div>
+      <div class="scq24-table-wrap">
+        <table class="tbl-table" dir="rtl">
+          <colgroup>
+            <col class="tbl24-col-name">
+            <col class="tbl24-col-a">
+            <col class="tbl24-col-b">
+            <col class="tbl24-col-c">
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="tbl-th">اسم المادة</th>
+              <th class="tbl-th">مرونة</th>
+              <th class="tbl-th">نفاذية الهواء</th>
+              <th class="tbl-th">مقاومة درجات الحرارة العالية</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="tbl-td">رغوة الذاكرة</td><td class="tbl-td">عالية</td><td class="tbl-td">متوسطة</td><td class="tbl-td">منخفضة</td></tr>
+            <tr><td class="tbl-td">قماش شبكي من البوليستر</td><td class="tbl-td">متوسطة</td><td class="tbl-td">عالية</td><td class="tbl-td">متوسطة</td></tr>
+            <tr><td class="tbl-td">سيليكون</td><td class="tbl-td">منخفضة</td><td class="tbl-td">منخفضة</td><td class="tbl-td">عالية</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="s23-popup" class="scq-fb-box">
+      <div class="scq-fb-title">
+        <span class="scq-fb-title-text"></span>
+      </div>
+      <p class="scq-fb-body"></p>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(1, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="s23-hint" class="btn-hint" onclick="s23OpenHint()" hidden>
+            <img class="scq-hint-icon" src="assets/images/icon-hint-blue.svg" alt="">
+            هل يمكنني الحصول على تلميح؟
+          </button>
+          <button id="s23-check" class="btn-continue" disabled onclick="s23Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 25 — שאלה 1 סעיף ב' מתוך 5 (בחירה יחידה + טבלה) ============
+       "תשכפל את המסך הקודם ותתאים תוכן בהתאם לשקף 37" (בקשה מפורשת) —
+       שכפול מכני 1:1 של מסך 24 (s23→s24 בכל שם), אותה טבלה בדיוק (חוזרת
+       זהה בשקף 37 עצמו). תוכן/תשובות שונים: כאן האפשרויות הן שמות
+       3 החומרים (שורות הטבלה, לא כותרות עמודות כמו בסעיף א') — תשובה
+       נכונה ב' (בד רשת פוליאסטר), לפי הערת ההפקה ("תשובה נכונה –ב'")
+       ומשוב התשובה הנכונה. שאלה 1 (סעיפים א/ב) חולקת שקע qnav אחד
+       (slot 1) — ראה S2324_SLOT_OF ב-script.js, לכן סרגל ההתקדמות כאן
+       זהה למסך 23 (עדיין "שאלה 1" מסומנת current עד שנענתה). -->
+  <section class="screen" data-screen="3" id="s24">
+    <div class="qnav" id="s24-qnav">
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s24-qnav-icon-5"></div>
+        <span class="qnav-label" id="s24-qnav-label-5">سؤال 5</span>
+      </div>
+      <div class="qnav-line" id="s24-qnav-line-4"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s24-qnav-icon-4"></div>
+        <span class="qnav-label" id="s24-qnav-label-4">سؤال 4</span>
+      </div>
+      <div class="qnav-line" id="s24-qnav-line-3"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s24-qnav-icon-3"></div>
+        <span class="qnav-label" id="s24-qnav-label-3">سؤال 3</span>
+      </div>
+      <div class="qnav-line" id="s24-qnav-line-2"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s24-qnav-icon-2"></div>
+        <span class="qnav-label" id="s24-qnav-label-2">سؤال 2</span>
+      </div>
+      <div class="qnav-line" id="s24-qnav-line-1"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-current" id="s24-qnav-icon-1"></div>
+        <span class="qnav-label qnav-label-active" id="s24-qnav-label-1">سؤال 1</span>
+      </div>
+    </div>
+
+    <div class="scq-question">
+      <div class="scq-content">
+        <div class="scq-qtext">
+          <p class="scq-qbody"><b>ب. إذا أردنا تجنّب ارتفاع حرارة الأذنين أثناء الاستخدام الطويل لسماعات الرأس، فأي مادة يفضّل استخدامها؟</b></p>
+        </div>
+        <div class="scq-answers" role="radiogroup" aria-label="خيارات الإجابة">
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s24Select('a')">
+            <span class="scq-opt-text">رغوة الذاكرة</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s24Select('b')">
+            <span class="scq-opt-text">قماش شبكي من البوليستر</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s24Select('c')">
+            <span class="scq-opt-text">سيليكون مرن</span>
+            <span class="scq-radio"></span>
+          </div>
+        </div>
+      </div>
+      <div class="scq24-table-wrap">
+        <table class="tbl-table" dir="rtl">
+          <colgroup>
+            <col class="tbl24-col-name">
+            <col class="tbl24-col-a">
+            <col class="tbl24-col-b">
+            <col class="tbl24-col-c">
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="tbl-th">اسم المادة</th>
+              <th class="tbl-th">مرونة</th>
+              <th class="tbl-th">نفاذية الهواء</th>
+              <th class="tbl-th">مقاومة درجات الحرارة العالية</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="tbl-td">رغوة الذاكرة</td><td class="tbl-td">عالية</td><td class="tbl-td">متوسطة</td><td class="tbl-td">منخفضة</td></tr>
+            <tr><td class="tbl-td">قماش شبكي من البوليستر</td><td class="tbl-td">متوسطة</td><td class="tbl-td">عالية</td><td class="tbl-td">متوسطة</td></tr>
+            <tr><td class="tbl-td">سيليكون</td><td class="tbl-td">منخفضة</td><td class="tbl-td">منخفضة</td><td class="tbl-td">عالية</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="s24-popup" class="scq-fb-box">
+      <div class="scq-fb-title">
+        <span class="scq-fb-title-text"></span>
+      </div>
+      <p class="scq-fb-body"></p>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(2, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="s24-hint" class="btn-hint" onclick="s24OpenHint()" hidden>
+            <img class="scq-hint-icon" src="assets/images/icon-hint-blue.svg" alt="">
+            هل يمكنني الحصول على تلميح؟
+          </button>
+          <button id="s24-check" class="btn-continue" disabled onclick="s24Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 26 — שאלה 2 מתוך 5 (בחירה יחידה + תמונה) ============
+       "אפשר לשכפל את מסך 20 מכאן" (בקשה מפורשת — כלומר את מסך 20
+       (`id="s19"`) בפרויקט שלנו עצמו, לא ממקור חיצוני) — אותו מבנה
+       `.scq-question`/`.scq-content`/`.scq-img`/`.img-zoom-btn`/
+       `.scq-fb-box` בדיוק, בתוספת סרגל qnav חדש (5 שקעים, שקע 2 =
+       השאלה הזו). תוכן לפי שקף 38 בתסריט — run-level מדויק, כולל
+       4 אפשרויות התשובה (נמצאו רק אחרי extraction רקורסיבי של קבוצות
+       PowerPoint מקוננות — extraction שטוח פספס אותן לגמרי, אותו
+       באג בדיוק שכבר תועד למסך 16/טבלת שקף 21). תמונה: אזניות חוטים.png
+       (לפי הערת הפקה "שם תמונה – 'אזניות חוטים'"). -->
+  <section class="screen" data-screen="4" id="s25">
+    <div class="qnav" id="s25-qnav">
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s25-qnav-icon-5"></div>
+        <span class="qnav-label" id="s25-qnav-label-5">سؤال 5</span>
+      </div>
+      <div class="qnav-line" id="s25-qnav-line-4"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s25-qnav-icon-4"></div>
+        <span class="qnav-label" id="s25-qnav-label-4">سؤال 4</span>
+      </div>
+      <div class="qnav-line" id="s25-qnav-line-3"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s25-qnav-icon-3"></div>
+        <span class="qnav-label" id="s25-qnav-label-3">سؤال 3</span>
+      </div>
+      <div class="qnav-line" id="s25-qnav-line-2"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-current" id="s25-qnav-icon-2"></div>
+        <span class="qnav-label qnav-label-active" id="s25-qnav-label-2">سؤال 2</span>
+      </div>
+      <div class="qnav-line" id="s25-qnav-line-1"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s25-qnav-icon-1"></div>
+        <span class="qnav-label qnav-label-active" id="s25-qnav-label-1">سؤال 1</span>
+      </div>
+    </div>
+
+    <div class="scq-question">
+      <div class="scq-content">
+        <div class="scq-qtext">
+          <p class="scq-qbody">داخل سماعات البلوتوث يوجد سلكان: سلك قصير وسلك طويل. <br/>
+             كلا السلكين مصنوعان من نفس المادة - النحاس.</p>
+          <p class="scq-qbody"><b>ما الخاصية المتوقع أن تكون مختلفة بين السلكين بسبب كونهما جسمين مختلفين؟</b></p>
+        </div>
+        <div class="scq-answers" role="radiogroup" aria-label="خيارات الإجابة">
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s25Select('a')">
+            <span class="scq-opt-text">الحجم الذي يشغله السلك داخل السماعة.</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s25Select('b')">
+            <span class="scq-opt-text">صلابة مادة النحاس.</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s25Select('c')">
+            <span class="scq-opt-text">البريق المميز لمادة النحاس.</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="d" onclick="s25Select('d')">
+            <span class="scq-opt-text">اللون المعدني لمادة النحاس.</span>
+            <span class="scq-radio"></span>
+          </div>
+        </div>
+      </div>
+      <div class="scq-img"><div class="scq-img-inner">
+        <button class="img-zoom-btn" type="button" aria-label="تكبير الصورة"
+                data-zoom-src="assets/images/אזניות חוטים.png" data-zoom-alt="سماعات رأس بسلكين، قصير وطويل">
+          <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
+        </button>
+        <img id="s25-img" src="assets/images/אזניות חוטים.png" alt="سماعات رأس بسلكين، قصير وطويل">
+        <div class="s25-tooltip s25-tooltip-1"><span>سلك طويل</span></div>
+        <div class="s25-tooltip s25-tooltip-2"><span>سلك قصير</span></div>
+      </div></div>
+    </div>
+
+    <div id="s25-popup" class="scq-fb-box">
+      <div class="scq-fb-title">
+        <span class="scq-fb-title-text"></span>
+      </div>
+      <p class="scq-fb-body"></p>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(3, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="s25-hint" class="btn-hint" onclick="s25OpenHint()" hidden>
+            <img class="scq-hint-icon" src="assets/images/icon-hint-blue.svg" alt="">
+            هل يمكنني الحصول على تلميح؟
+          </button>
+          <button id="s25-check" class="btn-continue" disabled onclick="s25Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 27 — שאלה 3 מתוך 5 (בחירה מרובה + טבלה) ============
+       "תשכפל את המסך הקודם ותתאים תוכן" (בקשה מפורשת) — אותה מעטפת
+       חזותית בדיוק כמו מסך 25 (`.scq-question`/`.scq-content`/
+       `.scq-fb-box`/qnav), עם טבלה במקום תמונה (כמו מסך 24 — התסריט
+       עצמו אומר "היא כתבה את המידע בטבלה (משמאל)"). **סטייה מפורשת
+       אחת, מבוססת-תוכן, לא המצאה:** התסריט מבקש "סמנו את כל המסקנות
+       התקפות" עם 2 תשובות נכונות (א' ו-ב', לפי הערת ההפקה) — לא ניתן
+       לממש כ-SingleChoiceQuestion (בחירה יחידה). זו MultipleChoiceQuestion
+       (720-templates skill, references/MultipleChoiceQuestion.md) —
+       "טקסט בלבד, אותו מראה כמו scq-opt, רק toggle במקום בחירה
+       בלעדית" — role="checkbox" (לא radio), Set במקום id יחיד, gate
+       על size>=1, בדיקת שוויון-קבוצות. ראו S26/s26Toggle/s26Check
+       ב-script.js למימוש המלא. תוכן לפי שקף 39 בתסריט. -->
+  <section class="screen" data-screen="5" id="s26">
+    <div class="qnav" id="s26-qnav">
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s26-qnav-icon-5"></div>
+        <span class="qnav-label" id="s26-qnav-label-5">سؤال 5</span>
+      </div>
+      <div class="qnav-line" id="s26-qnav-line-4"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s26-qnav-icon-4"></div>
+        <span class="qnav-label" id="s26-qnav-label-4">سؤال 4</span>
+      </div>
+      <div class="qnav-line" id="s26-qnav-line-3"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-current" id="s26-qnav-icon-3"></div>
+        <span class="qnav-label qnav-label-active" id="s26-qnav-label-3">سؤال 3</span>
+      </div>
+      <div class="qnav-line" id="s26-qnav-line-2"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s26-qnav-icon-2"></div>
+        <span class="qnav-label qnav-label-active" id="s26-qnav-label-2">سؤال 2</span>
+      </div>
+      <div class="qnav-line" id="s26-qnav-line-1"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s26-qnav-icon-1"></div>
+        <span class="qnav-label qnav-label-active" id="s26-qnav-label-1">سؤال 1</span>
+      </div>
+    </div>
+
+    <div class="scq-question">
+      <div class="scq-content">
+        <div class="scq-qtext">
+          <p class="scq-qbody">قامت باحثة بقياس جسمين: الجسم 1 - سلك نحاسي قصير، الجسم 2 - سلك نحاسي طويل.
+            <br/>
+            سجلت المعلومات في الجدول (على اليسار).</p>
+          <p class="scq-qbody">حدّدوا <b>جميع الاستنتاجات </b><span class="s26-term-wrap"><b>الصحيحة</b><button type="button" class="s26-info-btn" onclick="s26OpenTermInfo()" aria-label="ما هو الاستنتاج الصحيح؟"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button></span> من الجدول.</p>
+        </div>
+        <div class="scq-answers" role="group" aria-label="خيارات الإجابة">
+          <div class="scq-opt" role="checkbox" aria-checked="false" tabindex="0" data-id="a" onclick="s26Toggle('a')">
+            <span class="scq-opt-text">الجسم 2 يحتوي على كمية أكبر من النحاس مقارنة بالجسم 1.</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="checkbox" aria-checked="false" tabindex="0" data-id="b" onclick="s26Toggle('b')">
+            <span class="scq-opt-text">الجسمان مصنوعان من نفس المادة، وبالتالي خصائص المادة الخاصة بهما متطابقة.</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="checkbox" aria-checked="false" tabindex="0" data-id="c" onclick="s26Toggle('c')">
+            <span class="scq-opt-text">الموصلية الكهربائية للجسمين متطابقة.</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="checkbox" aria-checked="false" tabindex="0" data-id="d" onclick="s26Toggle('d')">
+            <span class="scq-opt-text">تغيّر اللون لأن السلك الثاني أطول.</span>
+            <span class="scq-radio"></span>
+          </div>
+        </div>
+      </div>
+      <div class="scq24-table-wrap">
+        <table class="tbl-table" dir="rtl">
+          <thead>
+            <tr>
+              <th class="tbl-th" >خاصية</th>
+              <th class="tbl-th">جسم 1 - سلك قصير</th>
+              <th class="tbl-th">جسم 2 - سلك طويل</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="tbl-td">الكتلة (غرام)</td><td class="tbl-td">2.0</td><td class="tbl-td">8.0</td></tr>
+            <tr><td class="tbl-td">الحجم (سم³)</td><td class="tbl-td">0.22</td><td class="tbl-td">0.90</td></tr>
+            <tr><td class="tbl-td">لون</td><td class="tbl-td">برتقالي</td><td class="tbl-td">برتقالي</td></tr>
+            <tr><td class="tbl-td">شكل</td><td class="tbl-td">سلك قصير</td><td class="tbl-td">سلك طويل</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="s26-popup" class="scq-fb-box">
+      <div class="scq-fb-title">
+        <span class="scq-fb-title-text"></span>
+      </div>
+      <p class="scq-fb-body"></p>
+      <button class="scq-fb-reveal-btn" id="s26-reveal-btn" type="button" hidden onclick="s26ToggleReveal()">الانتقال إلى إجابتي</button>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(4, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="s26-hint" class="btn-hint" onclick="s26OpenHint()" hidden>
+            <img class="scq-hint-icon" src="assets/images/icon-hint-blue.svg" alt="">
+            هل يمكنني الحصول على تلميح؟
+          </button>
+          <button id="s26-check" class="btn-continue" disabled onclick="s26Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 28 — שאלה 4 מתוך 5 (גרירה + היפוך קלפים, שקפים 40-41) ============
+       "לשכפל את שאלת הגרירה ממסך 14 כאן, גם בלחיצה על התמונות הן
+       יתהפכו ועל גבם יש טקסט... אבל כמובן צריך לעשות התאמות לפי
+       המסך שלנו, כי זה גם שאילת גרירה" (בקשה מפורשת). מנגנון הגרירה/
+       מיון-לשתי-קבוצות/בדיקת-נכונות-ברמת-אזור: שוכפל 1:1 ממסך 14
+       (ddq13* → ddq27* כאן, ראו למעלה) — DragStart/DragEnd/DragOver/
+       DragEnter/DragLeave/Drop/DropToSource/Check/resetScreenState27.
+       **הבדל מפורש אחד:** לחיצה על פריט (ddq13ItemClick במקור, "החזר
+       למגש") הוחלפה כאן ב-ddq27Flip ("הפוך קלף") — לפי בקשה מפורשת;
+       "החזרה למגש" עדיין אפשרית, רק דרך גרירה בחזרה (drop על המגש),
+       לא לחיצה. מנגנון ההיפוך עצמו (`.ddq27-card-inner`/is-flipped/
+       backface-visibility) הועתק מתבנית FlipCardsReveal הגלובלית
+       (720-templates skill) — היפוך חד-כיווני (ברירת המחדל של
+       התבנית; לא התבקש היפוך דו-כיווני). גודל הקלפים (130×150, לא
+       100×100 כמו מסך 14) הוגדל בכוונה כי צד ה"גב" כאן מציג משפט
+       ראיות שלם, לא רק שם — הוחלט מחדש עבור המסך הזה (אין רפרנס
+       מדויק לגודל, המשתמשת לא ציינה מידות).
+       תוכן/שיוך-קבוצות (שקפים 40-41): הותאם לפי תוכן-הראיות בפועל,
+       לא לפי סדר-הופעה גרידא בקובץ המקור (שהיה מוסט בשקף עצמו) —
+       "אבן צור"+"שבר עצם" → אין מספיק ראיות (סימנים לא-אחידים/טבעיים);
+       "שבר כלי חרס"+"לוחית נחושת" → יש מספיק ראיות (עובי אחיד/חורים
+       מדויקים) — לפי הערת ההפקה בשקף 40 ("תשובות: יש מספיק ראיות:
+       שבר חרס, לוחית נחושת. אין מספיק ראיות: אבן צור, שבר עצם").
+       כפתור "אפשר רמז?" פעיל אחרי ניסיון ראשון שגוי (לפי הדוקס — לא
+       "ללא רמז" כפי שההערה הישנה בשקף 40 אומרת; תוכן הרמז מנוסח מחדש
+       מתוך הסבר התשובה הנכונה עצמו, לא הומצא). -->
+  <section class="screen" data-screen="6" id="s27">
+    <div class="qnav" id="s27-qnav">
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s27-qnav-icon-5"></div>
+        <span class="qnav-label" id="s27-qnav-label-5">سؤال 5</span>
+      </div>
+      <div class="qnav-line" id="s27-qnav-line-4"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-current" id="s27-qnav-icon-4"></div>
+        <span class="qnav-label qnav-label-active" id="s27-qnav-label-4">سؤال 4</span>
+      </div>
+      <div class="qnav-line" id="s27-qnav-line-3"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s27-qnav-icon-3"></div>
+        <span class="qnav-label qnav-label-active" id="s27-qnav-label-3">سؤال 3</span>
+      </div>
+      <div class="qnav-line" id="s27-qnav-line-2"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s27-qnav-icon-2"></div>
+        <span class="qnav-label qnav-label-active" id="s27-qnav-label-2">سؤال 2</span>
+      </div>
+      <div class="qnav-line" id="s27-qnav-line-1"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s27-qnav-icon-1"></div>
+        <span class="qnav-label qnav-label-active" id="s27-qnav-label-1">سؤال 1</span>
+      </div>
+    </div>
+
+    <div class="ddq27-content">
+      <div class="ddq27-text-group">
+        <p class="ddq27-intro">في مختبر الترميم، فحصت أربع قطع أثرية من حفرية أثرية. هل يوجد ما يكفي من <span class="s26-term-wrap">أدلة<button type="button" class="s26-info-btn" onclick="s27OpenTermInfo()" aria-label="ما هي الأدلة؟"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button></span> لتحديد ما إذا كانت القطع الأثرية قد خضعت للمعالجة على يد الإنسان؟</p>
+        <p class="ddq27-question"><b>اضغطوا على القطع الأثرية لقراءة الأدلة، وصنّفوها في المجموعة المناسبة.</b></p>
+      </div>
+
+      <div class="ddq27-source-bank" id="ddq27-source-bank" ondragover="ddq27DragOver(event)" ondrop="ddq27DropToSource(event)">
+        <div class="ddq27-drag-item" id="ddq27-flint" draggable="true" data-correct="insufficient"
+             ondragstart="ddq27DragStart(event,'ddq27-flint')" ondragend="ddq27DragEnd('ddq27-flint')"
+             onclick="ddq27Flip('ddq27-flint')">
+          <div class="ddq27-card-inner">
+            <div class="ddq27-card-front">
+              <span class="ddq27-item-badge"></span>
+              <div class="ddq27-item-frame"><img src="assets/images/אבן צור.png" alt="حجر صوان" draggable="false"></div>
+              <p class="ddq27-item-label">حجر صوان</p>
+            </div>
+            <div class="ddq27-card-back">
+              <p class="ddq27-card-back-text">حجر أملس وله تجويف دائري في أحد الجوانب. عثر عليه في الطبقة التي عثر فيها أيضًا على علامات تدل على تدفق مياه قديم.</p>
+            </div>
+          </div>
+        </div>
+        <div class="ddq27-drag-item" id="ddq27-bone" draggable="true" data-correct="insufficient"
+             ondragstart="ddq27DragStart(event,'ddq27-bone')" ondragend="ddq27DragEnd('ddq27-bone')"
+             onclick="ddq27Flip('ddq27-bone')">
+          <div class="ddq27-card-inner">
+            <div class="ddq27-card-front">
+              <span class="ddq27-item-badge"></span>
+              <div class="ddq27-item-frame"><img src="assets/images/שבר עצם.png" alt="شظية عظم" draggable="false"></div>
+              <p class="ddq27-item-label">شظية عظم</p>
+            </div>
+            <div class="ddq27-card-back">
+              <p class="ddq27-card-back-text">محفور عليه عدة أخاديد تختلف عن بعضها البعض في طولها وعمقها واتجاهها.</p>
+            </div>
+          </div>
+        </div>
+        <div class="ddq27-drag-item" id="ddq27-pottery" draggable="true" data-correct="sufficient"
+             ondragstart="ddq27DragStart(event,'ddq27-pottery')" ondragend="ddq27DragEnd('ddq27-pottery')"
+             onclick="ddq27Flip('ddq27-pottery')">
+          <div class="ddq27-card-inner">
+            <div class="ddq27-card-front">
+              <span class="ddq27-item-badge"></span>
+              <div class="ddq27-item-frame"><img src="assets/images/שבר כלי חרס.png" alt="قطعة فخار مكسورة" draggable="false"></div>
+              <p class="ddq27-item-label">قطعة فخار مكسورة</p>
+            </div>
+            <div class="ddq27-card-back">
+              <p class="ddq27-card-back-text">محدب، ذو سمك جدار متساو، ومحفور عليه خطوط بفواصل ثابتة.</p>
+            </div>
+          </div>
+        </div>
+        <div class="ddq27-drag-item" id="ddq27-copper" draggable="true" data-correct="sufficient"
+             ondragstart="ddq27DragStart(event,'ddq27-copper')" ondragend="ddq27DragEnd('ddq27-copper')"
+             onclick="ddq27Flip('ddq27-copper')">
+          <div class="ddq27-card-inner">
+            <div class="ddq27-card-front">
+              <span class="ddq27-item-badge"></span>
+              <div class="ddq27-item-frame"><img src="assets/images/לוחית נחושת.png" alt="لوحة نحاسية" draggable="false"></div>
+              <p class="ddq27-item-label">لوحة نحاسية</p>
+            </div>
+            <div class="ddq27-card-back">
+              <p class="ddq27-card-back-text">لها ثقبان صغيران على مسافة متساوية من الحواف، وحوافها مطوية بزوايا متشابهة.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ddq27-zones-row">
+        <div class="ddq27-zone-wrap">
+          <div class="ddq27-zone" id="ddq27-zone-insufficient" ondragover="ddq27DragOver(event)" ondragenter="ddq27DragEnter(event,'ddq27-zone-insufficient')" ondragleave="ddq27DragLeave(event,'ddq27-zone-insufficient')" ondrop="ddq27Drop(event,'insufficient')"></div>
+          <p class="ddq27-zone-label">لا توجد أدلة كافية لتحديد أن القطعة الأثرية خضعت للمعالجة على يد الإنسان</p>
+        </div>
+        <div class="ddq27-zone-wrap">
+          <div class="ddq27-zone" id="ddq27-zone-sufficient" ondragover="ddq27DragOver(event)" ondragenter="ddq27DragEnter(event,'ddq27-zone-sufficient')" ondragleave="ddq27DragLeave(event,'ddq27-zone-sufficient')" ondrop="ddq27Drop(event,'sufficient')"></div>
+          <p class="ddq27-zone-label">توجد أدلة كافية لتحديد أن القطعة الأثرية خضعت للمعالجة على يد الإنسان</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="scq-fb-box" id="ddq27-popup">
+      <div class="scq-fb-title">
+        <span class="scq-fb-title-text"></span>
+      </div>
+      <p class="scq-fb-body"></p>
+      <button class="scq-fb-reveal-btn" id="ddq27-reveal-btn" type="button" hidden onclick="ddq27ToggleReveal()">الانتقال إلى إجابتي</button>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(5, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="s27-hint" class="btn-hint" onclick="s27OpenHint()" hidden>
+            <img class="scq-hint-icon" src="assets/images/icon-hint-blue.svg" alt="">
+            هل يمكنني الحصول على تلميح؟
+          </button>
+          <button id="ddq27-check" class="btn-continue" disabled onclick="ddq27Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 29 — שאלה 5 מתוך 5 (גרירה לתוך טבלה, שקף 42) ============
+       "מאוד דומה עקרונית לשאלת גרירה טקסטואלית, אז אפשר בהתחלה לשכפל
+       מסך 12 סיין 1 ביעד 3... תעשה את ההתאמות" (בקשה מפורשת) — אבל
+       המנגנון בפועל שוכפל מ**מסך 21 (dqx20) בפרויקט הזה עצמו**, לא
+       ממסך 12 יעד 3 ישירות: אותו state-machine בדיוק (Placement model
+       + Render מחדש, לא ddq13-style DOM-move) כבר קיים ומאומת אצלנו,
+       ומקורו באותה משפחה בדיוק (makeDragQuestion factory, יעד 2 סיין
+       5) שמסך 12 יעד 3 עצמו שוכפל ממנה — זהה במהות, קרוב יותר להעתיק
+       מהמימוש שכבר "עבר QA" בפרויקט שלנו. **סטייה אחת בלבד, לפי בקשה
+       מפורשת של המשתמשת עצמה:** "לקחת עיצוב טבלה בדיוק AS IS" — הטבלה
+       (`.tbl-table`/`.tbl-th`/`.tbl-td`, אותו קומפוננט גלובלי ממסכים
+       23-24, כבר מאומת מול Figma) יושבת בעטיפה `.scq24-table-wrap`
+       הקיימת (טור שני של `.scq-question`, בדיוק כמו מסכים 23-26),
+       ותאי היעד (7, אחד לכל תכונה) הם `.dqx-drop` בתוך `<td>`. **סטייה
+       שנייה, מבוססת-תוכן, מפורשת:** אחד מ-7 ניסוחי שיטות הבדיקה ארוך
+       בהרבה מהשאר ("התבוננות אם פני החומר מחזירים אור...") — 180px
+       הקבועים של `.dqx-drop`/`.dqx-drag-card` הגלובליים לא מספיקים לו;
+       הורחב ל-230px + `white-space:normal` (גלישת טקסט, לא nowrap),
+       **מוגבל לתחום המסך הזה בלבד** (`#s28 .dqx-drop`/`#s28 .dqx-drag-card`
+       ב-styles.css) כדי לא להשפיע על מסך 20 הקיים. אין כפתור "אפשר
+       רמז?" (לפי בקשה מפורשת "ללא כפתור רמז"). כפתור "צדקתי?" נדלק
+       רק לאחר גרירת כל 7 האלמנטים (אותו gate בדיוק כמו dqx20Check).
+       2 ניסיונות מענה. -->
+  <section class="screen" data-screen="7" id="s28">
+    <div class="qnav" id="s28-qnav">
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-current" id="s28-qnav-icon-5"></div>
+        <span class="qnav-label qnav-label-active" id="s28-qnav-label-5">سؤال 5</span>
+      </div>
+      <div class="qnav-line" id="s28-qnav-line-4"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s28-qnav-icon-4"></div>
+        <span class="qnav-label qnav-label-active" id="s28-qnav-label-4">سؤال 4</span>
+      </div>
+      <div class="qnav-line" id="s28-qnav-line-3"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s28-qnav-icon-3"></div>
+        <span class="qnav-label qnav-label-active" id="s28-qnav-label-3">سؤال 3</span>
+      </div>
+      <div class="qnav-line" id="s28-qnav-line-2"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s28-qnav-icon-2"></div>
+        <span class="qnav-label qnav-label-active" id="s28-qnav-label-2">سؤال 2</span>
+      </div>
+      <div class="qnav-line" id="s28-qnav-line-1"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s28-qnav-icon-1"></div>
+        <span class="qnav-label qnav-label-active" id="s28-qnav-label-1">سؤال 1</span>
+      </div>
+    </div>
+
+    <div class="scq-question">
+      <div class="scq-content">
+        <div class="scq-qtext">
+          <p class="scq-qbody"><b>كيف نفحص خصائص المادة؟</b><br/>
+          لتحديد خصائص المادة، يجري العلماء والعالمات فحوصات مختلفة.<br/>
+        <b>اسحبوا طريقة الفحص المناسبة لكل خاصية في الجدول:</b></p>
+        </div>
+        <div class="dqt28-table-wrap">
+          <table class="tbl-table dqt28-table" dir="rtl">
+            <colgroup>
+              <col class="dqt28-col-prop">
+              <col class="dqt28-col-drop">
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="tbl-th">خاصية</th>
+                <th class="tbl-th">طريقة الفحص / المشاهدة</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="tbl-td"><span class="dqt28-prop-cell"><span class="dqt28-prop-text">لون</span><button type="button" class="dqt28-info-btn" onclick="dqx28OpenTermInfo('color')" aria-label="معلومات إضافيّة عن اللون"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button></span></td><td class="tbl-td"><div class="dqx-drop" id="dqx28-target-color" ondragover="dqx28DragOver(event,'dqx28-target-color')" ondragenter="dqx28DragEnter(event,'dqx28-target-color')" ondragleave="dqx28DragLeave(event,'dqx28-target-color')" ondrop="dqx28Drop(event,'dqx28-target-color')"></div></td></tr>
+              <tr><td class="tbl-td"><span class="dqt28-prop-cell"><span class="dqt28-prop-text">شفافية</span><button type="button" class="dqt28-info-btn" onclick="dqx28OpenTermInfo('transparency')" aria-label="معلومات إضافيّة عن الشفافية"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button></span></td><td class="tbl-td"><div class="dqx-drop" id="dqx28-target-transparency" ondragover="dqx28DragOver(event,'dqx28-target-transparency')" ondragenter="dqx28DragEnter(event,'dqx28-target-transparency')" ondragleave="dqx28DragLeave(event,'dqx28-target-transparency')" ondrop="dqx28Drop(event,'dqx28-target-transparency')"></div></td></tr>
+              <tr><td class="tbl-td"><span class="dqt28-prop-cell"><span class="dqt28-prop-text">صلابة</span><button type="button" class="dqt28-info-btn" onclick="dqx28OpenTermInfo('hardness')" aria-label="معلومات إضافيّة عن الصلابة"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button></span></td><td class="tbl-td"><div class="dqx-drop" id="dqx28-target-hardness" ondragover="dqx28DragOver(event,'dqx28-target-hardness')" ondragenter="dqx28DragEnter(event,'dqx28-target-hardness')" ondragleave="dqx28DragLeave(event,'dqx28-target-hardness')" ondrop="dqx28Drop(event,'dqx28-target-hardness')"></div></td></tr>
+              <tr><td class="tbl-td"><span class="dqt28-prop-cell"><span class="dqt28-prop-text">ليونة</span><button type="button" class="dqt28-info-btn" onclick="dqx28OpenTermInfo('flex')" aria-label="معلومات إضافيّة عن الليونة"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button></span></td><td class="tbl-td"><div class="dqx-drop" id="dqx28-target-flex" ondragover="dqx28DragOver(event,'dqx28-target-flex')" ondragenter="dqx28DragEnter(event,'dqx28-target-flex')" ondragleave="dqx28DragLeave(event,'dqx28-target-flex')" ondrop="dqx28Drop(event,'dqx28-target-flex')"></div></td></tr>
+              <tr><td class="tbl-td"><span class="dqt28-prop-cell"><span class="dqt28-prop-text">لمعان</span><button type="button" class="dqt28-info-btn" onclick="dqx28OpenTermInfo('shine')" aria-label="معلومات إضافيّة عن اللمعان"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button></span></td><td class="tbl-td"><div class="dqx-drop" id="dqx28-target-shine" ondragover="dqx28DragOver(event,'dqx28-target-shine')" ondragenter="dqx28DragEnter(event,'dqx28-target-shine')" ondragleave="dqx28DragLeave(event,'dqx28-target-shine')" ondrop="dqx28Drop(event,'dqx28-target-shine')"></div></td></tr>
+              <tr><td class="tbl-td"><span class="dqt28-prop-cell"><span class="dqt28-prop-text">مغناطيسية</span><button type="button" class="dqt28-info-btn" onclick="dqx28OpenTermInfo('magnetism')" aria-label="معلومات إضافيّة عن المغناطيسية"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button></span></td><td class="tbl-td"><div class="dqx-drop" id="dqx28-target-magnetism" ondragover="dqx28DragOver(event,'dqx28-target-magnetism')" ondragenter="dqx28DragEnter(event,'dqx28-target-magnetism')" ondragleave="dqx28DragLeave(event,'dqx28-target-magnetism')" ondrop="dqx28Drop(event,'dqx28-target-magnetism')"></div></td></tr>
+              <tr><td class="tbl-td"><span class="dqt28-prop-cell"><span class="dqt28-prop-text">ملمس</span><button type="button" class="dqt28-info-btn" onclick="dqx28OpenTermInfo('texture')" aria-label="معلومات إضافيّة عن الملمس"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button></span></td><td class="tbl-td"><div class="dqx-drop" id="dqx28-target-texture" ondragover="dqx28DragOver(event,'dqx28-target-texture')" ondragenter="dqx28DragEnter(event,'dqx28-target-texture')" ondragleave="dqx28DragLeave(event,'dqx28-target-texture')" ondrop="dqx28Drop(event,'dqx28-target-texture')"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="dqt28-bank-col">
+        <div class="dqx-word-bank dqt28-word-bank" id="dqx28-word-bank" ondragover="event.preventDefault()" ondrop="dqx28DropToBank(event)">
+          <div class="dqx-source-slot" id="slot-dqx28-drag-observe"></div>
+          <div class="dqx-source-slot" id="slot-dqx28-drag-lightobserve"></div>
+          <div class="dqx-source-slot" id="slot-dqx28-drag-scratch"></div>
+          <div class="dqx-source-slot" id="slot-dqx28-drag-bend"></div>
+          <div class="dqx-source-slot" id="slot-dqx28-drag-touch"></div>
+          <div class="dqx-source-slot" id="slot-dqx28-drag-magnet"></div>
+          <div class="dqx-source-slot" id="slot-dqx28-drag-shine"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="dqx28-popup" class="scq-fb-box">
+      <div class="scq-fb-title">
+        <span class="scq-fb-title-text"></span>
+      </div>
+      <p class="scq-fb-body"></p>
+      <button class="scq-fb-reveal-btn" id="dqx28-reveal-btn" type="button" hidden onclick="dqx28ToggleReveal()">الانتقال إلى إجابتي</button>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(6, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="dqx28-check" class="btn-continue" disabled onclick="dqx28Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- פופ-אפים של רמז — מחוץ ל-.screen, ישירות ב-#app, לפי מוסכמת הפרויקט -->
+  <!-- מסך 29 (s28) — הגדרות-תכונה על-פי-דרישה: "לכל התכונות מימין
+       (בטבלה) צריך להוסיף אייקון של סימן שאלה שלחיצה עליו פותחת בועית
+       עם הגדרה של אותה תכונה" (בקשה מפורשת של הלקוח). בועית אחת
+       משותפת לכל 7 התכונות (כמו s22-hint-overlay למעלה — hotspot
+       דינמי, לא 7 overlay-ים נפרדים), טקסט מוזרק דרך dqx28OpenTermInfo
+       (ראו DQX28_TERMS ב-script.js). אותו קומפוננט בדיוק (.scq-hint-
+       overlay/.scq-hint-popup) בו כבר השתמשה בקשה זהה במסך 3 בסיין 2
+       (s2-term-hint-overlay, "קשיות" בלבד שם) — כאן מורחב לכל 7
+       התכונות של הטבלה. -->
+  <div id="dqx28-term-hint-overlay" class="scq-hint-overlay" hidden>
+    <div class="scq-hint-popup" role="dialog" aria-modal="true" aria-label="معلومات إضافيّة">
+      <div class="scq-hint-title-row">
+        <p class="scq-hint-title" id="dqx28-term-hint-title-text">عنوان</p>
+      </div>
+      <p class="scq-hint-body" id="dqx28-term-hint-body-text">محتوى</p>
+      <button class="scq-hint-close" onclick="dqx28CloseTermInfo()">إغلاق</button>
+    </div>
+  </div>
+  <!-- מסך 27 (s26) — בועית הגדרה ל"מסקנה תקפה" (בקשה מפורשת): אייקון המידע של פיגמה
+       (Tooltip info button 2045:20208) ליד הביטוי, אותו .scq-hint-popup כמו s28. -->
+  <div id="s26-term-hint-overlay" class="scq-hint-overlay" hidden>
+    <div class="scq-hint-popup" role="dialog" aria-modal="true" aria-label="معلومات إضافيّة">
+      <div class="scq-hint-title-row">
+        <p class="scq-hint-title">استنتاج صحيح</p>
+      </div>
+      <p class="scq-hint-body">استنتاج ينتج عن المعطيات في الجدول</p>
+      <button class="scq-hint-close" onclick="s26CloseTermInfo()">إغلاق</button>
+    </div>
+  </div>
+  <!-- מסך 28 (s27) — בועית הגדרה ל"ראיות" (בקשה מפורשת), אותו מנגנון כמו s26-term. -->
+  <div id="s27-term-hint-overlay" class="scq-hint-overlay" hidden>
+    <div class="scq-hint-popup" role="dialog" aria-modal="true" aria-label="معلومات إضافيّة">
+      <div class="scq-hint-title-row">
+        <p class="scq-hint-title">أدلة</p>
+      </div>
+      <p class="scq-hint-body">معلومات أو معطيات تساعد في دعم ادّعاء معين أو تفحص ما إذا كان صحيحًا.</p>
+      <button class="scq-hint-close" onclick="s27CloseTermInfo()">إغلاق</button>
+    </div>
+  </div>
+  <div id="s27-hint-overlay" class="scq-hint-overlay" hidden>
+    <div class="scq-hint-popup" role="dialog" aria-modal="true" aria-label="تلميح">
+      <div class="scq-hint-title-row">
+        <p class="scq-hint-title">تلميح</p>
+        <img class="scq-hint-bulb" src="assets/images/icon-idea-white-lg.svg" alt="">
+      </div>
+      <p class="scq-hint-body">ابحثوا عن علامات متكررة ومتناسقة، مثل سمك ثابت أو ثقوب في موقع دقيق — فهي تدل على تصميم مقصود من قبل الإنسان. الأخاديد غير المتناسقة أو التجاويف في الحجر يمكن أن تتشكل في الطبيعة أيضًا.</p>
+      <button class="scq-hint-close scq-hint-back" onclick="s27CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+  <div id="s26-hint-overlay" class="scq-hint-overlay" hidden>
+    <div class="scq-hint-popup" role="dialog" aria-modal="true" aria-label="تلميح">
+      <div class="scq-hint-title-row">
+        <p class="scq-hint-title">تلميح</p>
+        <img class="scq-hint-bulb" src="assets/images/icon-idea-white-lg.svg" alt="">
+      </div>
+      <p class="scq-hint-body"><b>الاستنتاج الصحيح</b> هو استنتاج تدعمه المعطيات فعلًا. أي يمكن الإشارة إلى معلومة في الجدول والقول: "وفقًا لهذا المعطى، استنتاجي قائم على معطيات".</p>
+      <button class="scq-hint-close scq-hint-back" onclick="s26CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+  <div id="s25-hint-overlay" class="scq-hint-overlay" hidden>
+    <div class="scq-hint-popup" role="dialog" aria-modal="true" aria-label="تلميح">
+      <div class="scq-hint-title-row">
+        <p class="scq-hint-title">تلميح</p>
+        <img class="scq-hint-bulb" src="assets/images/icon-idea-white-lg.svg" alt="">
+      </div>
+      <p class="scq-hint-body">اسألوا: أي من الخيارات يصف السلك نفسه؟</p>
+      <button class="scq-hint-close scq-hint-back" onclick="s25CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+  <div id="s24-hint-overlay" class="scq-hint-overlay" hidden>
+    <div class="scq-hint-popup" role="dialog" aria-modal="true" aria-label="تلميح">
+      <div class="scq-hint-title-row">
+        <p class="scq-hint-title">تلميح</p>
+        <img class="scq-hint-bulb" src="assets/images/icon-idea-white-lg.svg" alt="">
+      </div>
+      <p class="scq-hint-body">ابحثوا في الجدول عن الخاصية المرتبطة بدخول الهواء ومنع ارتفاع الحرارة.</p>
+      <button class="scq-hint-close scq-hint-back" onclick="s24CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+  <div id="s23-hint-overlay" class="scq-hint-overlay" hidden>
+    <div class="scq-hint-popup" role="dialog" aria-modal="true" aria-label="تلميح">
+      <div class="scq-hint-title-row">
+        <p class="scq-hint-title">تلميح</p>
+        <img class="scq-hint-bulb" src="assets/images/icon-idea-white-lg.svg" alt="">
+      </div>
+      <p class="scq-hint-body">فكروا: ما هي الخاصية التي تمكّن المادة من تغيير شكلها عند الضغط عليها ثم العودة إلى شكلها الأصلي.</p>
+      <button class="scq-hint-close scq-hint-back" onclick="s23CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+  <div id="s22-hint-overlay" class="scq-hint-overlay" hidden>
+    <div class="scq-hint-popup" role="dialog" aria-modal="true" aria-label="معلومات عن المادة">
+      <div class="scq-hint-title-row">
+        <p class="scq-hint-title" id="s22-hint-title-text">عنوان</p>
+      </div>
+      <p class="scq-hint-body" id="s22-hint-body-text">محتوى</p>
+      <button class="scq-hint-close" onclick="s22CloseHotspot()">إغلاق</button>
+    </div>
+  </div>
+  <!-- כפתור "מצאתם בעיה?" — רכיב גלובלי יחיד, מחוץ לכל .screen,
+       ישירות ב-#app, לפי 720-templates skill (_global-components.md) -->
+  <button class="flag-btn" aria-label="هل واجهتم مشكلة؟" title="هل واجهتم مشكلة؟">
+    <span class="flag-btn-icon" aria-hidden="true">
+      <img class="flag-btn-icon-default" src="assets/images/flag-default.svg" alt="">
+      <img class="flag-btn-icon-hover" src="assets/images/flag-hover.svg" alt="">
+    </span>
+    <span class="flag-btn-label">هل واجهتم مشكلة؟</span>
+  </button>
+
+  <!-- הגדלת תמונה (img-zoom) — רכיב גלובלי יחיד, מחוץ לכל .screen,
+       ישירות ב-#app, לפי מפרט 720-templates _global-components.md.
+       כל תמונת תוכן שצריכה זום מוסיפה כפתור .img-zoom-btn משלה
+       בתוך ה-wrapper שלה (position:relative, בלי stacking context) -->
+  <div id="img-zoom-modal" class="img-zoom-modal hidden" aria-hidden="true" data-zoom-close="true">
+    <div class="img-zoom-modal__panel" role="dialog" aria-modal="true" aria-label="تكبير الصورة">
+      <button class="img-zoom-close" type="button" data-zoom-close="true" aria-label="إغلاق تكبير الصورة">
+        <svg class="img-zoom-close__icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect class="zc-bg" x="1" y="1" width="38" height="38" rx="19" stroke-width="2"/><path class="zc-x" d="M27.151 12.849C26.9275 12.6255 26.6244 12.5 26.3084 12.5C25.9924 12.5 25.6893 12.6255 25.4658 12.849L20 18.3147L14.5342 12.849C14.3107 12.6255 14.0076 12.5 13.6916 12.5C13.3756 12.5 13.0725 12.6255 12.849 12.849C12.6255 13.0725 12.5 13.3756 12.5 13.6916C12.5 14.0076 12.6255 14.3107 12.849 14.5342L18.3147 20L12.849 25.4658C12.6255 25.6893 12.5 25.9924 12.5 26.3084C12.5 26.6244 12.6255 26.9275 12.849 27.151C13.0725 27.3745 13.3756 27.5 13.6916 27.5C14.0076 27.5 14.3107 27.3745 14.5342 27.151L20 21.6853L25.4658 27.151C25.6893 27.3745 25.9924 27.5 26.3084 27.5C26.6244 27.5 26.9275 27.3745 27.151 27.151C27.3745 26.9275 27.5 26.6244 27.5 26.3084C27.5 25.9924 27.3745 25.6893 27.151 25.4658L21.6853 20L27.151 14.5342C27.3745 14.3107 27.5 14.0076 27.5 13.6916C27.5 13.3756 27.3745 13.0725 27.151 12.849Z"/></svg>
+      </button>
+      <div class="img-zoom-modal__stage"></div>
+    </div>
+  </div>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>

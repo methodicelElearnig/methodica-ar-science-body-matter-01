@@ -1,0 +1,203 @@
+import json, os, sys, collections, csv, re, datetime
+
+OUT = sys.argv[1]
+MOD = "methodica-science-body-matter-01"
+raw = json.load(open(os.path.join(OUT, 'raw.json'), encoding='utf-8'))
+ver = json.load(open(os.path.join(OUT, 'verification.json'), encoding='utf-8'))
+U = sorted(raw['units'], key=lambda u: u['id'])
+with open(os.path.join(OUT, 'translation-screen-manifest.csv'), encoding='utf-8-sig', newline='') as f:
+    man = list(csv.DictReader(f))
+extra = json.load(open(os.path.join(OUT, 'extra.json'), encoding='utf-8')) if os.path.exists(os.path.join(OUT, 'extra.json')) else {}
+
+L = []
+w = L.append
+w('# Translation export report — ' + MOD)
+w('')
+w(f'Generated {datetime.date.today().isoformat()} from `translation-export-prompt-template-v2.md`. Source language `he` (RTL). All `<target>` elements are empty. No production file was modified.')
+w('')
+w('## 1. Scope and decisions')
+w('')
+w(f'- **Module root:** `…/720 Science/יעד 11/{MOD}` · **Target number:** `01` · **Parts requested:** none were listed, so the part list was derived from the folder structure.')
+w('- **Parts found (7):** `01`, `02`, `03`, `04`, `05`, `06`, `07` — each is `{module}-{NN}/` with `index.html`, `script.js`, `styles.css`, `index_dev.html`, `assets/`. This repo uses a flat layout (`script.js`, not `js/main.js`), so `script.js` plus inline `<script>` blocks were the JS scanned.')
+w('- **Module-root launcher:** the repo root contains **no `index.html`** (only the 7 part folders, a `.pptx` and local `.md` files), so pseudo-part `00` / screen `99` is **empty**. Nothing was invented for it. If an LMS-entry page is added later it will need its own `01-00-99-*` units.')
+w('- **Prior export:** none found (no `.xlf` in the repo, git history, or `720 Transilation`). This is a first export, so the refresh workflow (§7 of the prompt) and the ID-change mapping table do not apply.')
+w('- **Screen numbering:** the project\'s own `data-screen="N"` was used, unchanged. Every part is contiguous `0..N` and sequential in the file, so flow order = `data-screen` order (also in the manifest `flow_order` column). **Note for part 02:** its `data-screen` values `0–7` sit on DOM ids `#s21…#s28` (a late-appended range). The XLIFF id uses `data-screen` (e.g. `01-02-03` = `#s24`); the manifest `container_or_selector` column gives the DOM id.')
+w('- **Pseudo-screens:** `99` = a part\'s shared chrome (page `<title>`, flag button, image-zoom dialog, part-wide hint/info popups not tied to one screen, shared JS strings). `98` (part 05 only) = the embedded **bottle-lab applet** (`יישומון יעד 11 מעבדת הבקבוקים/index.html`, loaded in iframes on screens 1–5 and in the zoom overlay). Its learner-visible Hebrew would otherwise have been missed. `98` is an exporter choice — please confirm it.')
+w('- **Popups/overlays outside a `.screen`:** attributed to a screen when their DOM id starts with that screen\'s prefix (`s2-…`, `dqx28-…`), otherwise `99`.')
+w('- **Storage conventions:** HTML inline markup (`<b>`, `<br/>`, `<span …>`) is kept as escaped literal text in `<source>`. JS string literals are stored exactly as written between the quotes, **including JS escapes** (`\\n` = line break, `\\\'` = quote) — translators must keep them. Multi-line HTML elements are joined onto one line (see §9). `xml:space="preserve"` is set on every unit (some JS sources start with a space). No `target-language` attribute is set because none was specified.')
+w('- **Placeholders (one form used throughout):** `{dropzone:ID}` = an empty drag-and-drop target `<span>` with event handlers inside a sentence (7 units); `{name}` = a runtime-concatenated JS value (1 unit: `{m}`). Keep the braces; position matters. No tooltip-word markup exists in this lomda, so `{tooltip:…}` is unused.')
+w('')
+w('## 2. Totals')
+w('')
+w(f'- Screens (manifest rows, incl. pseudo-screens): **{len(man)}**')
+w(f'- Translation units: **{len(U)}**')
+bypart = collections.Counter(u['part'] for u in U)
+w('')
+w('| Part | Screens | Units |')
+w('|---|---:|---:|')
+sc_per_part = collections.Counter(r['screen_id'].split('-')[1] for r in man)
+for p in sorted(bypart):
+    w(f'| {p} | {sc_per_part[p]} | {bypart[p]} |')
+w('')
+w('### Units by source file')
+w('')
+byfile = collections.Counter(u['file'] for u in U)
+w('| File | Units |')
+w('|---|---:|')
+for f, c in sorted(byfile.items()):
+    w(f'| `{f}` | {c} |')
+w('')
+w('### Units by source kind')
+w('')
+kind = collections.Counter(u['src_kind'] for u in U)
+for k, c in kind.items():
+    w(f'- `{k}`: {c}')
+w('')
+w('### Units by screen')
+w('')
+w('| Screen id | Type | Title | Units |')
+w('|---|---|---|---:|')
+for r in man:
+    t = r['screen_title'].replace('|', '\\|')
+    w(f"| {r['screen_id']} | {r['screen_type']} | {t} | {r['unit_count']} |")
+w('')
+w('## 3. Consolidated duplicates')
+w('')
+w('**None consolidated** — every occurrence has its own unit, per §6 (contextual clarity over dedup). Heavy verbatim repetition is expected: ')
+txtc = collections.Counter(u['text'] for u in U)
+w('')
+w('| Text | Occurrences |')
+w('|---|---:|')
+for t, c in txtc.most_common(12):
+    w(f"| {t[:60].replace('|', '/')} | {c} |")
+w('')
+w('Where a unit duplicates another on the same line by design (`data-zoom-alt` and the image `alt` carry the same text; the flag button has the same text in `aria-label`, `title` and its visible label), both are kept as separate units and the `developer-note` says so.')
+w('')
+w('## 4. Excluded (with reason)')
+w('')
+ex = raw['excluded']
+w('| Category | Count | Reason |')
+w('|---|---:|---|')
+c1 = [e for e in ex if e[3].startswith('event-handler')]
+c2 = [e for e in ex if e[3].startswith('bare numeric')]
+w(f'| HTML `onclick` with Hebrew argument | {len(c1)} | code; the argument is **logic-coupled** (see §7) |')
+w(f'| Bare numeric cells / axis values / row indices | {len(c2)} | no linguistic content (§5 exclusion rule). Note: decimal separators in table cells like `0.22` may need localisation by the translator/layout owner |')
+dz = [d for d in ver['sweep2']['deliberate'] if 'data-zoom-src' in d[2] or 'src=' in d[2] or 'href=' in d[2]]
+w(f'| `data-zoom-src` / `src` / `href` values containing Hebrew | {len(dz)} | asset file names (paths), not display text |')
+w(f"| Source-code comments containing Hebrew | {ver['sweep2']['comment']} | comments quoting producer PPT notes/design history (HTML + JS) |")
+alt = raw.get('alt_empty', {})
+w(f"| Decorative `alt=\"\"` images | {sum(alt.values())} | decorative (`aria-hidden`/empty alt) — per part: " + ', '.join(f'{k}: {v}' for k, v in alt.items()) + ' |')
+w('| `console.*` diagnostics | 0 | none exist in this lomda |')
+w('| xAPI/analytics-only strings | 0 | none exist: no xAPI/SCORM/`sendBeacon`/`fetch` code in any part (traced by grep) |')
+w('| `index_dev.html` (7 files), `wireframe.html`, `images-brief.md`, `spec.md`, `ARCHITECTURE.md`, `PROJECT_BRIEF.md`, `Critical-requirement-lomda-building.md`, `styles.css` | — | authoring/dev material, not rendered to learners |')
+w('| `metadata/*.json` | — | no `metadata/` folder exists in this repo; nothing to localise |')
+w('')
+w('Hebrew comment counts per file: ' + '; '.join(f"`{k.replace(MOD + '-', '')}`: {v}" for k, v in ver['sweep2']['comments_by_file'].items()))
+w('')
+w('Individually logged (small categories):')
+w('')
+for e in c1:
+    w(f'- `{e[0]}:{e[1]}` — `{e[2]}`')
+for e in c2:
+    w(f'- `{e[0]}:{e[1]}` — `{e[2]}`')
+w('')
+w('## 5. Out of scope (still needs translating by someone)')
+w('')
+w('- **YouTube video** on part 01 screen 10 (`#s10-yt-player`, loaded through the YouTube IFrame API) — its caption/subtitle tracks live in YouTube, not in these files. The avatar `.mp4` loops (muted, `autoplay loop muted`) have no caption tracks.')
+w('- **Text baked into images** (`assets/images/*.png|svg`, e.g. the "שלוש אבקות" panel, tables and diagrams used as pictures). Hebrew inside raster images cannot be exported here and will need localised image variants. Not inspected pixel-by-pixel.')
+w('- The `.pptx` production script in the repo root is a source document, not part of the rendered lomda.')
+w('')
+w('## 6. Manual-review items')
+w('')
+groups = collections.defaultdict(list)
+for u in U:
+    for m in u['manual']:
+        key = re.sub(r'const S\d+_(CORRECT|OPTIONS)', 'const S<n>_\\1', m)
+        key = re.sub(r'\{m\}', '{m}', key)
+        groups[key[:110]].append(u)
+for k, lst in sorted(groups.items(), key=lambda kv: -len(kv[1])):
+    w(f'### {k}{"…" if len(k) >= 110 else ""} — {len(lst)} unit(s)')
+    w('')
+    w(', '.join(f"`{u['id']}`" for u in lst))
+    w('')
+w('Also flagged at screen level in the manifest: screen id `01-05-98` (embedded applet numbering).')
+w('')
+w('## 7. Logic-coupled strings (correctness depends on displayed text)')
+w('')
+w('720 templates normally key off `data-id` / DOM ids, so answer options can be translated freely. **Checked for exceptions — these exist:**')
+w('')
+w('- **Dropdown "text-compare" questions** — the selected option text is compared with `===` against a JS constant: `S8_CORRECT` (part 01, screen 8), `S4_CORRECT`/`S4_OPTIONS` (part 03, screen 4), `S2_CORRECT`/`S2_OPTIONS` (part 06, screen 2), `S3_CORRECT`/`S3_OPTIONS` (part 07, screen 3). The option labels and the correct-answer constants **must be translated identically** (same target string in every occurrence).')
+w('- **Part 01 screen 8 additionally** passes the Hebrew option text as an `onclick` argument (`s8DdSelect(\'guf\',\'השתנו\')`, 4 occurrences, excluded in §4). That argument must also equal the translated constant. The visible `<li>` text units and the JS values are flagged `manual-review`. **A merge tool must also rewrite the `onclick` arguments** (or the dropdown will never match).')
+w('- **Not coupled (verified):** `DQX*_LABELS`, `ODDQ_LABELS`, `*_CORRECT_MAP` in the drag-and-drop screens are keyed by element id; correctness is decided by id, so those labels translate freely.')
+w('- **`fbCorrectShown()`** (one unit per part, screen 99): appends the unit " התשובה הנכונה מוצגת." to a feedback title at runtime after trimming trailing `space : , ;` and adding "." if no end punctuation exists. Translate the suffix so that it reads naturally after a translated sentence ending in `.`; the punctuation logic is Hebrew/Latin-punctuation specific. Part 05 also has three titles with the full sentence written out (`התשובה לא נכונה. התשובה הנכונה מוצגת.`).')
+w('- No literal Hebrew comparisons (`=== \'…\'`, `case \'…\'`, `.includes(\'…\')`) exist in any `script.js` (grep-verified).')
+w('')
+w('## 8. Likely content issues observed (flagged, not fixed)')
+w('')
+w('- Part 02: `01-02-07-027/028` and `01-02-01-010/011` (+ part 05 `01-05-08-013/014`) — placeholder text "כותרת"/"תוכן" in popup markup; real content is injected by JS. Harmless if always overwritten; confirm.')
+w('- Part 03 `01-03-04-008`: the single letter "ה" is a sentence fragment glued in front of a dropdown blank; the sentence may need restructuring.')
+w('- Part 05 applet (`01-05-98-018`, `-015…-017`): material names are concatenated into a sentence with the Hebrew prefix "מ" — grammar will not survive a word-for-word translation.')
+w('- The DOM ids `#s21…#s28` in part 02 do not match the screen order (`data-screen` 0–7) — not an error, but easy to confuse.')
+w('')
+w('## 9. Normalised (non byte-matching) strings')
+w('')
+w(f"Sweep 1: **{ver['sweep1_classes'].get('literal-on-line', 0)}** of {ver['unit_count']} units match their source line byte-for-byte; **{ver['sweep1_classes'].get('multi-line-join', 0)}** are multi-line HTML elements joined onto one line (indentation and newlines dropped, `<br>` kept, whitespace around `<br>` removed); **{ver['sweep1_classes'].get('placeholder', 0)}** contain a placeholder; **{ver['sweep1_classes'].get('MISMATCH', 0)}** mismatches.")
+w('')
+w('| Unit | Class | Location | Detail |')
+w('|---|---|---|---|')
+for e in ver['sweep1_exceptions']:
+    w(f'| `{e[0]}` | {e[1]} | `{e[2]}` | {e[3]} |')
+w('')
+w('## 10. Malformed or ambiguous structures')
+w('')
+w('- None malformed. Ambiguities: the applet (`98`) numbering, the empty module root, and part 02 DOM ids (above).')
+w('- Screen attribution of JS strings is by the nearest preceding screen reference (`sN`, `dqxN`, …). Five JS strings in part 05\'s `oddq*` block (`updateQuestionNav(\'s7\')`) sit far from the screen reference; they were checked by hand and belong to screen 7. Strings outside any screen are on `99`.')
+w('- Screen types are inferred from DOM roles/classes or from the template name written in the author\'s comment above each `<section>`; where neither is reliable the `screen-type` is left blank (not guessed).')
+w('')
+w('## 11. Chrome checklist (per part, outside every `.screen`)')
+w('')
+chrome = collections.defaultdict(dict)
+for u in U:
+    if u['screen'] == 99:
+        t = u['text']
+        c = chrome[u['part']]
+        if u['note'] and 'document <title>' in ' '.join(u['note']):
+            c['title'] = True
+        if t == 'מצאתם בעיה?':
+            c['flag'] = c.get('flag', 0) + 1
+        if t == 'הגדלת תמונה':
+            c['zoom'] = True
+        if u['role'] == 'hint-text' or t in ('מידע נוסף', 'רמז'):
+            c['popup'] = True
+w('| Part | `<title>` | flag button (aria-label / title / label) | image-zoom dialog + close | popup not tied to one screen |')
+w('|---|---|---|---|---|')
+for p in sorted(chrome):
+    c = chrome[p]
+    w(f"| {p} | {'yes' if c.get('title') else 'NO'} | {c.get('flag', 0)} units | {'yes' if c.get('zoom') else 'no'} | {'yes' if c.get('popup') else 'none'} |")
+w('')
+w('Not present anywhere in this lomda: a report-a-problem modal (the flag button has no JS handler — no `report` code in any `script.js`), a confirm-close modal, resume prompts. Progress-nav labels (`סעיף א\'`, `שאלה 1`, …) are per-screen units with role `navigation-label`.')
+w('')
+w('## 12. Validation results')
+w('')
+w(f"- XML well-formed: **{ver['xml_well_formed']}** · unique ids: **{ver['ids_unique']}** · id shape `01-NN-NN-NNN`: **{ver['id_shape_ok']}**")
+w(f"- Every unit has exactly one `screen-id` note, and it equals the id prefix: **{ver['every_unit_has_screen_id'] and ver['id_prefix_matches_screen_id']}**")
+w(f"- Manifest screens: **{ver['manifest_screen_count']}**; screens in units but not in manifest: {ver['screens_in_units_not_in_manifest']}; manifest screens without units: {ver['screens_in_manifest_without_units']}")
+w(f"- All `<target>` empty: **{ver['all_targets_empty']}**")
+w(f"- `source-location` points at a real file and in-range line for every unit: **{len(ver['bad_source_locations']) == 0}**")
+w('- **Sweep 1 (every unit vs. its source line):** ' + ', '.join(f'{k} = {v}' for k, v in ver['sweep1_classes'].items()) + f" (of {ver['unit_count']}).")
+s2 = ver['sweep2']
+w(f"- **Sweep 2 (Hebrew in source not covered by a unit):** {s2['fragments']} Hebrew-bearing fragments inspected (HTML text nodes, attribute values, JS string literals, residual code outside strings/comments). Covered by a unit at the same location: **{s2['covered']}**. Deliberate exclusions: **{len(s2['deliberate'])}** (event-handler arguments and asset paths). Fragments inside **comments**: counted separately (**{s2['comment']}** comment blocks, not fragments). **Uncovered (genuine misses): {len(s2['misses'])}**.")
+w('  The sweep was tested by deleting 3 units from a copy of the XLIFF: it reported all of them as misses.')
+w('- The sweep matches by **location** (a unit must exist near the fragment\'s line and contain it), so a new button whose label already exists elsewhere is still detected.')
+w('')
+w('## 13. How to refresh')
+w('')
+w('The generator scripts are in `tools/` next to this report (Python). Re-run `build.py`, `out.py`, `verify.py`, `report.py`. Per §7 of the prompt: diff the text-bearing files from the commit this export was made against (record: repo HEAD `' + extra.get('head', '?') + '`), re-check every unit, recompute `source-location` lines, and watch for renumbered `data-screen`s. Nothing is translated yet, so renumbering is cheap; once translations exist, flag any ID change before renumbering.')
+w('')
+w('## 14. Environment notes')
+w('')
+w('- Python 3 was available and used (the template assumes PowerShell). Files were read/written as UTF-8; the XLIFF is UTF-8 **without** BOM, the manifest CSV is UTF-8 **with** BOM (so Excel shows Hebrew correctly).')
+w('- The output folder is **outside the git repo** (OneDrive-synced). It is not versioned: copy it into git or another backup — a translator\'s returned work in this folder could otherwise be lost without trace.')
+w(f"- git working tree before/after: {extra.get('git', 'clean')}")
+open(os.path.join(OUT, 'translation-export-report.md'), 'w', encoding='utf-8', newline='\n').write('\n'.join(L) + '\n')
+print('report written', len(L), 'lines')

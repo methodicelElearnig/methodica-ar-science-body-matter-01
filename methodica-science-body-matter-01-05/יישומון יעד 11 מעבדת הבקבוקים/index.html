@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مختبر القناني</title>
+<style>
+  /* תוקן (בקשה מפורשת: "הפונט תמיד צריך להיות אסיסטנט כמו בשאר
+     הלומדה") — אותם קבצי-פונט מקומיים בדיוק כמו ב-styles.css של
+     הסיין (../assets/fonts, כי היישומון יושב בתת-תיקייה משלו). */
+  @font-face {
+    font-family: 'Assistant';
+    src: url('../assets/fonts/assistant-hebrew.woff2') format('woff2');
+    font-weight: 400 800;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+  }
+  @font-face {
+    font-family: 'Assistant';
+    src: url('../assets/fonts/assistant-latin.woff2') format('woff2');
+    font-weight: 400 800;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+                   U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215;
+  }
+  :root {
+    --bg: #f4f7fa;
+    --panel: #ffffff;
+    --ink: #1e2a38;
+    --ink-soft: #5a6b7d;
+    --line: #dde5ec;
+    --accent: #2563b0;
+    --accent-soft: #e8f0fb;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #e9edf2;
+    font-family: Calibri, Arial, sans-serif;
+    color: var(--ink);
+    display: flex;
+    justify-content: center;
+    padding: 24px 12px;
+  }
+  /* תוקן (בקשה חוזרת: "תגדילי את גודל היישומון, גם גובה וגם רוחב" +
+     "כרגע לא מבינים כלום מהיישומון"): 620px גובה עם ריפוד-chrome נדיב
+     (header/panels/gaps) הותיר ל-.arena (זירת-הבקבוק, האלמנט המרכזי
+     בפועל) רק ~180px גובה-פנימי אחרי שגדלי-הפונט גדלו בסבב קודם —
+     בדיוק הסיבה הסבירה ל"לא מבינים כלום" (הזירה נדחסה). שני תיקונים
+     יחד, לא רק אחד: (1) ריפוד header/panels/gaps/כפתורים כאן ובהמשך
+     הקובץ צומצם (לא הזירה עצמה, לא הפונטים) — משחרר ~54px בחזרה
+     לזירה. (2) גובה .app עצמו הוקטן 620→580 (40px) — מ-54 המשוחררים,
+     40 יוצאים לחיצוץ scale חיצוני גבוה יותר (styles.css: .applet-wrap
+     גדל, ה-14 הנותרים + החיסכון-נטו עדיין משאירים את הזירה גדולה
+     יותר משהייתה, לא קטנה יותר). */
+  .app {
+    width: 500px;
+    height: 580px;
+    background: var(--bg);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(30,42,56,.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+
+  /* ─── Header ─── */
+  header {
+    padding: 8px 20px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+  }
+  /* גדלי-פונט "רגיל" מול "מוגדל" — ראו הערה מלאה יותר למטה ליד ה-JS
+     שמוסיף class="big" (פרמטר URL ?big=1, מוסף רק ל-iframe שבתוך
+     applet-zoom-modal; חמשת המופעים ה-inline נטענים בלי הפרמטר).
+     **"המוקטן צריך להיות 16"**: 20px מוצהר × 0.796 (ה-scale החיצוני
+     העדכני של .applet-wrap ב-styles.css, אחרי שגובה .app הוקטן
+     620→580 — ראו הערה שם) ≈ 15.9px מוצג בפועל.
+     **תוקן (בקשה מפורשת): "במוגדל הפונט בגודל 20"** — היה 24 (ולכותרת
+     34). "מוגדל" הוא scale חיצוני=1 טבעי, אז 20px מוצהר = 20px מוצג
+     בפועל בדיוק. הכותרת (.instruction) נשארת מעט גדולה יותר (26, לא
+     20) לשמירה על היררכיה בלבד — עדיין קרוב ל-20 המבוקש, לא קפיצה
+     גדולה כמו קודם. */
+  .instruction { font-size: 22px; font-weight: 600; color: var(--ink); line-height: 1.45; }
+  .app.big .instruction { font-size: 26px; }
+
+  /* ─── Main — פריסה אנכית ─── */
+  main { flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 8px 14px; min-height: 0; }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 6px 10px;
+  }
+  .panel h2 {
+    font-size: 20px; font-weight: 700; color: var(--ink-soft);
+    margin-bottom: 8px; letter-spacing: .2px;
+  }
+  .app.big .panel h2 { font-size: 20px; }
+
+  /* Materials — שורה אופקית */
+  .mat-row { display: flex; gap: 8px; }
+  .mat-card {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    padding: 6px 6px;
+    background: #fff;
+    cursor: pointer;
+    position: relative;
+    font-size: 20px; font-weight: 600;
+    font-family: inherit;
+    color: var(--ink);
+    text-align: center;
+    transition: border-color .2s, background .2s, opacity .2s;
+  }
+  .app.big .mat-card { font-size: 20px; }
+  .mat-card:focus-visible, .test-btn:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .mat-card .swatch {
+    width: 34px; height: 46px; flex-shrink: 0;
+    object-fit: contain;
+  }
+  .mat-card.selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    box-shadow: 0 2px 10px rgba(37,99,176,.15);
+  }
+  .mat-card.selected::after {
+    content: "✓";
+    position: absolute; top: -9px; left: -9px;
+    background: var(--accent); color: #fff;
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+  /* Arena (center) */
+  .arena {
+    flex: 1;
+    position: relative;
+    background: linear-gradient(180deg, #fbfdff 0%, #f2f7fb 100%);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  #scene { width: 100%; height: 100%; display: block; }
+  #arenaMsg {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
+  }
+  #arenaMsg span {
+    background: #ffffffdd;
+    border: 1.5px dashed #9fb2c4;
+    color: var(--ink-soft);
+    font-size: 20px; font-weight: 600;
+    padding: 12px 26px;
+    border-radius: 999px;
+  }
+  .app.big #arenaMsg span { font-size: 20px; }
+  .app[data-material] #arenaMsg { display: none; }
+
+  /* Tests — שורה אופקית בתחתית */
+  .test-row { display: flex; gap: 8px; }
+  .test-btn {
+    flex: 1;
+    border: 2px solid var(--line);
+    background: #fff;
+    border-radius: 12px;
+    padding: 8px 8px;
+    text-align: center;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 20px; font-weight: 700; color: var(--ink);
+    line-height: 1.35;
+    transition: border-color .2s, box-shadow .2s, opacity .2s;
+  }
+  .app.big .test-btn { font-size: 20px; }
+  .test-btn:hover:not([aria-disabled="true"]) {
+    border-color: var(--accent);
+    box-shadow: 0 2px 10px rgba(37,99,176,.12);
+  }
+  .test-btn[aria-disabled="true"], .mat-card[aria-disabled="true"] {
+    opacity: .45;
+    cursor: default;
+    box-shadow: none;
+  }
+
+  /* ─── מצב "מוגדל" (.app.big) — פריסה אופקית ──
+     תוקן (בקשה מפורשת: "אפשר להגדיל את הפופאפ הרבה יותר ואפילו להפוך
+     את סדר האלמנטים מאנכי לאופקי, שההתנסות תהיה מספיק טובה וברורה").
+     הפריסה הרגילה (ערימה אנכית: הנחיה/חומרים/זירה/בדיקות) נבנתה
+     במקור לתקציב-גובה צר של תצוגה מוטמעת-לצד-שאלה — לא רלוונטי כאן,
+     כי המודל המוגדל (applet-zoom-modal, styles.css) לא משתף מקום עם
+     שום טור-טקסט. `.app.big` מקבל רוחב/גובה משלו (הרבה יותר גדולים,
+     ראו .applet-zoom-modal__panel/iframe ב-styles.css של הסיין —
+     תואמים בדיוק), ו-`main` הופך מ-column ל-row: חומרים (ימין, DOM
+     ראשון תחת RTL) | זירה (flex:1, ממלאת את כל הרוחב הפנוי — גדולה
+     בהרבה מהערימה האנכית) | בדיקות (שמאל). שתי עמודות-הצד מקבלות רוחב
+     קבוע ו-.mat-row/.test-row הופכים גם הם ל-column (3 כרטיסים
+     זקופים זה-מתחת-לזה בעמודה צרה, לא שלושה-לצד-שלושה בשורה צרה
+     שהייתה נדחסת). */
+  .app.big {
+    width: 1140px;
+    height: 590px;
+  }
+  .app.big main {
+    flex-direction: row;
+  }
+  .app.big .panel:not(.arena) {
+    width: 260px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .app.big .mat-row,
+  .app.big .test-row {
+    flex-direction: column;
+  }
+  .app.big .mat-card,
+  .app.big .test-btn {
+    flex: 0 0 auto;
+  }
+
+  /* ─── תמונות ריאליסטיות — בקבוק/תיק/קנקן/שברים ───
+     כל תמונת בקבוק (glass/plastic/metal × clean/water/scratched) צולמה
+     באותה זווית/תאורה/גודל-בפריים (ראו images-brief.md) — האובייקט
+     תמיד ~97-98% מגובה הקנבס ומרוכז אופקית, למרות שיחסי-הרוחב/גובה של
+     קובצי ה-PNG עצמם שונים בין תמונה לתמונה. משתמשים לכן ב-
+     preserveAspectRatio="xMidYMax meet" על כל תמונת בקבוק/שברים/תיק —
+     כך שההיצמדות לתחתית + מרכוז אופקי שומרים על אותו בקבוק בדיוק,
+     באותו מקום ובאותו גודל, בכל קרוספייד בין תמונות. */
+  #bottleImgAlt, #shardsImg, #pitcher, #stream, #bagInner, #bagOpenImg { opacity: 0; }
+  #bottleGhost {
+    fill: none;
+    stroke: #9fb2c4;
+    stroke-width: 2.5;
+    stroke-dasharray: 10 8;
+    transition: opacity .3s;
+  }
+  .app[data-material] #bottleGhost { opacity: 0; }
+  #bottleInner { transform-box: fill-box; transform-origin: 50% 100%; }
+  #bagInner { transform-box: fill-box; transform-origin: 50% 50%; }
+
+  @media (prefers-reduced-motion: reduce) {
+    #bottleGhost { transition: none; }
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <header>
+    <p class="instruction">اختاروا المادة وأجروا عليها الفحوصات الثلاثة<br>لتحديد ما إذا كانت المادة المناسبة للقنينة.</p>
+  </header>
+
+  <main>
+    <!-- חומרים לבחירה — שורה עליונה -->
+    <section class="panel" aria-label="مواد للاختيار">
+      <h2>مواد للاختيار</h2>
+      <div class="mat-row">
+        <button class="mat-card" data-mat="glass"><img class="swatch" src="images/glass_clean.png" alt="" aria-hidden="true"> زجاج</button>
+        <button class="mat-card" data-mat="plastic"><img class="swatch" src="images/plastic_clean.png" alt="" aria-hidden="true"> بلاستيك شفاف</button>
+        <button class="mat-card" data-mat="metal"><img class="swatch" src="images/metal_clean.png" alt="" aria-hidden="true"> معدن</button>
+      </div>
+    </section>
+
+    <!-- זירה — מרכז -->
+    <section class="panel arena" aria-label="ساحة التجربة">
+      <svg id="scene" viewBox="0 0 600 560" preserveAspectRatio="xMidYMid meet" aria-hidden="true"
+           xmlns:xlink="http://www.w3.org/1999/xlink">
+
+        <!-- רצפה -->
+        <line x1="60" y1="520" x2="540" y2="520" stroke="#dde5ec" stroke-width="3" stroke-linecap="round"/>
+
+        <!-- תיק בית ספר (תמונה ריאליסטית) -->
+        <g id="bagPos" transform="translate(78,338)">
+          <g id="bagInner">
+            <image id="bagImg" href="images/bag.png" xlink:href="images/bag.png"
+                   x="-5" y="0" width="150" height="182" preserveAspectRatio="xMidYMax meet"/>
+            <!-- תיק פתוח (קלאפה פתוחה) — קרוספייד מעל bagImg בזמן בדיקת
+                 התיק. קנבס אחר (1254×1254 מרובע לעומת 1024×1536 לאורך
+                 של bag.png), אבל אותו תיק/אותה זווית — width/height
+                 מחושבים כך שגובה-האובייקט-בפועל (לא הקנבס) יישאר קבוע:
+                 bag.png ממלא 80.7% מגובה-הקנבס שלו, opened-bag.png ממלא
+                 98.1% מגובה-הקנבס שלו, אז 150/182 (=147 יח' אובייקט)
+                 מול 150/150 (=147 יח' אובייקט) — אותו גודל בדיוק. -->
+            <image id="bagOpenImg" href="images/opened-bag.png" xlink:href="images/opened-bag.png"
+                   x="-5" y="32" width="150" height="150" preserveAspectRatio="xMidYMax meet"/>
+          </g>
+        </g>
+
+        <!-- קנקן מזיגה (תמונה ריאליסטית — הטיית-המזיגה כבר "אפויה" בתוך
+             התמונה עצמה, לכן בלי rotate נוסף ב-transform, בניגוד לגרסה
+             המצוירת הקודמת) -->
+        <g id="pitcher" transform="translate(283,6)">
+          <image id="pitcherImg" href="images/pitcher.png" xlink:href="images/pitcher.png"
+                 x="0" y="0" width="145" height="145" preserveAspectRatio="xMidYMid meet"/>
+        </g>
+
+        <!-- זרם מים -->
+        <rect id="stream" x="300" y="128" width="7" height="0" rx="3.5" fill="#7fc0e8"/>
+
+        <!-- הבקבוק -->
+        <g id="bottlePos" transform="translate(217,188) scale(0.85)">
+          <!-- קו-מתאר מקווקו — "בקבוק רפאים", מוצג רק כל עוד לא נבחר חומר -->
+          <path id="bottleGhost" d="M80 30 h40 v40 c0 10 30 22 30 55 v230 c0 15 -12 25 -28 25 h-44 c-16 0 -28 -10 -28 -25 v-230 c0 -33 30 -45 30 -55 z"/>
+          <g id="bottleInner">
+            <!-- תמונת הבסיס — הבקבוק הנקי בחומר הנבחר (glass/plastic/metal _clean.png).
+                 width/x/y מוגדרים ב-JS (setBottleImg) לפי יחס-הרוחב/גובה האמיתי של
+                 קובץ ה-PNG הספציפי (הקנבסים שונים בגודלם בין תמונה לתמונה — חלקם
+                 מרובעים 1254×1254, חלקם לאורך 1024×1536), כדי שהבקבוק עצמו (לא
+                 הקנבס) ייצא באותו גובה/מיקום בדיוק בכל התמונות. -->
+            <image id="bottleImgBase" y="0" height="380" preserveAspectRatio="xMidYMax meet"/>
+            <!-- תמונת המצב השני — "מלא מים" (מזיגה) או "שרוט/מעוקם" (אחרי תיק, פלסטיק בלבד) — קרוספייד מעל הבסיס -->
+            <image id="bottleImgAlt" y="0" height="380" preserveAspectRatio="xMidYMax meet"/>
+          </g>
+        </g>
+
+        <!-- שברי זכוכית אחרי נפילה (תמונה ריאליסטית) -->
+        <!-- y מוזז +24 מתחת לקו-הרצפה כדי לפצות על שוליים שקופים
+             (~16% מגובה הקנבס) מתחת לשברים עצמם בתוך glass_broken.png -->
+        <image id="shardsImg" href="images/glass_broken.png" xlink:href="images/glass_broken.png"
+               x="185" y="397" width="230" height="147" preserveAspectRatio="xMidYMax meet"/>
+      </svg>
+      <div id="arenaMsg"><span>اختاروا مادة للبدء</span></div>
+    </section>
+
+    <!-- 3 בדיקות — שורה תחתונה -->
+    <section class="panel" aria-label="ثلاثة فحوصات">
+      <h2>اختاروا فحصًا لتجربته</h2>
+      <div class="test-row">
+        <button class="test-btn" data-test="water" aria-disabled="true">صب الماء</button>
+        <button class="test-btn" data-test="drop" aria-disabled="true">إسقاط من ارتفاع</button>
+        <button class="test-btn" data-test="bag" aria-disabled="true">إدخال في الحقيبة<br>(فحص المتانة)</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="sr-only" aria-live="polite" id="announcer"></div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  const app = document.getElementById("app");
+  /* מצב "מוגדל" — ראו הערה מלאה ליד .instruction למעלה. הדף המכיל
+     (index.html של הסיין, applet-zoom-modal) מוסיף ?big=1 ל-src של
+     ה-iframe רק בעותק המוצג בתוך המודל המוגדל; 5 העותקים ה-inline
+     נטענים בלי הפרמטר, ומקבלים את גדלי-הפונט ה"רגילים". */
+  if (new URLSearchParams(location.search).get("big") === "1") {
+    app.classList.add("big");
+  }
+  const announcer = document.getElementById("announcer");
+  const matCards = Array.from(document.querySelectorAll(".mat-card"));
+  const testBtns = Array.from(document.querySelectorAll(".test-btn"));
+
+  const bottleInner   = document.getElementById("bottleInner");
+  const bottleImgBase = document.getElementById("bottleImgBase");
+  const bottleImgAlt  = document.getElementById("bottleImgAlt");
+  const pitcher       = document.getElementById("pitcher");
+  const stream        = document.getElementById("stream");
+  const bagInner      = document.getElementById("bagInner");
+  const bagOpenImg    = document.getElementById("bagOpenImg");
+  const shardsImg     = document.getElementById("shardsImg");
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const MAT_NAMES = { glass: "الزجاج", plastic: "البلاستيك الشفاف", metal: "المعدن" };
+
+  const state = { material: null, busy: false, token: 0 };
+
+  /* קובע href על אלמנט <image> ב-SVG — גם ה-attribute הרגיל (SVG2,
+     כרום/אדג' מודרני) וגם xlink:href (תאימות רחבה יותר). */
+  function setImgHref(imgEl, href) {
+    imgEl.setAttribute("href", href);
+    imgEl.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", href);
+  }
+
+  /* גודל הקנבס האמיתי (בפיקסלים) של כל קובץ בקבוק — לא כל התמונות
+     צולמו/יוצאו באותו יחס-רוחב/גובה קנבס (חלקן מרובעות 1254×1254,
+     חלקן לאורך 1024×1536), למרות שהבקבוק *עצמו* תפוס אותו % מגובה
+     הקנבס בכל תמונה (ראו הערה ב-images-brief.md). לכן חובה לחשב את
+     ה-width/x של ה-<image> מיחס-הרוחב/גובה האמיתי של הקובץ הספציפי
+     שנטען כרגע — קופסה אחת קבועה לכל התמונות הייתה "מועכת" את
+     הריבועיות למלבן שגוי (SVG <image> ממלא לפי מידות-הקנבס עצמו,
+     לא לפי תיבת-התוכן הלא-שקופה). */
+  const BOTTLE_PX = {
+    glass_clean: [1254, 1254],
+    glass_water: [1024, 1536],
+    plastic_clean: [1254, 1254],
+    plastic_water: [1254, 1254],
+    plastic_scratched: [1024, 1536],
+    metal_clean: [1254, 1254]
+  };
+  const BOTTLE_H = 380;      /* גובה קבוע (יחידות local) לכל תמונות הבקבוק */
+  const BOTTLE_CENTER_X = 101; /* אותו מרכז אופקי בדיוק לכל התמונות */
+  function setBottleImg(imgEl, key) {
+    const px = BOTTLE_PX[key];
+    const w = BOTTLE_H * (px[0] / px[1]);
+    imgEl.setAttribute("width", String(w));
+    imgEl.setAttribute("x", String(BOTTLE_CENTER_X - w / 2));
+    setImgHref(imgEl, "images/" + key + ".png");
+  }
+
+  /* ── announcements — תיאורי תצפית לקוראי מסך בלבד ── */
+  const ANNOUNCE = {
+    select: (m) => "تم اختيار قنينة من" + MAT_NAMES[m] + ". الفحوصات متاحة.",
+    water: {
+      glass:   "سكب الماء في القنينة الزجاجية. يرى الماء من خلال الجدار.",
+      plastic: "سكب الماء في القنينة البلاستيكية الشفافة. يرى الماء من خلال الجدار.",
+      metal:   "سكب الماء في القنينة المعدنية. لا يرى الماء من خلال الجدار."
+    },
+    drop: {
+      glass:   "سقطت قنينة الزجاج على الأرض وتحطّمت إلى شظايا.",
+      plastic: "قنينة البلاستيك الشفافة سقطت، بقيت سليمة وممدّدة على الأرضية.",
+      metal:   "سقطت قنينة المعدن بثقل، وبقيت سليمة وممدّدة على الأرضية."
+    },
+    bag: {
+      glass:   "خرجت القنينة من الحقيبة دون خدوش ودون ضرر.",
+      plastic: "قنينة البلاستيك الشفافة خرجت من الحقيبة مشوّهة قليلًا ومخدوشة وتبدو مستعملة.",
+      metal:   "خرجت قنينة المعدن من الحقيبة دون خدوش ودون ضرر."
+    }
+  };
+
+  function announce(text) { announcer.textContent = text; }
+
+  /* ── tween helper ──
+     תוקן (בקשה מפורשת: "היישומון נתקע ולא מאפשר לבחור בדיקות"):
+     היה מבוסס על requestAnimationFrame בלבד. היישומון הזה תמיד רץ
+     בתוך iframe מוטמע בלומדה החיצונית (5 עותקים, אחד לכל מסך) —
+     כשהלומד עובר מסך תוך כדי אנימציה, ה-iframe של המסך שעזב הופך
+     ל-display:none, והדפדפן **מפסיק לגמרי** לקרוא ל-requestAnimationFrame
+     בתוכן לא-מצויר (אין מה לצייר). ה-Promise של ה-tween הרץ אז נתקע
+     לנצח, ה-await הבא בשרשרת (testWater/testDrop/testBag) אף פעם לא
+     מסתיים, וה-`finally { setBusy(false) }` בכפתור הבדיקה אף פעם לא
+     רץ — כפתורי הבדיקות נשארים "תפוסים" (state.busy) לצמיתות, גם
+     בחזרה למסך. setTimeout, בניגוד ל-rAF, לא תלוי ב"ציור" ולכן ממשיך
+     לפעול תמיד (delay() למטה כבר עובד כך, ולכן לא נתקע) — 16ms ≈ אותו
+     קצב 60fps כמו rAF כשהמסך פעיל וגלוי, בלי לשנות שום דבר בקצב/
+     במראה של האנימציה. */
+  function tween(duration, easing, onUpdate) {
+    const myToken = state.token;
+    return new Promise((resolve) => {
+      if (reduced || duration <= 0) { onUpdate(1); resolve(); return; }
+      const start = performance.now();
+      function frame(now) {
+        if (myToken !== state.token) { resolve(); return; }
+        const t = Math.min((now - start) / duration, 1);
+        onUpdate(easing(t));
+        if (t < 1) setTimeout(() => frame(performance.now()), 16); else resolve();
+      }
+      setTimeout(() => frame(performance.now()), 16);
+    });
+  }
+  function delay(ms) {
+    const myToken = state.token;
+    return new Promise((r) => setTimeout(() => r(myToken === state.token), reduced ? 0 : ms));
+  }
+  const linear = (t) => t;
+  const easeIn = (t) => t * t;
+  const easeOut = (t) => 1 - (1 - t) * (1 - t);
+  const easeInOut = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+
+  /* ── reset arena ── */
+  function resetArena() {
+    state.token++;
+    bottleImgAlt.style.opacity = "0";
+    bottleInner.style.transform = "";
+    bottleInner.style.opacity = "1";
+    pitcher.style.opacity = "0";
+    stream.setAttribute("height", "0");
+    stream.setAttribute("y", "128");
+    stream.style.opacity = "0";
+    bagInner.style.opacity = "0";
+    bagInner.style.transform = "";
+    bagOpenImg.style.opacity = "0";
+    shardsImg.style.opacity = "0";
+  }
+
+  /* ── UI locking ── */
+  function setBusy(b) {
+    state.busy = b;
+    testBtns.forEach((btn) => btn.setAttribute("aria-disabled", b || !state.material ? "true" : "false"));
+    matCards.forEach((c) => c.setAttribute("aria-disabled", b ? "true" : "false"));
+  }
+
+  /* ── material selection ── */
+  matCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      if (state.busy) return;
+      resetArena();
+      state.material = card.dataset.mat;
+      setBottleImg(bottleImgBase, state.material + "_clean");
+      app.setAttribute("data-material", state.material);
+      matCards.forEach((c) => c.classList.toggle("selected", c === card));
+      testBtns.forEach((btn) => btn.setAttribute("aria-disabled", "false"));
+      announce(ANNOUNCE.select(state.material));
+    });
+  });
+
+  /* ── tests ── */
+  testBtns.forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      if (state.busy || !state.material) return;
+      resetArena();
+      setBusy(true);
+      const test = btn.dataset.test;
+      const mat = state.material;
+      try {
+        if (test === "water") await testWater(mat);
+        else if (test === "drop") await testDrop(mat);
+        else await testBag(mat);
+        announce(ANNOUNCE[test][mat]);
+      } finally {
+        setBusy(false);
+      }
+    });
+  });
+
+  /* ── בדיקה 1: מזיגת מים ──
+     קרוספייד בין תמונת הבקבוק הריק לתמונת "מלא ⅔" (glass/plastic) —
+     במקום מפלס-מים מצויר עולה בהדרגה. במתכת אין קרוספייד כלל (הבקבוק
+     האטום לא משתנה חזותית), רק ה-delay כדי לשמור על אותו קצב. */
+  async function testWater(mat) {
+    stream.style.opacity = "1";
+    await tween(300, easeOut, (t) => { pitcher.style.opacity = String(t); });
+    await tween(180, easeIn, (t) => { stream.setAttribute("height", String(80 * t)); });
+    if (mat !== "metal") {
+      setBottleImg(bottleImgAlt, mat + "_water");
+      await tween(1400, linear, (t) => { bottleImgAlt.style.opacity = String(t); });
+    } else {
+      if (!(await delay(1400))) return;
+    }
+    await tween(200, easeOut, (t) => {
+      stream.setAttribute("y", String(128 + 80 * t));
+      stream.setAttribute("height", String(80 * (1 - t)));
+    });
+    stream.setAttribute("y", "128");
+    await tween(300, linear, (t) => { pitcher.style.opacity = String(1 - t); });
+  }
+
+  /* ── בדיקה 2: הפלה מגובה — הבקבוק נוחת בשכיבה ── */
+  const LIE_Y = -49; /* חצי רוחב הבקבוק — כך הוא נח על הצד בדיוק על הרצפה */
+  function lieTransform(y, deg) {
+    return "translateY(" + y + "px) rotate(" + deg + "deg)";
+  }
+  async function testDrop(mat) {
+    // עלייה — הבקבוק זקוף
+    await tween(650, easeInOut, (t) => {
+      bottleInner.style.transform = "translateY(" + (-310 * t) + "px)";
+    });
+    if (!(await delay(180))) return;
+    // נפילה עם סיבוב — נוחת על הצד
+    await tween(500, easeIn, (t) => {
+      const y = -310 + (310 + LIE_Y) * t;
+      bottleInner.style.transform = lieTransform(y, -90 * t);
+    });
+    if (mat === "glass") {
+      // מתנפץ לרסיסים (תמונה ריאליסטית של שברים, ראו images/glass_broken.png)
+      bottleInner.style.opacity = "0";
+      await tween(220, easeOut, (t) => { shardsImg.style.opacity = String(t); });
+    } else if (mat === "plastic") {
+      // קפיצה קלה בשכיבה — ונשאר שלם
+      await tween(200, easeOut, (t) => {
+        bottleInner.style.transform = lieTransform(LIE_Y - 34 * t, -90);
+      });
+      await tween(230, easeIn, (t) => {
+        bottleInner.style.transform = lieTransform(LIE_Y - 34 * (1 - t), -90);
+      });
+      await tween(150, easeOut, (t) => {
+        bottleInner.style.transform = lieTransform(LIE_Y - 10 * (1 - Math.abs(2 * t - 1)), -90);
+      });
+      bottleInner.style.transform = lieTransform(LIE_Y, -90);
+    } else {
+      // מתכת — נחיתה כבדה: רעד קצר בשכיבה
+      await tween(240, linear, (t) => {
+        const s = Math.sin(t * Math.PI * 5) * 2.5 * (1 - t);
+        bottleInner.style.transform = lieTransform(LIE_Y + s, -90);
+      });
+      bottleInner.style.transform = lieTransform(LIE_Y, -90);
+    }
+  }
+
+  /* ── בדיקה 3: הכנסה לתיק — התיק על הרצפה לכל אורך הסצנה ──
+     "פתיחת הקלאפה" היא קרוספייד בין bagImg (סגור) ל-bagOpenImg (פתוח,
+     images/opened-bag.png) — לא אנימציית-שכבה מצוירת כמו בגרסה הקודמת,
+     אבל אותה נקודה בדיוק בציר-הזמן: אחרי הטלטול, לפני שהבקבוק יוצא. */
+  async function testBag(mat) {
+    // התיק מופיע על הרצפה ליד הבקבוק
+    await tween(300, easeOut, (t) => { bagInner.style.opacity = String(t); });
+    // הבקבוק נכנס לתיק
+    await tween(650, easeInOut, (t) => {
+      const x = -152 * t, y = -26 * t, s = 1 - 0.55 * t;
+      bottleInner.style.transform = "translate(" + x + "px," + y + "px) scale(" + s + ")";
+      bottleInner.style.opacity = String(t > 0.75 ? (1 - t) / 0.25 : 1);
+    });
+    bottleInner.style.opacity = "0";
+
+    // התיק מיטלטל קלות על הרצפה — מדמה יום לימודים
+    await tween(1500, linear, (t) => {
+      const r = Math.sin(t * Math.PI * 7) * 4.5 * (1 - t * 0.4);
+      bagInner.style.transform = "rotate(" + r + "deg)";
+    });
+    bagInner.style.transform = "";
+    if (!(await delay(150))) return;
+
+    // המכסה נפתח
+    await tween(350, easeOut, (t) => { bagOpenImg.style.opacity = String(t); });
+    if (!(await delay(150))) return;
+
+    // תוצאת פלסטיק: מעוקם/שרוט — קרוספייד לתמונת plastic_scratched.png,
+    // לפני שהבקבוק יוצא מהתיק
+    if (mat === "plastic") {
+      setBottleImg(bottleImgAlt, "plastic_scratched");
+      bottleImgAlt.style.opacity = "1";
+    }
+
+    // הבקבוק יוצא מהתיק וחוזר למרכז הזירה
+    await tween(650, easeInOut, (t) => {
+      const u = 1 - t;
+      const s = 0.45 + 0.55 * t;
+      bottleInner.style.transform = "translate(" + (-152 * u) + "px," + (-26 * u - 40 * Math.sin(t * Math.PI)) + "px) scale(" + s + ")";
+      bottleInner.style.opacity = String(t < 0.3 ? t / 0.3 : 1);
+    });
+    bottleInner.style.transform = "";
+    bottleInner.style.opacity = "1";
+
+    // התיק נעלם בעדינות
+    await tween(400, linear, (t) => {
+      bagInner.style.opacity = String(1 - t);
+    });
+
+    // זום קצר להתבוננות (בפלסטיק — לראות את הבלאי)
+    if (mat === "plastic") {
+      await tween(320, easeOut, (t) => {
+        bottleInner.style.transform = "scale(" + (1 + 0.16 * t) + ")";
+      });
+      if (!(await delay(700))) return;
+      await tween(320, easeIn, (t) => {
+        bottleInner.style.transform = "scale(" + (1.16 - 0.16 * t) + ")";
+      });
+      bottleInner.style.transform = "";
+    }
+  }
+})();
+</script>
+</body>
+</html>

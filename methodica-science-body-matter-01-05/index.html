@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وحدة تعليمية 720 | الهدف 11 | وحدة 5</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ מסך 1 — מסך מעבר לפני תרגול מתקדם (4 שאלות), שקף 57 ============
+       "לשכפל את מסך 18 מסיין 1 ולהתאים את התוכן לפי שקף 57" — אותה
+       משפחת `.transition-*`. תוכן: 3 קטעי-טקסט, אבל בסדר שונה ממסכי-
+       מעבר קודמים — כאן ה-TITLE (בולד, 40px) מגיע **ראשון** (לא
+       באמצע), כי זה מה שבפועל בתסריט: הכותרת-הראשית ואז שורת-המשך
+       מודגשת ואז הערה קטנה רגילה. שתי הפסקאות הראשונות בתסריט הן שתי
+       פסקאות בולד נפרדות (לא אחת) — נשמרות כשתי שורות נפרדות
+       (h2.transition-title + p.transition-sub עם <b>), לא מוזגו
+       לפסקה אחת. כפתור המשך גנרי ("המשך" — לא נמצאה תיבת-טקסט ייעודית
+       לתווית מותאמת בשקף 57). **דמות (עודכן): וידאו לופ מושתק אמיתי**
+       (green-avatar-heavy-weight.mp4/Turquoise-avatar-heavy-weights.mp4,
+       סופקו בפועל — "גיף דמות מרימה משקולת כבדה מאוד" מהערת ההפקה).
+       **עודכן (בקשה מפורשת):
+       כפתור "חזרה" חוצה-פרויקטים** — זרימה טבעית 1↔2↔3↔4↔5; חוזר
+       לסיין 3 **למסך האחרון שלו** דרך `?start=last` (ראו script.js →
+       אתחול). -->
+  <section class="screen active" data-screen="0" id="s0">
+    <div class="transition-content">
+      <div class="transition-title-block">
+        <h2 class="transition-title">حان وقت 4 أسئلة متقدمة</h2>
+        <p class="transition-sub"><b>ومفاجآت مثيرة أخرى...</b></p>
+        <p class="transition-sub">(هذا يعني أننا تقدّمنا في المستوى)</p>
+      </div>
+      <div class="transition-avatar-wrap">
+        <video class="transition-avatar" id="s0-avatar-video" autoplay loop muted playsinline disablepictureinpicture preload="auto" aria-label="شخصية مرافقة"></video>
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" onclick="goTo(1)">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 2 — מעבדת הבקבוקים: משימה מלווה ביישומון (שקף 58) ============
+       "לשכפל את מסך 7 בסיין 1 של יעד 3, ואז להטמיע את היישומון למעלה
+       במקום היישומון הקיים שמה, ובמקום השאלה להכניס את הטקסט-ההנחיות".
+       **אומת לפני שכפול**: מסך 7 שם (`id="s6"`) הוא סימולציית-גרירה
+       ידנית (`.dq-sim-placeholder`+`.dq-question-panel`, absolute-
+       positioned, טור-סימולציה משמאל + טור-הנחיות מימין) — לא iframe
+       מוטמע. **נלקח מהמקור רק את דפוס הפריסה** (טור-ויזואל בצד אחד +
+       טור-טקסט בצד השני), לא את מנגנון-הגרירה-הידני שאין לנו צורך בו
+       (יש לנו יישומון HTML אמיתי, לא סימולציה בנויה-ביד) — וגם לא את
+       שיטת המיקום המוחלט שלו (left:0/left:427): במקום זאת, נעשה
+       שימוש ב-`.scq-question`/`.scq-content` **הגלובליים של הפרויקט
+       שלנו עצמו** (flex-row, סדר-DOM קובע צד תחת RTL — אותה מוסכמה
+       שכבר קיימת בכל מסכי ה-SCQ), עם `.applet-col` (חדש) כטור השני
+       במקום `.scq-img` — עקבי יותר עם שאר הפרויקט מאשר לייבא עוד
+       שיטת-מיקום מקבילה. היישומון: קובץ אמיתי בתיקיית הסיין עצמה
+       ("יישומון יעד 11 מעבדת הבקבוקים/index.html", 500×780+padding
+       פנימי=524×828), מוטמע ב-iframe ומוקטן ל-scale(0.56) (ראו הערה
+       מלאה ב-styles.css). סרגל qnav כמו מסך 3 (הקדמה לשאלה 1). -->
+  <section class="screen" data-screen="1" id="s1">
+    <div class="qnav" id="s1-qnav">
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s1-qnav-icon-4"></div>
+        <span class="qnav-label" id="s1-qnav-label-4">سؤال 4</span>
+      </div>
+      <div class="qnav-line" id="s1-qnav-line-3"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s1-qnav-icon-3"></div>
+        <span class="qnav-label" id="s1-qnav-label-3">سؤال 3</span>
+      </div>
+      <div class="qnav-line" id="s1-qnav-line-2"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s1-qnav-icon-2"></div>
+        <span class="qnav-label" id="s1-qnav-label-2">سؤال 2</span>
+      </div>
+      <div class="qnav-line" id="s1-qnav-line-1"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s1-qnav-icon-1"></div>
+        <span class="qnav-label" id="s1-qnav-label-1">سؤال 1</span>
+      </div>
+    </div>
+
+    <div class="scq-question">
+      <div class="scq-content">
+        <div class="scq-qtext">
+          <p class="scq-qtitle">مختبر القناني</p>
+          <p class="scq-qbody">
+            تلقّى فريق التطوير في المختبر مهمة تصميم قنينة للشرب.
+            <br/>
+            يجب أن تلبّي القنينة هذه المتطلبات الثلاثة:
+          </p>
+          <p class="scq-qbody">الشفافية - يمكن رؤية كمية الماء من خلال القنينة.</p>
+          <p class="scq-qbody">قابلية الكسر - القنينة مقاومة للكسر.</p>
+          <p class="scq-qbody">الصلابة - القنينة مناسبة للاستخدام اليومي، فلا تتلف ولا تنثني.</p>
+          <p class="scq-qbody"><b>
+
+جرّبوا المحاكاة وساعدوا فريق التطوير على تحديد المادة المناسبة لتصنيع هذه القنينة.  
+          </b></p>
+        </div>
+      </div>
+      <div class="applet-col">
+        <div class="applet-wrap">
+          <button class="img-zoom-btn applet-zoom-btn" type="button" aria-label="تكبير التطبيق" onclick="appletZoomOpen()">
+            <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
+          </button>
+          <iframe src="יישומון יעד 11 מעבדת הבקבוקים/index.html?v=2" title="تطبيق مختبر القناني" loading="lazy"></iframe>
+        </div>
+       
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(0, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" onclick="goTo(2)">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 3 — שאלה 1 מתוך 4 (בחירה יחידה + יישומון, שקף 59) ============
+       "לשכפל את מסך 7 בסיין 1 של יעד 3, ואז במקום האינפוט שמה להכניס
+       שאלה חד ברירה... תשתמש בקומפוננטות שכבר בנית ומכיר" — reuse
+       מלא של `.scq-question`/`.scq-content`/`.scq-answers`/`.scq-opt`
+       (כבר מוכרים, לא הומצא דבר), פשוט עם `.applet-col` (כמו מסך 2)
+       במקום `.scq-img`. **סרגל התקדמות חדש** (`stationProgress`/
+       `updateQuestionNav`, 4 שקעים — מסכים 5-6 חולקים שקע 2, כמו
+       מסכים 23-24 בסיין 1). בלי כפתור רמז (לפי בקשה מפורשת). -->
+  <section class="screen" data-screen="2" id="s2">
+    <div class="qnav" id="s2-qnav">
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s2-qnav-icon-4"></div>
+        <span class="qnav-label" id="s2-qnav-label-4">سؤال 4</span>
+      </div>
+      <div class="qnav-line" id="s2-qnav-line-3"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s2-qnav-icon-3"></div>
+        <span class="qnav-label" id="s2-qnav-label-3">سؤال 3</span>
+      </div>
+      <div class="qnav-line" id="s2-qnav-line-2"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s2-qnav-icon-2"></div>
+        <span class="qnav-label" id="s2-qnav-label-2">سؤال 2</span>
+      </div>
+      <div class="qnav-line" id="s2-qnav-line-1"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-current" id="s2-qnav-icon-1"></div>
+        <span class="qnav-label qnav-label-active" id="s2-qnav-label-1">سؤال 1</span>
+      </div>
+    </div>
+
+    <div class="scq-question">
+      <div class="scq-content">
+        <div class="scq-qtext">
+          <p class="scq-qbody"><b>بعد التجربة، أي مادة تناسب صنع القنينة منها وفقًا للمتطلبات 
+            <br/>
+            (قابلية كسر منخفضة، شفافية عالية، وصلابة عالية)؟</b></p>
+        </div>
+        <div class="scq-answers" role="radiogroup" aria-label="خيارات الإجابة">
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s2Select('a')">
+            <span class="scq-opt-text">زجاج</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s2Select('b')">
+            <span class="scq-opt-text">بلاستيك شفاف</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s2Select('c')">
+            <span class="scq-opt-text">معدن</span>
+            <span class="scq-radio"></span>
+          </div>
+        </div>
+      </div>
+      <div class="applet-col">
+        <div class="applet-wrap">
+          <button class="img-zoom-btn applet-zoom-btn" type="button" aria-label="تكبير التطبيق" onclick="appletZoomOpen()">
+            <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
+          </button>
+          <iframe src="יישומון יעד 11 מעבדת הבקבוקים/index.html?v=2" title="تطبيق مختبر القناني" loading="lazy"></iframe>
+        </div>
+      
+      </div>
+    </div>
+
+    <div id="s2-popup" class="scq-fb-box">
+      <div class="scq-fb-title">
+        <span class="scq-fb-title-text"></span>
+      </div>
+      <p class="scq-fb-body"></p>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(1, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="s2-check" class="btn-continue" disabled onclick="s2Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 4 — מעבדת הבקבוקים: קולקציית משרד (שקף 60) ============
+       "לשכפל את מסך 2 מהסיין הזה, ולהתאים את התוכן לפי שקף 60" —
+       שכפול מכני מלא (מבנה זהה, אותו יישומון, בלי qnav) — רק תוכן
+       הטקסט שונה (דרישות שונות: שקיפות לא נדרשת, קשיות ללא דרישה). -->
+  <section class="screen" data-screen="3" id="s3">
+    <div class="qnav" id="s3-qnav">
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s3-qnav-icon-4"></div>
+        <span class="qnav-label" id="s3-qnav-label-4">سؤال 4</span>
+      </div>
+      <div class="qnav-line" id="s3-qnav-line-3"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s3-qnav-icon-3"></div>
+        <span class="qnav-label" id="s3-qnav-label-3">سؤال 3</span>
+      </div>
+      <div class="qnav-line" id="s3-qnav-line-2"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s3-qnav-icon-2"></div>
+        <span class="qnav-label" id="s3-qnav-label-2">سؤال 2</span>
+      </div>
+      <div class="qnav-line" id="s3-qnav-line-1"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s3-qnav-icon-1"></div>
+        <span class="qnav-label" id="s3-qnav-label-1">سؤال 1</span>
+      </div>
+    </div>
+
+    <div class="scq-question">
+      <div class="scq-content">
+        <div class="scq-qtext">
+          <p class="scq-qtitle">مختبر القناني</p>
+          <p class="scq-qbody">الآن يطلب من فريق التطوير تطوير مجموعة زجاجات إضافية – لمكاتب الهايتك. في هذه الحالة يجب أن تلبي القنينة متطلبات أخرى:</p>
+          <!-- תוקן (2026-08-06): שלושת הדרישות ממוספרות בפועל בתסריט
+               (buAutoNum type="arabicPeriod" ב-XML של שקף 60) — חסר כאן,
+               הוספתי <ol class="s3-req-list"> כדי שיוצג 1./2./3. -->
+          <ol class="s3-req-list scq-qbody">
+            <li>الشفافية – لا حاجة إلى رؤية كمية الماء من خلال القنينة.</li>
+            <li>قابلية الكسر - القنينة مقاومة للكسر.</li>
+            <li>الصلابة – لا توجد متطلبات خاصة. تخزّن القناني في خزانة وليست قيد الاستخدام اليومي.</li>
+          </ol>
+          <p class="scq-qbody"><b>
+جرّبوا المحاكاة وساعدوا فريق التطوير على تحديد المادة المناسبة لتصنيع هذه القنينة.
+          </b></p>
+        </div>
+      </div>
+      <div class="applet-col">
+        <div class="applet-wrap">
+          <button class="img-zoom-btn applet-zoom-btn" type="button" aria-label="تكبير التطبيق" onclick="appletZoomOpen()">
+            <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
+          </button>
+          <iframe src="יישומון יעד 11 מעבדת הבקבוקים/index.html?v=2" title="تطبيق مختبر القناني" loading="lazy"></iframe>
+        </div>
+     
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(2, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" onclick="goTo(4)">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 5 — שאלה 2 סעיף א' מתוך 4 (בחירה יחידה + יישומון, שקף 61) ============
+       "תשכפל את מסך 3 מהסיין הנוכחי, ותתאים את התוכן לפי שקף 61" —
+       שכפול מכני מלא של מסך 3 (s2→s4), בלי כפתור רמז (לפי בקשה
+       מפורשת). שקע qnav 2 (משותף עם מסך 6/סעיף ב'). -->
+  <section class="screen" data-screen="4" id="s4">
+    <div class="qnav" id="s4-qnav">
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s4-qnav-icon-4"></div>
+        <span class="qnav-label" id="s4-qnav-label-4">سؤال 4</span>
+      </div>
+      <div class="qnav-line" id="s4-qnav-line-3"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s4-qnav-icon-3"></div>
+        <span class="qnav-label" id="s4-qnav-label-3">سؤال 3</span>
+      </div>
+      <div class="qnav-line" id="s4-qnav-line-2"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-current" id="s4-qnav-icon-2"></div>
+        <span class="qnav-label qnav-label-active" id="s4-qnav-label-2">سؤال 2</span>
+      </div>
+      <div class="qnav-line" id="s4-qnav-line-1"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s4-qnav-icon-1"></div>
+        <span class="qnav-label qnav-label-active" id="s4-qnav-label-1">سؤال 1</span>
+      </div>
+    </div>
+
+    <div class="scq-question">
+      <div class="scq-content">
+        <div class="scq-qtext">
+          <p class="scq-qbody"><b>أ. أي مادة تناسب صنع قنينة المكتب وفقًا للمتطلبات 
+            <br/>
+            (قابلية كسر منخفضة، شفافية منخفضة، وصلابة دون متطلبات خاصة)؟</b></p>
+        </div>
+        <div class="scq-answers" role="radiogroup" aria-label="خيارات الإجابة">
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s4Select('a')">
+            <span class="scq-opt-text">زجاج</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s4Select('b')">
+            <span class="scq-opt-text">بلاستيك شفاف</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s4Select('c')">
+            <span class="scq-opt-text">معدن</span>
+            <span class="scq-radio"></span>
+          </div>
+        </div>
+      </div>
+      <div class="applet-col">
+        <div class="applet-wrap">
+          <button class="img-zoom-btn applet-zoom-btn" type="button" aria-label="تكبير التطبيق" onclick="appletZoomOpen()">
+            <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
+          </button>
+          <iframe src="יישומון יעד 11 מעבדת הבקבוקים/index.html?v=2" title="تطبيق مختبر القناني" loading="lazy"></iframe>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="s4-popup" class="scq-fb-box">
+      <div class="scq-fb-title">
+        <span class="scq-fb-title-text"></span>
+      </div>
+      <p class="scq-fb-body"></p>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(3, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="s4-check" class="btn-continue" disabled onclick="s4Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 6 — שאלה 2 סעיף ב' מתוך 4 (גרירת השלמת משפטים + יישומון, שקף 62) ============
+       "שאלת גרירה... כמו מסך 3 סיין 5 יעד 2" — state machine זהה
+       ל-dqx19/dqx27 בסיין 1 (makeDragQuestion factory: placement
+       עוקב draggable→'source'|targetId). מבנה המסך (עמודת טקסט +
+       יישומון) שוכפל מהמסכים הקודמים בסיין הזה (s2/s4), לפי בקשה
+       מפורשת בדוקס. בלי כפתור רמז כלל (לפי בקשה מפורשת). שקע qnav 2
+       (משותף עם s4, סעיף א') — כל סעיף מעדכן את אותו שקע עם התוצאה
+       שלו, בדיוק כמו s22/s23 בסיין 1. -->
+  <section class="screen" data-screen="5" id="s5">
+    <div class="qnav" id="s5-qnav">
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s5-qnav-icon-4"></div>
+        <span class="qnav-label" id="s5-qnav-label-4">سؤال 4</span>
+      </div>
+      <div class="qnav-line" id="s5-qnav-line-3"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s5-qnav-icon-3"></div>
+        <span class="qnav-label" id="s5-qnav-label-3">سؤال 3</span>
+      </div>
+      <div class="qnav-line" id="s5-qnav-line-2"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-current" id="s5-qnav-icon-2"></div>
+        <span class="qnav-label qnav-label-active" id="s5-qnav-label-2">سؤال 2</span>
+      </div>
+      <div class="qnav-line" id="s5-qnav-line-1"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s5-qnav-icon-1"></div>
+        <span class="qnav-label qnav-label-active" id="s5-qnav-label-1">سؤال 1</span>
+      </div>
+    </div>
+
+    <div class="scq-question">
+      <div class="scq-content">
+        <p class="dqx-instruction-bold">ب. أكملوا الادّعاء العلمي:</p>
+
+        <div class="dqx-sentences">
+          <p class="dqx-sentence">وفقًا لمتطلبات تطوير قنينة المكتب، الخاصية الوحيدة المهمة
+            <br/>
+            للقنينة هي
+            <span class="dqx-drop" id="dqx5-target-1"
+                  ondragover="dqx5DragOver(event,'dqx5-target-1')"
+                  ondragenter="dqx5DragEnter(event,'dqx5-target-1')"
+                  ondragleave="dqx5DragLeave(event,'dqx5-target-1')"
+                  ondrop="dqx5Drop(event,'dqx5-target-1')"></span>
+                   على مستوى 
+            <span class="dqx-drop" id="dqx5-target-2"
+                  ondragover="dqx5DragOver(event,'dqx5-target-2')"
+                  ondragenter="dqx5DragEnter(event,'dqx5-target-2')"
+                  ondragleave="dqx5DragLeave(event,'dqx5-target-2')"
+                  ondrop="dqx5Drop(event,'dqx5-target-2')"></span>.
+          </p>
+          <p class="dqx-sentence">لذلك، من بين المواد الثلاث، الأنسب لإنتاج قنينة المكتب هو:
+            <span class="dqx-drop" id="dqx5-target-3"
+                  ondragover="dqx5DragOver(event,'dqx5-target-3')"
+                  ondragenter="dqx5DragEnter(event,'dqx5-target-3')"
+                  ondragleave="dqx5DragLeave(event,'dqx5-target-3')"
+                  ondrop="dqx5Drop(event,'dqx5-target-3')"></span>.
+          </p>
+        </div>
+
+        <div class="dqx-word-bank" id="dqx5-word-bank" ondragover="event.preventDefault()" ondrop="dqx5DropToBank(event)">
+          <div class="dqx-source-slot" id="slot-dqx5-drag-shvirut"></div>
+          <div class="dqx-source-slot" id="slot-dqx5-drag-namucha"></div>
+          <div class="dqx-source-slot" id="slot-dqx5-drag-metal"></div>
+        </div>
+      </div>
+      <div class="applet-col">
+        <div class="applet-wrap">
+          <button class="img-zoom-btn applet-zoom-btn" type="button" aria-label="تكبير التطبيق" onclick="appletZoomOpen()">
+            <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
+          </button>
+          <iframe src="יישומון יעד 11 מעבדת הבקבוקים/index.html?v=2" title="تطبيق مختبر القناني" loading="lazy"></iframe>
+        </div>
+    
+      </div>
+    </div>
+
+    <div id="dqx5-popup" class="scq-fb-box">
+      <div class="scq-fb-title">
+        <span class="scq-fb-title-text"></span>
+      </div>
+      <p class="scq-fb-body"></p>
+      <button class="scq-fb-reveal-btn" id="dqx5-reveal-btn" type="button" hidden onclick="dqx5ToggleReveal()">الانتقال إلى إجابتي</button>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(4, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="dqx5-check" class="btn-continue" disabled onclick="dqx5Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 7 — שאלה 3 מתוך 4 (בחירה יחידה + טבלה, שקף 63) ============
+       "אפשר לשכפל ממסך 4 בסיין 2 בפרויקט הנוכחי" — מסך 4 בסיין 2 הוא
+       s3 שם (SingleChoiceQuestion + `.scq-table-wrap`, בלי כפתור רמז).
+       **סטייה מתועדת מהמקור**: המקור (s3 בסיין 2) לא כלל כפתור רמז,
+       אבל שקף 63 בפועל מכיל טקסט רמז נפרד כצורה עצמאית — לכן נוסף
+       כפתור רמז כאן, לפי תוכן השקף בפועל ולא לפי מבנה המקור המשוכפל
+       (Figma/שקף בפועל הם המקור-של-אמת לתוכן, לא הציטוט). טבלה
+       5-עמודות (רחבה מ-3 העמודות במקור) — הורחבה ל-560px וצומצם
+       הטקסט, בדיוק לפי דפוס `#s8` בסיין 2 (טבלה 6-עמודות, אותה בעיה). -->
+  <section class="screen" data-screen="6" id="s6">
+    <div class="qnav" id="s6-qnav">
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-future" id="s6-qnav-icon-4"></div>
+        <span class="qnav-label" id="s6-qnav-label-4">سؤال 4</span>
+      </div>
+      <div class="qnav-line" id="s6-qnav-line-3"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-current" id="s6-qnav-icon-3"></div>
+        <span class="qnav-label qnav-label-active" id="s6-qnav-label-3">سؤال 3</span>
+      </div>
+      <div class="qnav-line" id="s6-qnav-line-2"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s6-qnav-icon-2"></div>
+        <span class="qnav-label qnav-label-active" id="s6-qnav-label-2">سؤال 2</span>
+      </div>
+      <div class="qnav-line" id="s6-qnav-line-1"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s6-qnav-icon-1"></div>
+        <span class="qnav-label qnav-label-active" id="s6-qnav-label-1">سؤال 1</span>
+      </div>
+    </div>
+
+    <div class="scq-question">
+      <div class="scq-content">
+        <div class="scq-qtext">
+          <p class="scq-qbody">فريق تطوير يخطط لعلبة طعام قابلة لإعادة الاستخدام للطلاب. يجب أن تكون العلبة خفيفة، <span style="white-space:nowrap">لا تنكسر</span> بسهولة، ومقاومة للماء.</p>
+          <p class="scq-qbody">أمامكم جدول معطيات عن ثلاث مواد محتملة لصنع العلبة.
+          <br/><b>أي مادة تناسب وفقًا للمعطيات في الجدول؟</b></p>
+        </div>
+        <div class="scq-answers" role="radiogroup" aria-label="خيارات الإجابة">
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s6Select('a')">
+            <span class="scq-opt-text">زجاج - لأنه شفاف ومقاوم للماء.</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s6Select('b')">
+            <span class="scq-opt-text">بلاستيك صلب - لأنه مقاوم للماء وقابلية كسره منخفضة.</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s6Select('c')">
+            <span class="scq-opt-text">جميع المواد مناسبة بنفس القدر، لأن كل واحدة منها لها ميزة مختلفة.</span>
+            <span class="scq-radio"></span>
+          </div>
+          <div class="scq-opt" role="radio" aria-checked="false" tabindex="0" data-id="d" onclick="s6Select('d')">
+            <span class="scq-opt-text">كرتون مطلي - لأنه أقل شفافية من المواد الأخرى.</span>
+            <span class="scq-radio"></span>
+          </div>
+        </div>
+      </div>
+      <div class="scq-table-wrap">
+        <table class="tbl-table" dir="rtl">
+          <thead>
+            <tr>
+              <th class="tbl-th">مادة</th>
+              <th class="tbl-th">قابلية الكسر</th>
+              <th class="tbl-th">مقاومة الماء</th>
+              <th class="tbl-th">ليونة</th>
+              <th class="tbl-th">شفافية</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="tbl-td">زجاج</td><td class="tbl-td">عالية</td><td class="tbl-td">عالية</td><td class="tbl-td">منخفضة</td><td class="tbl-td">عالية</td></tr>
+            <tr><td class="tbl-td">بلاستيك صلب</td><td class="tbl-td">منخفضة</td><td class="tbl-td">عالية</td><td class="tbl-td">متوسطة</td><td class="tbl-td">متوسطة</td></tr>
+            <tr><td class="tbl-td">كرتون مطلي</td><td class="tbl-td">متوسطة</td><td class="tbl-td">متوسطة</td><td class="tbl-td">منخفضة</td><td class="tbl-td">منخفضة</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="s6-popup" class="scq-fb-box">
+      <div class="scq-fb-title">
+        <span class="scq-fb-title-text"></span>
+      </div>
+      <p class="scq-fb-body"></p>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(5, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="s6-hint" class="btn-hint" onclick="s6OpenHint()">
+            <img class="scq-hint-icon" src="assets/images/icon-hint-blue.svg" alt="">
+            هل يمكنني الحصول على تلميح؟
+          </button>
+          <button id="s6-check" class="btn-continue" disabled onclick="s6Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 8 — שאלה 4 מתוך 4 (שאלת התאמה, שקף 64) ============
+       OrderedDragAndDropQuestion — תבנית חדשה, נבנתה ישירות מ-Figma
+       (fileKey eSbp4bKHgBky0rakDb8l9N, nodes 1717-39511/39465/39599/
+       39645/39683, לפי בקשה מפורשת בדוקס + 720-templates/
+       DragAndDropQuestion.md + figma-lomda-builder). ראו הערה מלאה
+       ב-styles.css על מבנה התוכן (הדגימות כטקסט סטטי + תוויות-גרירה
+       קצרות). אייקוני ✔/✖ = תווי יוניקוד צבועים (לא אייקוני
+       Figma נפרדים — תיאור בדיקה, לא סימון-נכונות). אייקוני V/X
+       לסימון נכונות (אחרי בדיקה) הם ddq-icon-correct-check.svg/
+       ddq-icon-incorrect-x.svg הקיימים כבר בנכסי הסיין. כפתור רמז
+       קיים (לפי טקסט רמז אמיתי שנמצא בשקף) — 2 ניסיונות, ניסיון 1
+       משתמש בנוסח הגנרי של ה-state בפיגמה עצמה ("התשובה אינה נכונה.
+       שננסה שוב?", התוכן לא סיפק נוסח ספציפי לניסיון הראשון), ניסיון
+       אחרון/סופי משתמש בנוסח מהתסריט. -->
+  <section class="screen" data-screen="7" id="s7">
+    <div class="qnav" id="s7-qnav">
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-current" id="s7-qnav-icon-4"></div>
+        <span class="qnav-label qnav-label-active" id="s7-qnav-label-4">سؤال 4</span>
+      </div>
+      <div class="qnav-line" id="s7-qnav-line-3"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s7-qnav-icon-3"></div>
+        <span class="qnav-label qnav-label-active" id="s7-qnav-label-3">سؤال 3</span>
+      </div>
+      <div class="qnav-line" id="s7-qnav-line-2"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s7-qnav-icon-2"></div>
+        <span class="qnav-label qnav-label-active" id="s7-qnav-label-2">سؤال 2</span>
+      </div>
+      <div class="qnav-line" id="s7-qnav-line-1"></div>
+      <div class="qnav-item">
+        <div class="qnav-icon qnav-success" id="s7-qnav-icon-1"></div>
+        <span class="qnav-label qnav-label-active" id="s7-qnav-label-1">سؤال 1</span>
+      </div>
+    </div>
+
+    <div class="scq-question">
+      <div class="scq-content">
+        <div class="scq-qtext">
+          <p class="scq-qbody">في المختبر فحصت ثلاث عينات من مواد غير معروفة.
+            <br/>
+            في كل عينة لوحظت خصائص مختلفة للمادة.</p>
+          <p class="scq-qbody"><b>طابقوا بين العينة والمادة أو الجسم المناسب لها:</b></p>
+        </div>
+
+        <div class="oddq-samples">
+          <p class="oddq-sample"><b>العينة أ:</b> يمكن الرؤية من خلالها بوضوح، لا تنجذب إلى المغناطيس، لا تذوب في الماء، غير موصلة للكهرباء</p>
+          <p class="oddq-sample"><b>العينة ب:</b> لا يمكن الرؤية من خلالها، تنجذب إلى المغناطيس، لا تذوب في الماء، موصلة للكهرباء</p>
+          <p class="oddq-sample"><b>العينة ج:</b> لا يمكن الرؤية من خلالها، لا تنجذب إلى المغناطيس، تذوب في الماء، غير موصلة للكهرباء</p>
+        </div>
+
+        <div class="oddq-grid">
+          <div class="oddq-zones">
+            <div class="oddq-row">
+              <span class="oddq-num">1</span>
+              <span class="oddq-target-label">معدن مغناطيسي</span>
+              <div class="oddq-zone" id="oddq-target-1"
+                   ondragover="oddqDragOver(event,'oddq-target-1')"
+                   ondragenter="oddqDragEnter(event,'oddq-target-1')"
+                   ondragleave="oddqDragLeave(event,'oddq-target-1')"
+                   ondrop="oddqDrop(event,'oddq-target-1')"></div>
+            </div>
+            <div class="oddq-row">
+              <span class="oddq-num">2</span>
+              <span class="oddq-target-label">نافذة شفافة</span>
+              <div class="oddq-zone" id="oddq-target-2"
+                   ondragover="oddqDragOver(event,'oddq-target-2')"
+                   ondragenter="oddqDragEnter(event,'oddq-target-2')"
+                   ondragleave="oddqDragLeave(event,'oddq-target-2')"
+                   ondrop="oddqDrop(event,'oddq-target-2')"></div>
+            </div>
+            <div class="oddq-row">
+              <span class="oddq-num">3</span>
+              <span class="oddq-target-label">مادة قابلة للذوبان في الماء</span>
+              <div class="oddq-zone" id="oddq-target-3"
+                   ondragover="oddqDragOver(event,'oddq-target-3')"
+                   ondragenter="oddqDragEnter(event,'oddq-target-3')"
+                   ondragleave="oddqDragLeave(event,'oddq-target-3')"
+                   ondrop="oddqDrop(event,'oddq-target-3')"></div>
+            </div>
+          </div>
+          <div class="oddq-pool" id="oddq-pool" ondragover="event.preventDefault()" ondrop="oddqDropToBank(event)">
+            <div class="oddq-slot" id="slot-oddq-drag-a"></div>
+            <div class="oddq-slot" id="slot-oddq-drag-b"></div>
+            <div class="oddq-slot" id="slot-oddq-drag-c"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="oddq-popup" class="scq-fb-box">
+      <div class="scq-fb-title">
+        <span class="scq-fb-title-text"></span>
+      </div>
+      <p class="scq-fb-body"></p>
+      <button class="scq-fb-reveal-btn" id="oddq-reveal-btn" type="button" hidden onclick="oddqToggleReveal()">الانتقال إلى إجابتي</button>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(6, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="oddq-hint" class="btn-hint" onclick="oddqOpenHint()" hidden>
+            <img class="scq-hint-icon" src="assets/images/icon-hint-blue.svg" alt="">
+            هل يمكنني الحصول على تلميح؟
+          </button>
+          <button id="oddq-check" class="btn-continue" disabled onclick="oddqCheck()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 9 — הוטספוטים (4 חומרים בנעל ריצה, שקף 65) ============
+       **תוקן (2026-08-05)**: נבנה מחדש לפי "לשכפל את מסך 2 מהסיין
+       הנוכחי" **פשוטו כמשמעו** — `.scq-question`/`.scq-content` +
+       עמודה שנייה (`.hs9-col`, באותו "משבצת" ויזואלית בדיוק שבה יושב
+       `.applet-col`/`.scq-img`/`.scq-table-wrap` בכל שאר מסכי הסיין
+       הזה: top:139, אותה עמודה משמאל). הגרסה הקודמת (מבנה `.hs9-content`
+       עצמאי, עמודת-טור עם תמונה ממורכזת) הייתה שכפול של `.hs22-*`
+       מסיין 1 — נאמן ל-Figma node 196:3349/196:3357 בפני עצמו, אבל
+       שברה את העקביות הוויזואלית מול מסכים 2-8 באותו סיין (שכולם
+       ממקמים את התמונה/היישומון/הטבלה המלווה באותה משבצת בדיוק). מיקומי
+       ההוטספוט (אחוזים, לא px) נשארו זהים — הם יחסיים לתמונה עצמה
+       (aspect-ratio קבוע), אז מקטינים את המסגרת בלי לשנות את היחס. -->
+  <section class="screen" data-screen="8" id="s8">
+    <div class="scq-question">
+      <div class="scq-content">
+        <div class="scq-qtext">
+          <p class="scq-qtitle">هل تعلم؟</p>
+          <p class="scq-qbody"><b>حذاء الجري الذي يبدو وكأنه "يعيد" لك الطاقة</b></p>
+          <p class="scq-qbody">تخيلوا أنكم تركضون، وفي كل مرة تضرب فيها القدم الأرض لا يمتص الحذاء الصدمة فحسب، بل يساعدكم أيضًا على الاندفاع للخطوة التالية. هذه بالضبط هي التجربة التي تحاول أحذية الجري التنافسية في الصورة توفيرها.</p>
+          <p class="scq-qtitle">اضغطوا للتعرف على المواد التي صنع منها الحذاء وخصائصها.</p>
+        </div>
+      </div>
+      <div class="hs9-col">
+        <div class="hs9-image-frame">
+          <img src="assets/images/שכבות-נעלי-ספורט.png" alt="طبقات المواد في حذاء الجري: القماش العلوي، الرغوة الوسطى، وسائد الهواء، اللوحة السفلية">
+          <button type="button" class="hs9-hotspot" style="left:50%;top:17%" onclick="s8OpenHotspot('mesh')" aria-label="معلومات عن القماش العلوي"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button>
+          <button type="button" class="hs9-hotspot" style="left:50%;top:46%" onclick="s8OpenHotspot('foam')" aria-label="معلومات عن الرغوة الوسطى"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button>
+          <button type="button" class="hs9-hotspot" style="left:52%;top:60%" onclick="s8OpenHotspot('aircushion')" aria-label="معلومات عن وسادات الهواء"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button>
+          <button type="button" class="hs9-hotspot" style="left:50%;top:83%" onclick="s8OpenHotspot('carbon')" aria-label="معلومات عن لوحة الكربون"><svg class="info-btn__icon" viewBox="0 0 15 15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" fill="currentColor"/><path transform="translate(6.108 2.673)" d="M1.01452 9.654C0.782522 9.654 0.586522 9.62 0.426522 9.552C0.270522 9.484 0.156522 9.39 0.0845217 9.27C0.0125217 9.146 -0.0134783 9 0.00652175 8.832C0.0265218 8.652 0.0545218 8.432 0.0905217 8.172C0.130522 7.912 0.172522 7.62 0.216522 7.296C0.264522 6.972 0.316522 6.622 0.372522 6.246C0.428522 5.87 0.482522 5.478 0.534522 5.07C0.590522 4.662 0.646522 4.246 0.702522 3.822L0.00652175 3.492L0.0905217 3.018L2.17252 2.724L2.46652 2.862L1.67452 8.322C1.65452 8.466 1.66252 8.576 1.69852 8.652C1.73452 8.724 1.79252 8.76 1.87252 8.76C1.94452 8.76 2.02252 8.738 2.10652 8.694C2.19452 8.646 2.30652 8.566 2.44252 8.454L2.59852 8.82C2.55452 8.88 2.46452 8.976 2.32852 9.108C2.19652 9.24 2.02052 9.364 1.80052 9.48C1.58052 9.596 1.31852 9.654 1.01452 9.654ZM1.73452 1.92C1.49852 1.92 1.29652 1.832 1.12852 1.656C0.964522 1.48 0.888522 1.274 0.900522 1.038C0.912522 0.746 1.00852 0.5 1.18852 0.3C1.37252 0.1 1.61852 0 1.92652 0C2.19052 0 2.40052 0.086 2.55652 0.258C2.71252 0.426 2.78852 0.62 2.78452 0.84C2.78052 1.144 2.69052 1.4 2.51452 1.608C2.33852 1.816 2.07852 1.92 1.73452 1.92Z" fill="#fff"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(7, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" onclick="window.location.href='../methodica-science-body-matter-01-06/index.html'">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- פופ-אפ המידע של מסך 9 (s8) — reuse מלא של scq-hint-overlay
+       הגלובלי (בלי בועת-רעיון, כמו s21-hint-overlay בסיין 1) -->
+  <div id="s8-hint-overlay" class="scq-hint-overlay" hidden>
+    <div class="scq-hint-popup" role="dialog" aria-modal="true" aria-label="معلومات عن المادة">
+      <div class="scq-hint-title-row">
+        <p class="scq-hint-title" id="s8-hint-title-text">عنوان</p>
+      </div>
+      <p class="scq-hint-body" id="s8-hint-body-text">محتوى</p>
+      <button class="scq-hint-close" onclick="s8CloseHotspot()">إغلاق</button>
+    </div>
+  </div>
+
+  <!-- הצצת-רמז של מסך 8 (s7) — מחוץ לכל .screen, ישירות ב-#app -->
+  <div id="oddq-hint-overlay" class="scq-hint-overlay" hidden>
+    <div class="scq-hint-popup" role="dialog" aria-modal="true" aria-label="تلميح">
+      <div class="scq-hint-title-row">
+        <p class="scq-hint-title">تلميح</p>
+        <img class="scq-hint-bulb" src="assets/images/icon-idea-white-lg.svg" alt="">
+      </div>
+      <p class="scq-hint-body">قارنوا جميع خصائص العينة بخصائص المواد، واختاروا المادة التي تتطابق مع جميعها.</p>
+      <button class="scq-hint-close scq-hint-back" onclick="oddqCloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- הצצת-רמז של מסך 7 (s6) — מחוץ לכל .screen, ישירות ב-#app,
+       לפי מוסכמת הפרויקט (help popup outside all .screen divs) -->
+  <div id="s6-hint-overlay" class="scq-hint-overlay" hidden>
+    <div class="scq-hint-popup" role="dialog" aria-modal="true" aria-label="تلميح">
+      <div class="scq-hint-title-row">
+        <p class="scq-hint-title">تلميح</p>
+        <img class="scq-hint-bulb" src="assets/images/icon-idea-white-lg.svg" alt="">
+      </div>
+      <p class="scq-hint-body">تحققوا من الخصائص المرتبطة مباشرة بمتطلبات المنتج: مقاومة الماء وقابلية كسر منخفضة.</p>
+      <button class="scq-hint-close scq-hint-back" onclick="s6CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- כפתור "מצאתם בעיה?" — רכיב גלובלי יחיד, מחוץ לכל .screen,
+       ישירות ב-#app, לפי 720-templates skill (_global-components.md) -->
+  <button class="flag-btn" aria-label="هل واجهتم مشكلة؟" title="هل واجهتم مشكلة؟">
+    <span class="flag-btn-icon" aria-hidden="true">
+      <img class="flag-btn-icon-default" src="assets/images/flag-default.svg" alt="">
+      <img class="flag-btn-icon-hover" src="assets/images/flag-hover.svg" alt="">
+    </span>
+    <span class="flag-btn-label">هل واجهتم مشكلة؟</span>
+  </button>
+
+  <!-- הגדלת תמונה (img-zoom) — רכיב גלובלי יחיד, מחוץ לכל .screen,
+       ישירות ב-#app, לפי מפרט 720-templates _global-components.md.
+       כל תמונת תוכן שצריכה זום מוסיפה כפתור .img-zoom-btn משלה
+       בתוך ה-wrapper שלה (position:relative, בלי stacking context) -->
+  <div id="img-zoom-modal" class="img-zoom-modal hidden" aria-hidden="true" data-zoom-close="true">
+    <div class="img-zoom-modal__panel" role="dialog" aria-modal="true" aria-label="تكبير الصورة">
+      <button class="img-zoom-close" type="button" data-zoom-close="true" aria-label="إغلاق تكبير الصورة">
+        <svg class="img-zoom-close__icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect class="zc-bg" x="1" y="1" width="38" height="38" rx="19" stroke-width="2"/><path class="zc-x" d="M27.151 12.849C26.9275 12.6255 26.6244 12.5 26.3084 12.5C25.9924 12.5 25.6893 12.6255 25.4658 12.849L20 18.3147L14.5342 12.849C14.3107 12.6255 14.0076 12.5 13.6916 12.5C13.3756 12.5 13.0725 12.6255 12.849 12.849C12.6255 13.0725 12.5 13.3756 12.5 13.6916C12.5 14.0076 12.6255 14.3107 12.849 14.5342L18.3147 20L12.849 25.4658C12.6255 25.6893 12.5 25.9924 12.5 26.3084C12.5 26.6244 12.6255 26.9275 12.849 27.151C13.0725 27.3745 13.3756 27.5 13.6916 27.5C14.0076 27.5 14.3107 27.3745 14.5342 27.151L20 21.6853L25.4658 27.151C25.6893 27.3745 25.9924 27.5 26.3084 27.5C26.6244 27.5 26.9275 27.3745 27.151 27.151C27.3745 26.9275 27.5 26.6244 27.5 26.3084C27.5 25.9924 27.3745 25.6893 27.151 25.4658L21.6853 20L27.151 14.5342C27.3745 14.3107 27.5 14.0076 27.5 13.6916C27.5 13.3756 27.3745 13.0725 27.151 12.849Z"/></svg>
+      </button>
+      <div class="img-zoom-modal__stage"></div>
+    </div>
+  </div>
+
+  <!-- הגדלת יישומון (applet-zoom) — רכיב גלובלי יחיד, לפי בקשה מפורשת
+       של הלקוח: "היישומון קטן מאוד וקשה להשתמש בו" (מסכים 2-6, s1-s5).
+       מודל-יחיד-משותף (לא clone-DOM כמו img-zoom): 5 המופעים מטמיעים
+       בדיוק אותו קובץ סטטי, אז אין "תוכן חי משתנה" להעתיק — המודל
+       פותח את אותו יישומון בגודל טבעי (524×668, בלי scale-down),
+       לעומת scale(0.71) המצומצם בתוך .applet-wrap הרגיל. -->
+  <div id="applet-zoom-modal" class="applet-zoom-modal hidden" aria-hidden="true" data-applet-zoom-close="true">
+    <div class="applet-zoom-modal__panel" role="dialog" aria-modal="true" aria-label="تكبير التطبيق">
+      <button class="img-zoom-close" type="button" data-applet-zoom-close="true" aria-label="إغلاق تكبير الصورة">
+        <svg class="img-zoom-close__icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect class="zc-bg" x="1" y="1" width="38" height="38" rx="19" stroke-width="2"/><path class="zc-x" d="M27.151 12.849C26.9275 12.6255 26.6244 12.5 26.3084 12.5C25.9924 12.5 25.6893 12.6255 25.4658 12.849L20 18.3147L14.5342 12.849C14.3107 12.6255 14.0076 12.5 13.6916 12.5C13.3756 12.5 13.0725 12.6255 12.849 12.849C12.6255 13.0725 12.5 13.3756 12.5 13.6916C12.5 14.0076 12.6255 14.3107 12.849 14.5342L18.3147 20L12.849 25.4658C12.6255 25.6893 12.5 25.9924 12.5 26.3084C12.5 26.6244 12.6255 26.9275 12.849 27.151C13.0725 27.3745 13.3756 27.5 13.6916 27.5C14.0076 27.5 14.3107 27.3745 14.5342 27.151L20 21.6853L25.4658 27.151C25.6893 27.3745 25.9924 27.5 26.3084 27.5C26.6244 27.5 26.9275 27.3745 27.151 27.151C27.3745 26.9275 27.5 26.6244 27.5 26.3084C27.5 25.9924 27.3745 25.6893 27.151 25.4658L21.6853 20L27.151 14.5342C27.3745 14.3107 27.5 14.0076 27.5 13.6916C27.5 13.3756 27.3745 13.0725 27.151 12.849Z"/></svg>
+      </button>
+      <iframe src="יישומון יעד 11 מעבדת הבקבוקים/index.html?big=1&v=2" title="مختبر القناني — تطبيق (مكبّر)" loading="lazy"></iframe>
+    </div>
+  </div>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>

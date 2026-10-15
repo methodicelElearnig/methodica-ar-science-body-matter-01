@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מוק-אפ — מעבדת הבקבוקים</title>
+<style>
+  :root {
+    --bg: #f4f7fa;
+    --panel: #ffffff;
+    --ink: #1e2a38;
+    --ink-soft: #5a6b7d;
+    --line: #dde5ec;
+    --accent: #2563b0;
+    --accent-soft: #e8f0fb;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #e9edf2;
+    font-family: 'Segoe UI', 'Heebo', Arial, sans-serif;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 12px;
+  }
+  .app {
+    width: 1200px;
+    height: 750px;
+    background: var(--bg);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(30,42,56,.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+
+  /* ─── Header ─── */
+  header {
+    padding: 20px 32px 16px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+  }
+  h1 { font-size: 26px; font-weight: 800; }
+  .instruction { font-size: 16.5px; color: var(--ink-soft); margin-top: 6px; }
+  .reqs { display: flex; gap: 10px; margin-top: 12px; }
+  .req {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--accent-soft);
+    border: 1px solid #c9dcf5;
+    color: #1d4e8f;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .req .num {
+    background: #1d4e8f; color: #fff;
+    width: 20px; height: 20px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 12px;
+  }
+
+  /* ─── Main ─── */
+  main { flex: 1; display: flex; gap: 18px; padding: 18px 24px; min-height: 0; }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px;
+  }
+  .panel h2 {
+    font-size: 15px; font-weight: 700; color: var(--ink-soft);
+    margin-bottom: 12px; letter-spacing: .2px;
+  }
+
+  /* Materials (right) */
+  .materials { width: 218px; display: flex; flex-direction: column; }
+  .mat-card {
+    display: flex; align-items: center; gap: 12px;
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #fff;
+    cursor: pointer;
+    position: relative;
+    font-size: 16px; font-weight: 600;
+  }
+  .mat-card .swatch {
+    width: 42px; height: 42px; border-radius: 10px; flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,.08);
+  }
+  .sw-glass  { background: linear-gradient(135deg, #d8f0f9 20%, #a9d9ec 55%, #e9f8ff 80%); }
+  .sw-plastic{ background: linear-gradient(135deg, #eefcf4 15%, #cdeeda 50%, #f2fdf7 85%); }
+  .sw-metal  { background: linear-gradient(135deg, #f2f4f7 10%, #aeb8c4 45%, #e6eaef 70%, #98a3b0 95%); }
+  .mat-card.selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    box-shadow: 0 2px 10px rgba(37,99,176,.15);
+  }
+  .mat-card.selected::after {
+    content: "✓";
+    position: absolute; top: -9px; left: -9px;
+    background: var(--accent); color: #fff;
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+  .mat-hint { margin-top: auto; font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+
+  /* Arena (center) */
+  .arena {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    background: linear-gradient(180deg, #fbfdff 0%, #f2f7fb 100%);
+  }
+  .arena .floor {
+    position: absolute; bottom: 60px; left: 10%; right: 10%;
+    height: 3px; background: var(--line); border-radius: 2px;
+  }
+  .bottle-wrap { margin-top: 40px; height: 450px; display: flex; align-items: flex-end; }
+
+  /* Tests (left) */
+  .tests { width: 250px; display: flex; flex-direction: column; }
+  .test-btn {
+    border: 2px solid var(--line);
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px 14px;
+    margin-bottom: 12px;
+    text-align: right;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .test-btn .emoji { font-size: 22px; }
+  .test-btn .t-name { font-size: 16px; font-weight: 700; color: var(--ink); }
+  .test-btn.active { border-color: var(--accent); box-shadow: 0 2px 10px rgba(37,99,176,.12); }
+
+  .mock-note {
+    width: 1200px;
+    margin-top: 10px;
+    font-size: 13px; color: var(--ink-soft);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <h1>🧪 מעבדת הבקבוקים</h1>
+    <p class="instruction">בחרו בחומר ובצעו עליו את 3 הבדיקות כדי לקבוע אם הוא החומר המתאים לבקבוק.</p>
+  </header>
+
+  <main>
+    <!-- חומרים לבחירה — ימין -->
+    <section class="panel materials">
+      <h2>חומרים לבחירה</h2>
+      <div class="mat-card"><span class="swatch sw-glass"></span> זכוכית</div>
+      <div class="mat-card selected"><span class="swatch sw-plastic"></span> פלסטיק שקוף</div>
+      <div class="mat-card"><span class="swatch sw-metal"></span> מתכת</div>
+      <p class="mat-hint">אפשר להחליף חומר בכל שלב — הבקבוק ישתנה בהתאם.</p>
+    </section>
+
+    <!-- זירה — מרכז -->
+    <section class="panel arena">
+      <div class="bottle-wrap">
+        <!-- בקבוק פלסטיק שקוף עם מים (אחרי בדיקת מזיגת מים) -->
+        <svg width="215" height="420" viewBox="0 0 200 390" role="img" aria-label="בקבוק מפלסטיק שקוף ובו מים">
+          <defs>
+            <clipPath id="bottleClip">
+              <path d="M80 30 h40 v40 c0 10 30 22 30 55 v230 c0 15 -12 25 -28 25 h-44 c-16 0 -28 -10 -28 -25 v-230 c0 -33 30 -45 30 -55 z"/>
+            </clipPath>
+            <linearGradient id="waterG" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#8ec9ef"/>
+              <stop offset="1" stop-color="#5aa9dd"/>
+            </linearGradient>
+          </defs>
+          <!-- מים בתוך הבקבוק -->
+          <g clip-path="url(#bottleClip)">
+            <rect x="40" y="205" width="120" height="180" fill="url(#waterG)" opacity="0.75"/>
+            <ellipse cx="100" cy="205" rx="52" ry="7" fill="#b7dcf3" opacity="0.9"/>
+          </g>
+          <!-- גוף הבקבוק — פלסטיק חלבי-שקוף -->
+          <path d="M80 30 h40 v40 c0 10 30 22 30 55 v230 c0 15 -12 25 -28 25 h-44 c-16 0 -28 -10 -28 -25 v-230 c0 -33 30 -45 30 -55 z"
+                fill="#eefcf4" fill-opacity="0.35" stroke="#69a583" stroke-width="3.5"/>
+          <!-- פקק -->
+          <rect x="76" y="12" width="48" height="22" rx="5" fill="#69a583"/>
+          <!-- ברק -->
+          <path d="M62 120 q-6 90 0 190" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="0.55" fill="none"/>
+        </svg>
+      </div>
+      <div class="floor"></div>
+    </section>
+
+    <!-- 3 בדיקות — שמאל -->
+    <section class="panel tests">
+      <h2>3 בדיקות</h2>
+
+      <button class="test-btn active">
+        <span class="t-name">מזיגת מים</span>
+      </button>
+
+      <button class="test-btn">
+        <span class="t-name">הפלה מגובה</span>
+      </button>
+
+      <button class="test-btn">
+        <span class="t-name">הכנסה לתיק (בדיקת עמידות)</span>
+      </button>
+    </section>
+  </main>
+
+</div>
+<p class="mock-note">מוק-אפ סטטי לאישור עיצוב — האינטראקציות אינן פעילות. מוצג: פלסטיק שקוף אחרי בדיקת מזיגת מים.</p>
+</body>
+</html>

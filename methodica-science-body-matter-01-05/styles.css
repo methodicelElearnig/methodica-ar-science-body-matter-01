@@ -1,0 +1,1087 @@
+/* =========================================================
+   לומדה 720 — יעד 11 (גוף וחומר) | סיין 4
+   תשתית בסיס — מנוע/רכיבים גלובליים לפי 720-templates skill
+   (_global-components.md) ו-720-design-guidelines skill
+   (colors-and-gradients.md), מאומתים בפרויקטי המקור (מדעים יעד 2/3).
+   ========================================================= */
+
+/* ---------- Subject theme tokens (720-design-guidelines skill:
+   colors-and-gradients.md → "Subject tokens"). ערכי Science theme —
+   11 הטוקנים הרשמיים, גם אם רק חלק בשימוש בפועל כרגע. ---------- */
+:root {
+  --subject-100: #D4F3FF;
+  --subject-200: #C7F0FF;
+  --subject-300: #B9ECFF;
+  --subject-400: #00BAFF;
+  --subject-500: #019DE5;
+  --subject-600: #0690D0;
+  --subject-700: #007AC6;
+  --subject-800: #0070C0;
+  --subject-900: #002060;
+  --subject-alpha-100: rgba(0, 186, 255, 0);
+  --subject-alpha-200: rgba(0, 186, 255, 0.3);
+}
+
+/* ---------- Fonts (עותק מקומי לסין זה, ב-assets/fonts — כל סיין
+   עצמאי לחלוטין, לפי מוסכמת הפרויקט) ---------- */
+@font-face {
+  font-family: 'Assistant';
+  src: url('assets/fonts/assistant-hebrew.woff2') format('woff2');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: 'Assistant';
+  src: url('assets/fonts/assistant-latin.woff2') format('woff2');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+                 U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215;
+}
+
+/* ---------- Reset ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  direction: rtl;
+  font-family: Calibri, Arial, sans-serif;
+  background: #ffffff;
+}
+button {
+  font-family: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: inherit;
+}
+button:disabled { cursor: default; }
+img { display: block; max-width: none; }
+
+/* utility — used by the global goTo() popup/hint-overlay closer below */
+.hidden { display: none !important; }
+
+/* ---------- Canvas & viewport scaling ---------- */
+#app {
+  width: 1280px;
+  height: 710px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  background: #fff;
+  overflow: hidden;
+}
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+.screen.active { display: block; }
+
+/* transitions removed on purpose — Figma states change instantly */
+* { transition: none !important; }
+
+/* ════════════════════════════════════════════════════════
+   GLOBAL — הועתקו 1:1 מסיין 1 (methodica-science-body-matter-01-01) —
+   רכיבים משותפים לכל הסינים, לא שוכפלו/שונו כאן.
+   ════════════════════════════════════════════════════════ */
+
+/* --- Transition screen family --- */
+.transition-content {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 74px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px 56px 50px;
+}
+.transition-title-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 810px;
+  direction: rtl;
+}
+.transition-title {
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: #303030;
+  text-align: center;
+  margin: 0;
+}
+.transition-sub {
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: #303030;
+  text-align: center;
+  line-height: 1.5;
+  margin: 0;
+}
+.transition-avatar-wrap {
+  position: relative;
+  width: 304px;
+  flex-shrink: 0;
+}
+.transition-avatar {
+  width: 304px;
+  aspect-ratio: 304 / 293;
+  object-fit: cover;
+  display: block;
+  border-radius: 16px;
+  background: #ececec;
+}
+/* תוקן: מסך 1 (s0) קיבל כפתור "חזרה" חוצה-פרויקטים — ה-override הישן
+   (flex-end, מהתקופה שבה היה כאן רק כפתור אחד) גרם לשני הכפתורים
+   להידחס יחד לצד השמאלי. הוסר, חוזר לברירת המחדל הגלובלית (space-between). */
+
+/* --- SingleChoiceQuestion/MultipleChoiceQuestion --- */
+.scq-question {
+  position: absolute;
+  top: 139px;
+  left: 40px;
+  right: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+}
+.scq-img {
+  flex-shrink: 0;
+  width: 380px;
+  height: 380px;
+  padding: 8px;
+}
+.scq-img-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(174, 174, 174, 0.5);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #fff;
+}
+.scq-img-inner img { width: 100%; height: 100%; object-fit: cover; }
+.scq-img-inner.scq-img-placeholder {
+  background: #f8f8f8;
+  border: 1px dashed rgba(174, 174, 174, 0.8);
+  cursor: default;
+}
+.scq-img-placeholder-label {
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #aeaeae;
+  text-align: center;
+  padding: 0 16px;
+}
+.scq-content {
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  flex: 1;
+  min-width: 0; /* בלי זה, פריט flex לא מתכווץ מתחת ל-min-content של
+    ילד ברוחב קבוע (`.scq-qtext` 792px) — גורם לעמודה השנייה (טבלה
+    מורחבת ל-560px ב-#s6) לגלוש 128px משמאל לקנבס. תוקן (2026-08-04,
+    בדיקת Playwright בפועל) — אותו באג קיים גם ב-#s8 בסיין 2 (אותו
+    דפוס מדויק הועתק משם). */
+}
+.scq-qtext {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  width: 792px;
+  max-width: 100%;
+}
+.scq-qtitle {
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--subject-500);
+  text-align: right;
+  width: 100%;
+}
+.scq-qbody {
+  font-weight: 400;
+  font-size: 24px;
+  color: #303030;
+  text-align: right;
+}
+
+/* מסך 4 (s3) — תוקן (2026-08-06): 3 הדרישות ממוספרות בפועל בתסריט
+   (buAutoNum type="arabicPeriod", שקף 60) — היו מוצגות כפסקאות
+   נפרדות בלי מספור. */
+.s3-req-list {
+  direction: rtl;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding-right: 26px;
+  padding-left: 0;
+  list-style: decimal;
+}
+.s3-req-list li { padding-right: 4px; }
+.scq-answers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  width: 604px;
+  max-width: 100%;
+}
+.scq-opt {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border: 2px solid var(--subject-500);
+  border-radius: 999px;
+  cursor: pointer;
+  background: #fff;
+}
+.scq-opt-text {
+  flex: 1;
+  font-weight: 400;
+  font-size: 22px;
+  color: #222;
+  text-align: right;
+}
+.scq-radio {
+  order: -1;
+  position: relative;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--subject-500);
+  border-radius: 999px;
+  background: #fff;
+}
+.scq-radio::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.scq-opt.selected .scq-radio { background: var(--subject-500); }
+.scq-opt.correct { border-width: 1.5px; border-color: #609e12; background: #edf8ed; }
+.scq-opt.correct .scq-radio { border-color: #609e12; background: #609e12; }
+.scq-opt.correct .scq-radio::after { background-image: url('assets/images/ddq-icon-correct-check.svg'); background-size: 12px 9px; }
+.scq-opt.wrong { border-width: 1.5px; border-color: #b20010; background: #fff0f4; }
+.scq-opt.wrong .scq-radio { border-color: #b20010; background: #b20010; }
+.scq-opt.wrong .scq-radio::after { background-image: url('assets/images/ddq-icon-incorrect-x.svg'); background-size: 10px 10px; }
+.scq-opt.disabled { cursor: default; }
+.scq-opt:focus-visible { outline: 2px solid var(--subject-500); outline-offset: 2px; }
+
+/* --- qnav (סרגל התקדמות) --- */
+.qnav {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  right: 0;
+  display: flex;
+  direction: ltr;
+  justify-content: center;
+  align-items: flex-start;
+}
+.qnav-item { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 60px; }
+.qnav-icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.qnav-icon.qnav-future { border: 1.5px solid #ececec; background: #fff; }
+.qnav-icon.qnav-future::after { content: ''; width: 12px; height: 12px; border-radius: 50%; background: #ececec; display: block; }
+.qnav-icon.qnav-current { border: 2px solid var(--subject-500); background: #fff; }
+.qnav-icon.qnav-current::after { content: ''; width: 12px; height: 12px; border-radius: 50%; background: var(--subject-500); display: block; }
+.qnav-icon.qnav-success { background: var(--subject-500); border: 2px solid var(--subject-500); }
+/* תוקן (2026-08-05): גליף SVG אמיתי — ראו scene1/styles.css לפירוט המלא. */
+.qnav-icon.qnav-success::after { content: ''; width: 12px; height: 9px; background-image: url('assets/images/ddq-icon-correct-check.svg'); background-repeat: no-repeat; background-position: center; display: block; }
+.qnav-icon.qnav-fail { background: var(--subject-500); border: 2px solid var(--subject-500); }
+.qnav-icon.qnav-fail::after { content: ''; width: 12px; height: 12px; background-image: url('assets/images/ddq-icon-incorrect-x.svg'); background-repeat: no-repeat; background-position: center; display: block; }
+.qnav-label { font-family: Calibri, Arial, sans-serif; font-size: 15px; color: #ececec; text-align: right; white-space: nowrap; }
+.qnav-label.qnav-label-active { color: #222; text-align: center; }
+.qnav-line { width: 96px; height: 1.5px; background: #ececec; margin-top: 11.5px; border-radius: 2px; flex-shrink: 0; }
+.qnav-line.line-done { background: rgba(0, 0, 0, 0.6); }
+
+/* --- קומפוננט טבלה (.tbl-table), מאומת מול Figma node 507:9307 --- */
+/* תוקן (2026-08-05): 22px/SemiBold-600/ימין/12px ריפוד — ראו
+   scene1/styles.css לפירוט המלא (אימות ישיר מול Figma node 507:8458). */
+/* טבלה — לפי Figma "720 — UI Templates" node 716:20555 (Table Cell States 507:7818):
+   כותרת: רקע subject/100 (#D4F3FF), גבול #D4D4D4, פינות עליונות 8px, SemiBold 600.
+   גוף: רקע לבן, קווי הפרדה #ECECEC (תחתון + שמאלי), עמודה ימנית SemiBold 600. */
+.tbl-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  direction: rtl;
+  text-align: right;
+  flex-shrink: 0;
+}
+.tbl-th {
+  background: #D4F3FF;
+  border-top: 1px solid #D4D4D4;
+  border-bottom: 1px solid #D4D4D4;
+  border-right: 1px solid #D4D4D4;
+  font-size: 22px;
+  font-weight: 600;
+  color: #303030;
+  padding: 4px 12px;
+  height: 52px;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.tbl-th:first-child { border-top-right-radius: 8px; }
+.tbl-th:last-child { border-top-left-radius: 8px; border-left: 1px solid #D4D4D4; }
+.tbl-td {
+  background: #fff;
+  border-bottom: 1px solid #ECECEC;
+  border-left: 1px solid #ECECEC;
+  font-size: 22px;
+  font-weight: 400;
+  color: #303030;
+  padding: 4px 12px;
+  height: 52px;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.tbl-td:first-child { font-weight: 600; border-right: 1px solid #ECECEC; }
+.scq-table-wrap { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 380px; height: 380px; box-sizing: border-box; overflow: hidden; }
+
+/* מסך 7 (s6) — טבלה 5-עמודות (רחבה מברירת המחדל 3-עמודות), לפי אותו
+   דפוס בדיוק כמו #s8 בסיין 2 (טבלה 6-עמודות, אותה בעיה) */
+/* תוקן (2026-08-06), לפי בקשה מפורשת ("גודל הטבלה לא תקין"): הטבלה
+   הייתה תקועה ב-15px/min-height:200px מיותר (הרבה יותר מגובה-התוכן
+   האמיתי שלה, ~4 שורות), מה שהשאיר רווח לבן גדול מתחתיה בתוך העמודה,
+   ופונט קטן-מדי לקריאה נוחה. תוקן: פונט 18px (קריא, עדיין נכנס
+   ב-560px בעזרת table-layout:fixed+word-break), אין min-height מלאכותי
+   (הקופסה מתאימה עצמה לתוכן האמיתי), ו-align-self:center כדי שהטבלה
+   תתמרכז אנכית מול טור השאלה/תשובות הגבוה יותר לצידה — לא "תרחף"
+   בראש העמודה עם המרחב הפנוי מתחת. */
+/* תוקן (בקשה מפורשת נוספת): פונט 22px — לא 18px, לפי המוסכמה הקבועה
+   שגודל פונט טבלה בפרויקט הזה הוא תמיד 22px (זהה למה שכבר תוקן
+   בסיין 5). align-self תוקן בהתאם ל-center שהערת-הקוד למעלה כבר
+   תיארה כמתוכנן, אבל בפועל נשאר flex-start. */
+/* תוקן (בקשה מפורשת): מסיחי s6 ברוחב המסיח הארוך ביותר (fit-content,
+   כל האפשרויות נמתחות לאותו רוחב), והטבלה הורחבה ל-700px כדי
+   שכותרת "עמידות במים" לא תישבר לשתי שורות. */
+#s6 .scq-answers { width: fit-content; align-items: stretch; }
+#s6 .scq-table-wrap { width: fit-content; height: auto; align-self: flex-start; }
+/* רוחב העמודות והטבלה מותאם לתוכן (table-layout:auto, בלי שבירת שורות) */
+#s6 .scq-table-wrap .tbl-table { table-layout: auto; width: auto; }
+#s6 .scq-table-wrap .tbl-th, #s6 .scq-table-wrap .tbl-td {
+  font-size: 22px;
+  padding: 8px 14px;
+  white-space: nowrap;
+}
+
+/* --- DragAndDropQuestion (טקסטואלי, מחסן-מילים) --- */
+.dqx-instruction-bold { font-family: Calibri, Arial, sans-serif; font-weight: 700; font-size: 24px; color: #303030; text-align: right; width: 100%; margin: 0; }
+.dqx-sentences { display: flex; flex-direction: column; gap: 14px; width: 100%; }
+.dqx-sentence { direction: rtl; text-align: right; font-family: Calibri, Arial, sans-serif; font-size: 24px; font-weight: 400; color: #303030; line-height: 1.6; }
+.dqx-drop {
+  display: inline-flex; flex-direction: row; direction: rtl; align-items: center; vertical-align: middle;
+  margin: 0 4px; gap: 10px; width: 180px; height: 42px; padding: 0 16px; box-sizing: border-box;
+  border-radius: 12px; border: 1px dashed rgba(0, 0, 0, 0.6); background: #f3f4f5;
+}
+.dqx-drop.drag-hover { border: 1px dashed var(--subject-500); background: #fff; }
+.dqx-drop.filled { border: 1.5px solid var(--subject-500); background: #d4f3ff; }
+.dqx-drop.correct { border: 1.5px solid #609e12 !important; background: #fff !important; }
+.dqx-drop.incorrect { border: 1.5px solid #b20010 !important; background: #fff !important; }
+.dqx-drop-word { flex: 1; min-width: 0; font-size: 24px; color: #303030; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dqx-drop.filled .dqx-drop-word { font-size: 22px; color: #222; }
+/* תוקן (SELF-QA.md §3, "Dropped, not yet checked → Badge: none"):
+   display:none כברירת מחדל, לא רק background ריק — אחרת 26px+10px
+   gap נשמרים תפוסים גם לפני בדיקה ודוחפים את הטקסט מהקצה, בניגוד
+   למפרט. אותו דפוס בדיוק כמו .s8b-item-badge (סיין 2, מאומת). */
+.dqx-drop-icon { display: none; width: 26px; height: 26px; flex-shrink: 0; border-radius: 50%; background-repeat: no-repeat; background-position: center; }
+.dqx-drop.correct .dqx-drop-icon { display: block; background-color: #609e12; background-image: url('assets/images/ddq-icon-correct-check.svg'); background-size: 12px 9px; }
+.dqx-drop.incorrect .dqx-drop-icon { display: block; background-color: #b20010; background-image: url('assets/images/ddq-icon-incorrect-x.svg'); background-size: 12px 12px; }
+.dqx-word-bank { display: flex; flex-direction: row; flex-wrap: wrap; direction: rtl; gap: 10px; width: 100%; padding: 8px 0; }
+.dqx-source-slot { display: inline-flex; align-items: center; }
+.dqx-drag-card {
+  background: #fff; border: 1.5px solid #ececec; border-radius: 10px; font-family: Calibri, Arial, sans-serif;
+  font-size: 24px; font-weight: 400; color: #303030; cursor: grab; user-select: none; white-space: nowrap;
+  display: inline-flex; align-items: center; justify-content: flex-start; width: 180px; height: 42px; direction: rtl;
+  padding: 0 16px;
+  box-sizing: border-box;
+  text-align: right;
+}
+.dqx-drag-card:hover:not(.ghost):not(.locked) { border-color: var(--subject-500); box-shadow: 0 2px 6px rgba(1, 157, 229, 0.2); }
+/* Figma 5340:25533 (State 02 Dragging): הגלולה שנגררת נשארת לבנה ואטומה עם גבול 1.5px כחול — בלי שקיפות/אפור. */
+.dqx-drag-card.dragging { opacity: 1; border-color: var(--subject-500); }
+.drag-pill-preview { position: fixed; top: -500px; left: 0; margin: 0; box-sizing: border-box; transform-origin: 0 0; background: #fff !important; border: 1.5px solid var(--subject-500) !important; color: #303030 !important; opacity: 1 !important; pointer-events: none; }
+/* המילה נגררת מתוך תיבת-יעד: התיבה נראית ריקה */
+.dqx-drop.drag-origin, .oddq-zone.drag-origin { border: 1px dashed rgba(0, 0, 0, 0.6) !important; background: #f3f4f5 !important; }
+.dqx-drop.drag-origin > *, .oddq-zone.drag-origin > * { visibility: hidden; }
+.dqx-drag-card.ghost { color: transparent; background: #f3f4f5; border: 1px solid rgba(174, 174, 174, 0.3); pointer-events: none; }
+.dqx-drag-card.locked { cursor: default; }
+
+/* --- OrderedDragAndDropQuestion (מסך 8, s7) — תבנית חדשה, נבנתה
+   ישירות מ-Figma (fileKey eSbp4bKHgBky0rakDb8l9N, nodes 1717-39511
+   /39465/39599/39645/39683). צבעי/גבולות אזור-היעד (.oddq-zone) זהים
+   במפורש לצבעי .dqx-drop (אותה מערכת עיצוב — var(--subject-500),
+   #d4f3ff, #609e12, #b20010) — לא הומצאו. גיאומטריית השורה (פילה
+   מלאה-רוחב 52px, רדיוס 12px) לפי הרכיב DragDropState בפיגמה.
+   **הבהרה על מבנה התוכן** (שקף 64 בתסריט): התסריט עצמו לא נותן גישה
+   ויזואלית חד-משמעית לפריסת המסך הספציפי הזה (רק ל-state components
+   הגנריים) — לכן, בהתאם למוסכמת הפרויקט הקיימת (dqx19/dqx5: משפט
+   סטטי מלא + מחסן-מילים קצר, לא הפוך), הוחלט: 3 "הדגימות" (עם תיאורי
+   הבדיקות המלאים, אייקוני ✔/✖) מוצגות כטקסט סטטי מעל אזור הגרירה;
+   הגרירה עצמה מתבצעת על תוויות קצרות ("דגימה א'/ב'/ג'") לתוך 3 יעדים
+   קבועים וממוספרים (חלון שקוף=1, מתכת מגנטית=2, חומר מסיס במים=3),
+   בדיוק לפי המיפוי הנכון-מוצהר בתסריט. */
+.oddq-samples { display: flex; flex-direction: column; gap: 10px; width: 100%; margin: 0; }
+.oddq-sample { direction: rtl; text-align: right; font-family: Calibri, Arial, sans-serif; font-size: 24px; font-weight: 400; color: #303030; line-height: 1.5; margin: 0; }
+.oddq-yes { color: #609e12; font-weight: 700; }
+.oddq-no { color: #b20010; font-weight: 700; }
+/* תוקן (בקשה מפורשת: "אלמנטי הגרירה זרוקים לצד השמאלי, למה הם לא
+   קרובים לאיזור הימני?"): .oddq-zones היה flex:1, נמתח לכל הרוחב
+   הפנוי (948px) בעוד תוכנו האמיתי (מספר+תווית+יעד) רק ~350px ונדחס
+   לקצה הימני שלו — זה השאיר פער ריק ענק בין מאגר-הגרירה (משמאל,
+   .oddq-pool) לבין היעדים עצמם (מימין). הוסר ה-flex:1: העמודה
+   מתכווצת עכשיו לתוכן האמיתי שלה, כך ששתי העמודות (מאגר+יעדים)
+   יושבות צמודות זו לזו עם gap:32px קבוע ביניהן, לא מפוזרות לשני
+   קצוות המסך. */
+.oddq-grid { display: flex; flex-direction: row; direction: rtl; gap: 32px; width: 100%; align-items: flex-start; margin-top: 6px; }
+.oddq-zones { display: flex; flex-direction: column; gap: 7px; }
+.oddq-row { display: flex; flex-direction: row; direction: rtl; align-items: center; gap: 10px; }
+.oddq-num {
+  width: 26px; height: 26px; border-radius: 50%; background: var(--subject-500); color: #fff;
+  font-family: Calibri, Arial, sans-serif; font-weight: 600; font-size: 15px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.oddq-target-label { font-family: Calibri, Arial, sans-serif; font-size: 22px; font-weight: 700; color: #303030; white-space: nowrap; flex-shrink: 0; }
+.oddq-zone {
+  /* תוקן (SELF-QA.md §3, "pill/zone width must never be left to
+     flex:1"): רוחב קבוע זהה ל-.oddq-pool/.oddq-card (220px) — היה
+     flex:1 שנמתח לכל הרוחב הפנוי בשורה (ללא עמודת-אפליקציה שמצרה
+     כאן, בניגוד למסך dqx5 התאום), כך שהפריט המוטל נראה קטן בהרבה
+     מהמשבצת שהוא אמור למלא. */
+  width: 220px; flex-shrink: 0; height: 46px; border-radius: 12px; box-sizing: border-box;
+  border: 1px dashed rgba(0, 0, 0, 0.6); background: #f3f4f5;
+  /* תוקן (2026-08-04): gap 10px (לא 8) — ערך Figma מדויק (SELF-QA.md
+     קטגוריה 3), זהה ל-.dqx-drop. */
+  display: flex; flex-direction: row; direction: rtl; align-items: center; gap: 10px; padding: 0 20px;
+}
+.oddq-zone.drag-hover { border: 1px dashed var(--subject-500); background: #fff; }
+.oddq-zone.filled { border: 1.5px solid var(--subject-500); background: #d4f3ff; }
+.oddq-zone.correct { border: 1.5px solid #609e12 !important; background: #fff !important; }
+.oddq-zone.incorrect { border: 1.5px solid #b20010 !important; background: #fff !important; }
+/* תוקן (2026-08-04): ברירת-מחדל 24px/`#303030` (זהה ל-.dqx-drop-word) —
+   היה 17px/`#222` קבוע בכל מצב, בלי הבחנה בין "הונח טרם נבדק" לכל
+   מצב אחר. עכשיו ה-22px/`#222` (SELF-QA.md קטגוריה 3, "Dropped, not
+   yet checked") חל רק תחת .filled, כמו בכל שאר משפחת ה-dqx. */
+.oddq-zone-word { flex: 1; min-width: 0; font-family: Calibri, Arial, sans-serif; font-size: 24px; font-weight: 400; color: #303030; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.oddq-zone.filled .oddq-zone-word { font-size: 22px; color: #222; }
+/* תוקן (2026-08-04): 26×26 (לא 22×22) — גודל-badge מדויק לקטגוריה 3
+   (SELF-QA.md), זהה ל-.dqx-drop-icon; קנה-מידה הגליף הותאם בהתאם. */
+.oddq-zone-icon { display: none; width: 26px; height: 26px; flex-shrink: 0; border-radius: 50%; background-repeat: no-repeat; background-position: center; }
+.oddq-zone.correct .oddq-zone-icon { display: block; background-color: #609e12; background-image: url('assets/images/ddq-icon-correct-check.svg'); background-size: 12px 9px; }
+.oddq-zone.incorrect .oddq-zone-icon { display: block; background-color: #b20010; background-image: url('assets/images/ddq-icon-incorrect-x.svg'); background-size: 12px 12px; }
+.oddq-pool { display: flex; flex-direction: column; gap: 14px; width: 220px; flex-shrink: 0; }
+.oddq-slot { display: flex; }
+/* תוקן (2026-08-04): border 1.5px `#ececec` (לא 1px `rgba(174,174,174,.5)`,
+   מוסכמת ValueInputQuestion שגויה כאן - אותה טעות בדיוק שכבר תוקנה
+   ב-.dqx-drag-card); טקסט 24px/`#303030` (לא 17px/`#222` קבוע). */
+/* תוקן (2026-09-14, בקשה: "למה הטקסט מיושר לשמאל במקום לימין באלמנטי
+   הגרירה?"): justify-content היה flex-end. הקלף הוא display:flex עם
+   direction:rtl, והטקסט מוזרק כטקסט גולמי (card.textContent) שהופך
+   ל-anonymous flex item — מיקומו נקבע ע"י justify-content, לא
+   text-align. בציר-ראשי rtl, flex-end = קצה שמאל (לא ימין כמו ב-ltr),
+   ולכן הטקסט נדחק שמאלה חרף text-align:right. הוחלף ל-flex-start,
+   שתחת rtl מצביע נכון לימין. */
+.oddq-card {
+  width: 100%; height: 46px; border-radius: 12px; box-sizing: border-box;
+  border: 1.5px solid #ececec; background: #fff;
+  display: flex; align-items: center; justify-content: flex-start; padding: 0 20px;
+  font-family: Calibri, Arial, sans-serif; font-size: 24px; font-weight: 400; color: #303030;
+  cursor: grab; user-select: none; direction: rtl; text-align: right;
+}
+.oddq-card:hover:not(.ghost):not(.locked) { border-color: var(--subject-500); box-shadow: 0 2px 6px rgba(1, 157, 229, 0.2); }
+.oddq-card.dragging { opacity: 1; border-color: var(--subject-500); }
+.oddq-card.ghost { color: transparent; background: #f3f4f5; border: 1px solid rgba(174, 174, 174, 0.3); pointer-events: none; }
+.oddq-card.locked { cursor: default; }
+
+/* ════════════════════════════════════════════════════════
+   מסך 9 (s8) — מסך הוטספוטים (4 חומרים בנעל ריצה, שקף 65). "לשכפל
+   את מסך 2 מהסיין הנוכחי, ובמקום היישמון תכניס הוטספוט" — **תוקן
+   (2026-08-05)**: הגרסה הקודמת (`.hs9-content` — טור עצמאי, תמונה
+   ממורכזת, top:100) שוכפלה ממבנה `.hs22-*` בסיין 1 כדי להישאר נאמנה
+   ל-Figma node 196:3349/196:3357 (אותו node ששימש למסך 22 שם) —
+   אבל התעלמה מהחלק הראשון של אותה הוראה עצמה ("לשכפל את מסך 2"),
+   ויצרה חוסר-עקביות ויזואלית: כל שאר מסכי הסיין (2-8) ממקמים את
+   התמונה/היישומון/הטבלה המלווה באותה משבצת בדיוק (`.scq-question`
+   top:139, עמודה שנייה משמאל) — מסך 9 לבד ישב במקום/גודל שונים.
+   **התיקון**: `.hs9-col` הוא כעת עמודה שנייה רגילה בתוך `.scq-question`
+   הגלובלי (בדיוק כמו `.applet-col`) — אותה משבצת, אותה נקודת-עיגון,
+   תוכן ה-Figma node (מסגרת תמונה + כפתורי הוטספוט) פשוט "מתמלא"
+   לתוכה. הרוחב הוקטן מ-480px ל-380px (זהה ל-`.scq-img`/`.applet-wrap`
+   ברירת המחדל) — מיקומי ההוטספוט (אחוזים, לא px) נשארים תקפים בלי
+   שינוי כי הם יחסיים ל-aspect-ratio הקבוע של התמונה עצמה, לא לגודל
+   המסגרת. יחס-הגובה-רוחב (552×370) לא הועתק מסיין 1 — מבוסס על מידות
+   התמונה האמיתית של הסיין הזה. 4 הוטספוטים ממופים ידנית מול 4 השכבות
+   הנראות בתמונה (מלמעלה למטה: בד/עליונית, קצף אמצעי, כריות אוויר
+   כחולות, לוחית תחתונה) — סדר זהה לסדר התוכן בתסריט. בלי
+   טיימר-להשהיית-כפתור-המשך (בשונה ממסך 22 בסיין 1) — שם זה היה לפי
+   הנחיית הפקה מפורשת שלא חוזרת כאן. */
+.hs9-col { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.hs9-image-frame {
+  width: 380px;
+  max-width: 100%;
+  aspect-ratio: 552 / 370;
+  position: relative;
+  border: 1px solid rgba(174, 174, 174, 0.5);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  flex-shrink: 0;
+}
+.hs9-image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.hs9-hotspot {
+  /* Same Figma info button (2045:20208, SELF-QA §25.6) as the hotspots in
+     01-02 (.hs23-hotspot): filled --subject-500 circle with a white "i",
+     no border / hover change. Replaces the custom "?" circle. The ::before
+     enlarges only the click target. */
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--subject-500);
+  padding: 0;
+  cursor: pointer;
+}
+.hs9-hotspot::before { content: ''; position: absolute; inset: -8px; }
+.hs9-hotspot .info-btn__icon { width: 100%; height: 100%; display: block; }
+
+/* תוקן (2026-08-06), לפי בקשה מפורשת: התמונה (+מסגרתה) הוגדלה — לתוכן
+   הטקסטואלי של המסך הזה (3 פסקאות קצרות, לא 4 אפשרויות-תשובה כמו
+   מסכי SCQ אחרים) לא היה צריך את מלוא 792px של `.scq-qtext`
+   הגלובלי, אז הוקטן ל-620px scoped כאן — הפנוי עבר למסגרת התמונה
+   (380→520px, עם אותו aspect-ratio 552/370). ההוטספוטים גדלו בהתאם
+   באופן מתון (לא סקאלה מלאה 1:1 — כדי שלא ייראו גדולים-מוגזמים). */
+#s8 .scq-qtext { width: 620px; }
+#s8 .hs9-image-frame { width: 520px; }
+#s8 .hs9-hotspot { width: 32px; height: 32px; }
+
+/* תוקן (2026-08-06), לפי בקשה מפורשת ("הפופאפים גדולים מאוד"):
+   .scq-hint-popup הגלובלי (542px/padding 40/רדיוס 48) נועד לתוכן-רמז
+   ארוך (כותרת "רמז" + 2-3 משפטים) — כאן התוכן קצר בהרבה (כותרת חומר
+   קצרה + משפט אחד), אותו תיקון-שיעור בדיוק שכבר נעשה ל-#s21 בסיין 1
+   מאותה סיבה. Scoped ל-#s8 בלבד, לא נוגע ב-.scq-hint-popup הגלובלי
+   (בשימוש גם למסכי-רמז אחרים כאן שבהם הגודל המקורי מתאים). */
+#s8-hint-overlay .scq-hint-popup {
+  width: 420px;
+  padding: 28px 32px;
+  gap: 14px;
+  border-radius: 32px;
+}
+#s8-hint-overlay .scq-hint-title { font-size: 24px; }
+#s8-hint-overlay .scq-hint-body { font-size: 20px; }
+#s8-hint-overlay .scq-hint-close {
+  width: auto;
+  padding: 10px 32px;
+  font-size: 20px;
+}
+
+/* --- הטמעת יישומון חיצוני (iframe), משחק תפקיד כמו .scq-img בתוך
+   .scq-question — ראו הערה מלאה במסך 2 ב-index.html.
+   **הוגדל משמעותית (בקשה מפורשת: "בקושי רואים את הכתוב")** — שילוב
+   3 מנופים, לא רק scale, כי scale לבד לא יכול לפצות על תקציב-גובה
+   קשיח (קנבס 710px, פס תחתון 74px):
+   1) top של .scq-question ב-s1-s5 הוקטן מ-139 ל-115 (מרווח-בטיחות
+      ~17px מתחת ל-qnav, שמסתיים סביב y≈98) → מעלה תקציב אנכי זמין
+      מ-497 ל-521px.
+   2) applet-note (ההערה מתחת ליישומון) הוקטנה 14px→11px, applet-col
+      gap 6px→4px — חוסך עוד כ-6px overhead.
+   3) **היישומון עצמו הוקטן (`.app` בקובץ שלו) מ-780px ל-620px גובה
+      עיצוב** — כי הבעיה האמיתית הייתה scale כפול (יישומון "טלפון"
+      גבוה נדחס עוד ל-0.56-0.59). מקטין את שטח-הזירה (ה-SVG, flex:1)
+      אבל לא את גודל הפונטים המוצהרים של הכותרת/תוויות/כפתורים —
+      כך שאותה הקטנה חיצונית (scale) מספיקה כדי לגדל את הטקסט בפועל.
+   סה"כ (אז): scale מ-0.59 ל-0.71.
+   **תוקן שוב, ואז תוקן בחזרה (בקשה מפורשת חדשה): כפתור ההגדלה נשאר
+   overlay בתוך .applet-wrap** — סבב-ביניים קצר העביר אותו לשורת-
+   כפתור נפרדת מתחת ל-wrap כדי למנוע חפיפה עם `header`/`.instruction`
+   של היישומון; הלקוחה ביקשה בחזרה overlay, עם פתרון שונה לחפיפה: הטקסט
+   עצמו (`.instruction` ביישומון, קובץ נפרד) קיבל `<br>` ידני כדי
+   ש"כדי" יעבור לשורה השנייה, מפנה מקום לכפתור. **חשוב:** תחת RTL,
+   המקום שמתפנה הוא **בקצה השמאלי** של השורה הראשונה (המילה האחרונה
+   לפני שבירה יושבת משמאל, לא מימין) — לכן `.applet-zoom-btn` דורס את
+   ברירת-המחדל של `.img-zoom-btn` (right:10px) ל-left:10px; right:auto,
+   ולא reuse "כמו שהוא" של המחלקה הגלובלית.
+   - נוצל תקציב-הגובה שנשאר פנוי (521px זמינים): בלי שורת-כפתור נפרדת,
+     נשארה רק `.applet-note` לבדה מתחת ל-wrap (~15px) + gap(4px) →
+     521-4-15=502, מעוגל-כלפי-מטה ל-500 לשם מרווח-ביטחון.
+     500/668=0.748 (היה 0.71 במקור, 0.733 בסבב-הביניים). 372×474 →
+     392×500. שינוי-הרוחב **לא מזיז** את טור הטקסט הימני (.scq-content
+     flex:1 סופג את זה, כמו במסכי-טבלה אחרים בפרויקט) — טור-הטקסט
+     עצמו נשאר מיושר לימין באותו מקום, רק מצטמצם קצת ברוחב אם צריך.
+   ⚠️ **תקרה אמיתית, לא נפתרה לגמרי**: 0.748 הוא עדיין שיפור צנוע
+   (+5% מ-0.71) כי תקציב-הגובה כמעט מוצה כבר בסבב קודם. כדי לקבל
+   קפיצה משמעותית יותר (למשל scale~0.85-0.9) צריך לצמצם את הגובה
+   הפנימי של `.app` ביישומון עצמו (קובץ נפרד, "יישומון יעד 11 מעבדת
+   הבקבוקים/index.html") — לא בוצע כאן כי זו עריכה עמוקה יותר במיני-
+   פרויקט נפרד (header/panels/paddings), ואי אפשר לאמת חזותית בלי
+   דפדפן חי; לא רציתי לנחש ולסכן שבירת הפריסה הפנימית שלו. */
+/* תוקן (בקשה חוזרת: "תגדילי את גודל היישומון... כרגע לא מבינים כלום
+   מהיישומון"): היישומון עצמו (`.app` בקובץ שלו) הוקטן 620→580px גובה
+   פנימי, ע"י צמצום ריפוד header/panels/כפתורים בלבד — לא הפונטים
+   (כבר תוקנו למטה, לא נגעו כאן) ולא .arena (זירת-הבקבוק, האלמנט
+   המרכזי, אפילו מקבלת יותר שטח עכשיו, לא פחות — הריפוד שהצטמצם משתחרר
+   אליה). native height: 580+48(ריפוד ה-body בקובץ היישומון)=628.
+   **תוקן שוב (בקשה מפורשת: "בדיוק כמו במסך 2", "גם במסכים 4+5+6") —
+   גודל אחיד לחלוטין בכל 5 המסכים (s1-s5), לא רק s1:** מסך 2 (s1, בלי
+   qnav) קיבל בעבר גודל גדול יותר משלו כי חשבנו ש-s2-s5 (עם qnav)
+   זקוקים למרווח-בטיחות גדול יותר. בפועל: qnav עצמו (48 top + 24
+   אייקון + 8 gap + 18 תווית) מסתיים בדיוק ב-98px (נמדד ישירות מה-CSS,
+   לא ניחוש) — ו-.flag-btn הגלובלי (רלוונטי לכל 5 המסכים, לא רק s1)
+   מסתיים ב-95px. שני האילוצים כמעט זהים, אז top:105px (מרווח-בטיחות
+   ~7-10px משניהם) עובד לכל חמשת המסכים גם יחד — לא צריך שני גדלים
+   שונים. תקציב: 531(=710-105-74)-4(gap)-15(note)=512 →
+   scale=512/628=0.815. */
+.applet-col { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.applet-wrap {
+  width: 427px; height: 512px;
+  border: 1px solid rgba(174, 174, 174, 0.5);
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+}
+.applet-wrap iframe {
+  width: 524px; height: 628px; border: none;
+  position: absolute; top: 0; right: 0;
+  transform: scale(0.815);
+  transform-origin: top right;
+}
+#s1 .scq-question, #s2 .scq-question, #s3 .scq-question, #s4 .scq-question, #s5 .scq-question {
+  top: 105px;
+}
+/* דורס את ברירת-המחדל הגלובלית של .img-zoom-btn (right:10px) — כאן
+   הפינה הפנויה היא השמאלית (ראו הערה מלאה למעלה, RTL + <br> ידני
+   ב-.instruction של היישומון). */
+/* תוקן (באג אמיתי, לא רק תיאורטי): .applet-zoom-btn כאן ו-.img-zoom-btn
+   הגלובלי (right:10px) הם שתי מחלקות בודדות עם אותה ספציפיות (0,1,0) —
+   מי שמנצח הוא מי שמופיע אחרון במקור, וזה .img-zoom-btn (מוגדר הרבה
+   יותר למטה בקובץ), אז ה-right:10px שלו ניצח בשקט את left:10px כאן,
+   ללא קשר לסדר-הכתיבה למעלה. תוקן ל-selector עם ספציפיות גבוהה יותר
+   (0,2,0) שמנצח תמיד, בלי תלות בסדר-מקור. */
+.applet-wrap .applet-zoom-btn { left: 10px; right: auto; }
+.applet-note {
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: #aeaeae;
+  text-align: center;
+  margin: 0;
+}
+
+/* ════════════════════════════════════════════════════════
+   PLACEHOLDER — מסך תשתית בלבד, יוחלף במסך תוכן אמיתי
+   ════════════════════════════════════════════════════════ */
+.placeholder-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.placeholder-text {
+  font-size: 24px;
+  font-weight: 400;
+  color: #aeaeae;
+  text-align: center;
+}
+
+/* ════════════════════════════════════════════════════════
+   GLOBAL — Bottom bar (74px). RTL אמיתי: אין direction:ltr בשום מקום.
+   ════════════════════════════════════════════════════════ */
+.bottom-bar {
+  /* Figma (196:3319): bottom:0, גובה 75px כולל קו עליון 0.3px (SELF-QA §8) */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 75px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-top: 0.3px solid #AEAEAE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bottom-bar-inner {
+  /* Figma: padding 24px + Slot padding 10px — השורה נמתחת עם הסרגל (§8) */
+  width: 100%;
+  padding: 0 34px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+/* RTL אמיתי, לא direction:ltr — הסדר הפיזי מושג ע"י סדר ה-DOM (חזרה ראשון = ימין) */
+.bar-actions { display: flex; align-items: center; gap: 16px; }
+.bar-back { display: flex; align-items: center; }
+
+/* תוקן (SELF-QA.md §6, מאומת מול Figma): height:39px מפורש (לא
+   padding+line-height), min-width (לא width קבוע), גרדיאנט 3-עצירות,
+   גבול 1px על רמז/חזרה (לא 1.5px), וצבע כפתור הרמז subject-700 (לא
+   subject-500 — ההחלפה השכיחה ביותר במשפחה הזו לפי SELF-QA.md). */
+.btn-continue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 39px;
+  background: linear-gradient(180deg, #005FBE 9%, #0059B2 23.361%, #003971 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 0 20px;
+  min-width: 140px;
+  box-sizing: border-box;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-continue:disabled { background: #AEAEAE; color: #303030; cursor: not-allowed; }
+.btn-continue:not(:disabled):hover { opacity: 0.88; }
+.btn-continue:focus-visible { outline: 3px solid var(--subject-500); outline-offset: 2px; }
+
+.btn-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 39px;
+  background: #ffffff;
+  color: var(--subject-700);
+  border: 1px solid var(--subject-700);
+  border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 0 20px;
+  min-width: 140px;
+  box-sizing: border-box;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-back:hover { background: #f0f8ff; }
+.btn-back:focus-visible { outline: 3px solid var(--subject-700); outline-offset: 2px; }
+
+.btn-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 39px;
+  background: #ffffff;
+  color: var(--subject-700);
+  border: 1px solid var(--subject-700);
+  border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 0 20px;
+  min-width: 140px;
+  box-sizing: border-box;
+  cursor: pointer;
+  gap: 6px;
+  white-space: nowrap;
+}
+.btn-hint[hidden] { display: none; }
+.btn-hint:disabled { color: #aeaeae; border-color: #aeaeae; cursor: not-allowed; }
+.btn-hint .scq-hint-icon { flex-shrink: 0; width: 26px; height: 24px; }
+.btn-hint:hover { background: #f0f8ff; }
+.btn-hint:focus-visible { outline: 3px solid var(--subject-500); outline-offset: 2px; }
+
+/* ════════════════════════════════════════════════════════
+   GLOBAL — Feedback popup system (720-templates skill:
+   _global-components.md → "Feedback popup system"). CSS מוכן, טרם
+   מחובר לתוכן — כל מסך שאלה עתידי ייתן ל-box שלו id שמסתיים ב-"-popup"
+   (למשל s3-feedback-popup), כדי שהסוגר הגלובלי ב-goTo() יתפוס אותו.
+   ════════════════════════════════════════════════════════ */
+.scq-fb-box {
+  display: none;
+  position: absolute;
+  left: 16px;
+  bottom: 87px;
+  width: 426px;
+  max-width: calc(100% - 32px);
+  border: 0.3px solid #aeaeae;
+  border-radius: 12px;
+  padding: 24px;
+  flex-direction: column;
+  gap: 12px;
+  background: #fff;
+  z-index: 25;
+  cursor: grab;
+  user-select: none;
+}
+.scq-fb-box.visible { display: flex; }
+.scq-fb-box.is-correct { background: #edf8ed; }
+.scq-fb-box.is-wrong { background: #ffdbdc; }
+.scq-fb-box.is-dragging { cursor: grabbing; }
+.scq-fb-title { display: flex; direction: rtl; align-items: center; gap: 16px; }
+.scq-fb-title-text { flex: 1; font-weight: 700; font-size: 20px; color: #222; text-align: right; white-space: pre-line; }
+.scq-fb-body { font-weight: 400; font-size: 20px; color: #222; text-align: right; white-space: pre-line; }
+/* כפתור טוגל "מעבר לתשובה שלי/הנכונה" (§6.1) */
+.scq-fb-reveal-btn {
+  align-self: flex-start;
+  background: #fff; color: #222; border: 1px solid #484848; border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif; font-size: 20px; font-weight: 400;
+  height: 39px; padding: 0 20px; box-sizing: border-box; white-space: nowrap; cursor: pointer;
+}
+.scq-fb-reveal-btn[hidden] { display: none; }
+.scq-fb-reveal-btn:hover { font-weight: 600; }
+
+/* long-feedback variant (scroll-gated) — ראו _global-components.md
+   → "Long-feedback variant". מופעל per-feedback-state, לא ברירת מחדל. */
+.scq-fb-box.is-scroll { height: 300px; }
+.scq-fb-box.is-scroll .scq-fb-body {
+  flex: 1; min-height: 0; overflow-y: auto;
+  direction: ltr; /* scrollbar-only flip — פיזית ימין תחת RTL */
+  padding-right: 6px;
+}
+.scq-fb-box.is-scroll .scq-fb-body p { direction: rtl; text-align: right; }
+/* תוקן (2026-09-15, בקשה מפורשת של הלקוח: לוודא שאין לסקרולבר חיצים,
+   מאומת מול Figma node 1038:17061 "Scrolling" כ-source of truth) —
+   צד ה-ltr כבר היה נכון (למעלה), אבל שום סקרולבר בפרויקט לא היה
+   מעוצב בכלל, ולכן הציג את חיצי-ברירת-המחדל של הדפדפן (נבדק
+   אמפירית ב-Chromium). כאן ובכל שאר המכולות הגלילות בפרויקט נוסף
+   עיצוב מותאם תואם-פיגמה, כולל הסתרת החיצים. */
+.scq-fb-box.is-scroll .scq-fb-body::-webkit-scrollbar { width: 18px; }
+.scq-fb-box.is-scroll .scq-fb-body::-webkit-scrollbar-track { background: rgba(201, 206, 216, 0.4); border: 0.5px solid #f3f4f5; border-radius: 16px; }
+.scq-fb-box.is-scroll .scq-fb-body::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.56); border-radius: 24px; border: 3px solid transparent; background-clip: padding-box; }
+.scq-fb-box.is-scroll .scq-fb-body::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+
+/* ════════════════════════════════════════════════════════
+   GLOBAL — Hint popup (CSS-only, מוכן לשימוש עתידי). id של ה-overlay
+   יסתיים ב-"-hint-overlay" (למשל s3-hint-overlay) כדי שהסוגר הגלובלי
+   ב-goTo() יתפוס אותו.
+   ════════════════════════════════════════════════════════ */
+.scq-hint-overlay {
+  position: absolute; inset: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0, 32, 96, 0.35);
+}
+.scq-hint-overlay[hidden] { display: none; }
+.scq-hint-popup {
+  position: relative; width: 542px; max-width: calc(100% - 64px);
+  background: var(--subject-500); border-radius: 48px; padding: 40px;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 24px;
+  direction: rtl;
+}
+.scq-hint-title-row { width: 100%; display: flex; flex-direction: row-reverse; align-items: center; justify-content: flex-end; gap: 16px; }
+.scq-hint-title { flex: 1; font-weight: 700; font-size: 32px; color: #fff; text-align: right; }
+.scq-hint-bulb { width: 40px; height: 34px; flex-shrink: 0; }
+.scq-hint-body { font-weight: 400; font-size: 22px; color: #fff; text-align: right; line-height: 1.5; }
+.scq-hint-close { align-self: center; width: 196px; padding: 16px 40px; border-radius: 999px; background: #fff; color: #303030; font-size: 24px; text-align: center; }
+/* כפתור "عودة إلى السؤال" בפופאפ רמז — רוחב לפי הטקסט (בלי שבירת שורה),
+   והובר לפי Figma "Hint Card" (Hover): הטקסט הופך ל-Bold (700). */
+.scq-hint-close.scq-hint-back { width: auto; white-space: nowrap; cursor: pointer; }
+.scq-hint-close.scq-hint-back:hover { font-weight: 700; }
+
+/* ════════════════════════════════════════════════════════
+   GLOBAL — Image zoom (720-templates skill: _global-components.md
+   → "Image zoom")
+   ════════════════════════════════════════════════════════ */
+.img-zoom-btn {
+  position: absolute; top: 10px; right: 10px; width: 44px; height: 44px;
+  border-radius: 999px; background: #fff; border: 2px solid var(--subject-500);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  padding: 0; z-index: 2; box-sizing: border-box; /* Figma Zoom 1589:17043 */
+}
+.img-zoom-btn:hover, .img-zoom-btn:focus-visible { background: var(--subject-500); }
+.img-zoom-btn__icon { width: 20.7149px; height: 20.9231px; overflow: visible; }
+.img-zoom-btn__icon .zi-ring { stroke: var(--subject-500); }
+.img-zoom-btn__icon .zi-handle { fill: var(--subject-500); stroke: none; }
+.img-zoom-btn__icon .zi-handle--hover { display: none; }
+.img-zoom-btn:hover .zi-ring, .img-zoom-btn:focus-visible .zi-ring { stroke: #fff; }
+.img-zoom-btn:hover .zi-handle--default, .img-zoom-btn:focus-visible .zi-handle--default { display: none; }
+.img-zoom-btn:hover .zi-handle--hover, .img-zoom-btn:focus-visible .zi-handle--hover { display: block; fill: #fff; stroke: #fff; }
+.img-zoom-btn:focus-visible { outline: 2px solid var(--subject-500); outline-offset: 2px; }
+.img-zoom-modal {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.78); z-index: 1000;
+}
+.img-zoom-modal.hidden { display: none; }
+.img-zoom-modal__panel {
+  position: relative; width: 660px; height: 660px; background: #fff; border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); display: flex; align-items: center;
+  justify-content: center; overflow: hidden;
+}
+.img-zoom-modal__stage { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+.img-zoom-close {
+  position: absolute; top: 10px; left: 10px; width: 40px; height: 40px;
+  padding: 0; border: 0; background: none; cursor: pointer; z-index: 2; border-radius: 50%;
+}
+.img-zoom-close__icon { display: block; width: 40px; height: 40px; overflow: visible; }
+.img-zoom-close__icon .zc-bg { fill: #fff; stroke: var(--subject-500); }
+.img-zoom-close__icon .zc-x { fill: var(--subject-500); }
+.img-zoom-close:hover .zc-bg, .img-zoom-close:focus-visible .zc-bg { fill: var(--subject-500); }
+.img-zoom-close:hover .zc-x, .img-zoom-close:focus-visible .zc-x { fill: #fff; }
+.img-zoom-close:focus-visible { outline: 2px solid var(--subject-500); outline-offset: 2px; }
+
+/* ════════════════════════════════════════════════════════
+   GLOBAL — הגדלת יישומון (applet-zoom), לפי בקשה מפורשת של הלקוח:
+   "היישומון קטן מאוד וקשה להשתמש בו" (מסכים 2-6, s1-s5). כפתור
+   ההגדלה (.img-zoom-btn, reuse מלא — אותו אייקון/מיקום/צבע כמו
+   הגדלת-תמונה) פותח את המודל, שמציג את אותו יישומון **בלי scale-down
+   כלל** (transform:scale) — לעומת ה-scale המצומצם בתוך .applet-wrap
+   הרגיל (ראו הערה מלאה שם).
+   **תוקן שוב (בקשה מפורשת): "להגדיל את הפופאפ הרבה יותר ואפילו להפוך
+   את סדר האלמנטים מאנכי לאופקי"** — היישומון עצמו קיבל מצב `.app.big`
+   ייעודי (לא רק גודל-פונט, גם פריסה אופקית: main הופך מ-column
+   ל-row) שדורש הרבה יותר רוחב מהגרסה הרגילה. גדלים כאן **חייבים
+   להתאים בדיוק** למה ש-`.app.big` מצהיר ביישומון עצמו (קובץ נפרד,
+   "יישומון יעד 11 מעבדת הבקבוקים/index.html") — 1140×590 שם, +24
+   רוחב/+48 גובה (ריפוד ה-body הפנימי של היישומון) = 1164×638 כאן.
+   פאנל 1204×678 (20px מרווח לכל צד) — הקנבס 1280×710 בסה"כ, עדיין
+   עם מרווח בטוח מהקצוות (38px אופקי/32px אנכי, סה"כ). */
+.applet-zoom-modal {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.78); z-index: 1000;
+}
+.applet-zoom-modal.hidden { display: none; }
+.applet-zoom-modal__panel {
+  position: relative; width: 1204px; height: 678px; background: #fff; border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); display: flex; align-items: center;
+  justify-content: center; overflow: hidden;
+}
+.applet-zoom-modal__panel iframe { width: 1164px; height: 638px; border: none; }
+
+/* ════════════════════════════════════════════════════════
+   GLOBAL — Report/Issue button (.flag-btn)
+   ════════════════════════════════════════════════════════ */
+.flag-btn {
+  /* Figma Report Problem 207:3588 / 207:3589: 88x68, left:32px, top:32px */
+  position: absolute; top: 32px; left: 32px; z-index: 30;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  box-sizing: border-box; width: 88px; height: 68px; padding: 10px 4px 8px;
+}
+.flag-btn:hover, .flag-btn:focus-visible { padding-bottom: 10px; }
+.flag-btn-icon { position: relative; display: block; width: 38px; height: 38px; flex-shrink: 0; }
+.flag-btn-icon-default, .flag-btn-icon-hover { position: absolute; inset: 0; width: 38px; height: 38px; }
+.flag-btn-icon-hover { opacity: 0; }
+.flag-btn-label { display: none; font-weight: 600; font-size: 14px; color: var(--subject-500); text-align: center; width: 80px; }
+.flag-btn:hover .flag-btn-icon-default, .flag-btn:focus-visible .flag-btn-icon-default { opacity: 0; }
+.flag-btn:hover .flag-btn-icon-hover, .flag-btn:focus-visible .flag-btn-icon-hover { opacity: 1; }
+.flag-btn:hover .flag-btn-label, .flag-btn:focus-visible .flag-btn-label { display: block; }
+
+/* ════════════════════════════════════════════════════════
+   GLOBAL — Gesture Hints (עדכון מעצבת בפיגמה, node 2915:35184/35189/
+   35185 "Cursor Scroll/Click/Drag", ראו SELF-QA.md §7 לפירוט המלא/
+   מקור-האמת). תג-יד סטטי + שתי טבעות-אדווה פועמות מאחוריו, לופ 2000ms
+   אינסופי — היד עצמה **לא זזה בכלל**, רק הטבעות פועמות (מתועד
+   במפורש בהערת הפיגמה של הרכיב, אומת גם דרך get_motion_context).
+   נכסים: assets/images/gesture-hand.svg (28×33, זהה לכל הווריאנטים)
+   + gesture-ring-big.svg/gesture-ring-small.svg (קליק/גלילה, 64/12px)
+   + gesture-ring-big-drag.svg/gesture-ring-small-drag.svg (גרירה,
+   42/8px) — צבעי Science/כחול, אומתו בפועל ע"י פתיחת קובץ ה-SVG
+   (לא הוסקו משם-משתנה ב-export, שהיה הפוך בפועל — ראו SELF-QA.md).
+   ════════════════════════════════════════════════════════ */
+.gesture-hint {
+  position: absolute;
+  width: 28px;
+  height: 33px;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.gesture-hint.visible { opacity: 1; }
+.gesture-hint-hand {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 28px;
+  height: 33px;
+  z-index: 3;
+}
+/* היחס בין מרכז-הטבעת לפינה השמאלית-עליונה של היד (12px ימינה, 0px
+   אנכית) נמדד במדויק מהקואורדינטות של הפיגמה (קליק ו-גרירה נתנו את
+   אותו יחס בדיוק, למרות שגודל הטבעות שונה בין השניים) — לא ניחוש. */
+.gesture-hint-ring-big {
+  position: absolute;
+  left: -20px;  /* 12 - 32 (מחצית 64px) */
+  top: -32px;
+  width: 64px;
+  height: 64px;
+  z-index: 1;
+  animation: gesture-ring-big 2000ms infinite;
+}
+.gesture-hint-ring-small {
+  position: absolute;
+  left: 6px;    /* 12 - 6 (מחצית 12px) */
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  z-index: 2;
+  animation: gesture-ring-small 2000ms infinite;
+}
+.gesture-hint--drag .gesture-hint-ring-big {
+  left: -9px;   /* 12 - 21 (מחצית 42px) */
+  top: -21.5px;
+  width: 42px;
+  height: 43px;
+}
+.gesture-hint--drag .gesture-hint-ring-small {
+  left: 8px;    /* 12 - 4 (מחצית 8px) */
+  top: -4px;
+  width: 8px;
+  height: 8px;
+}
+/* עקומות-easing מדויקות מ-get_motion_context — לא "ease" גנרי */
+@keyframes gesture-ring-big {
+  0%    { opacity: 0;    scale: 0.05; animation-timing-function: cubic-bezier(0.2,0.4,0.4,1); }
+  5%    { opacity: 0.85; animation-timing-function: ease-out; }
+  7.5%  { scale: 0.22;   animation-timing-function: ease-out; }
+  22.5% { scale: 0.6;    animation-timing-function: ease-out; }
+  35%   { opacity: 0.65; animation-timing-function: cubic-bezier(0.6,0,1,1); }
+  37.5% { scale: 0.85;   animation-timing-function: ease-out; }
+  45%   { opacity: 0.35; animation-timing-function: linear; }
+  50%   { opacity: 0; scale: 1; }
+  100%  { opacity: 0; scale: 1; }
+}
+@keyframes gesture-ring-small {
+  0%   { opacity: 0;    scale: 0.2; animation-timing-function: cubic-bezier(0.05,0.9,0.1,1); }
+  3%   { opacity: 0.75; scale: 1;   animation-timing-function: cubic-bezier(0.4,0,1,1); }
+  10%  { opacity: 0;    scale: 1.1; animation-timing-function: linear; }
+  100% { opacity: 0;    scale: 1.1; }
+}
+/* תוקן: * {transition:none!important} הגלובלי (למעברי-מסך מיידיים,
+   ראו תחילת הקובץ) לא נועד לעצור הנפשות אינסופיות של רכיב חדש כמו
+   זה — override מפורש כדי שה-opacity fade-out (סגירת המחווה) ישאר
+   חלק, בדיוק כמו שנעשה כבר במסך 27/ddq26 להיפוך הקלפים. */
+.gesture-hint { transition: opacity 0.15s ease !important; }
+.gesture-hint-ring-big, .gesture-hint-ring-small { transition: none !important; }
+
+/* צורת עכבר — יד-אחיזה על כל מה שנגרר, יד-הצבעה על כל מה שנלחץ
+   לחשיפת-תוכן (קלפים מתהפכים וכו') — נפרד מהמחווה המונפשת עצמה,
+   תקף כל עוד הפעולה אפשרית במסך, לא רק בזמן שהמחווה מוצגת. */
+.gesture-cursor-grab { cursor: grab; }
+.gesture-cursor-grab:active { cursor: grabbing; }
+.gesture-cursor-pointer { cursor: pointer; }
