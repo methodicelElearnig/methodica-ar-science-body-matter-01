@@ -366,7 +366,7 @@
       </trans-unit>
       <trans-unit id="01-01-04-005" xml:space="preserve">
         <source xml:lang="he">הכסא הוא גוף.&lt;br/&gt;&lt;strong&gt;גוף&lt;/strong&gt; הוא חפץ התופס מקום במרחב.&lt;br/&gt;גוף יכול להיות חי או דומם, טבעי או מעובד.&lt;br/&gt;למשל: שולחן, כוס, כדור.</source>
-        <target>الكرسي هو جسم.&lt;br/&gt;&lt;strong&gt;الجسم&lt;/strong&gt; هو شيء يشغل حيّزًا من الفراغ.&lt;br/&gt;يمكن أن يكون الجسم حيًّا أو جامدًا، طبيعيًا أو مُعالَجًا.&lt;br/&gt;على سبيل المثال: طاولة، كوب، كرة.</target>
+        <target>الكرسي هو جسم.&lt;br/&gt;&lt;strong&gt;الجسم&lt;/strong&gt; هو كل شيء يشغل حيّزاً من الفراغ.&lt;br/&gt;يمكن أن يكون الجسم حيّاً أو جماداً، طبيعيّاً أو مُصنعاً.&lt;br/&gt;على سبيل المثال: طاولة، كوب، كرة.</target>
         <note from="screen-id">01-01-04</note>
         <note from="screen-title">קלפים מתהפכים (FlipCardsReveal)</note>
         <note from="screen-type">FlipCardsReveal</note>
@@ -394,7 +394,7 @@
       </trans-unit>
       <trans-unit id="01-01-04-008" xml:space="preserve">
         <source xml:lang="he">העץ הוא חומר.&lt;br/&gt;&lt;strong&gt;חומר&lt;/strong&gt; הוא מה שממנו עשויים גופים וחפצים.&lt;br/&gt;למשל: השולחן עשוי מעץ,&lt;br/&gt;הכוס עשויה מזכוכית,&lt;br/&gt;הכדור עשוי מפלסטיק.</source>
-        <target>الخشب مادة.&lt;br/&gt;&lt;strong&gt;المادة&lt;/strong&gt; هي ما تصنع منه الأجسام والأشياء.&lt;br/&gt;على سبيل المثال: الطاولة مصنوعة من الخشب،&lt;br/&gt;الكوب مصنوع من الزجاج،&lt;br/&gt;الكرة مصنوعة من البلاستيك.</target>
+        <target>الخشب هو مادة.&lt;br/&gt;&lt;strong&gt;المادة&lt;/strong&gt; هي ما تصنع منه الأجسام والأشياء.&lt;br/&gt;على سبيل المثال: الطاولة مصنوعة من الخشب،&lt;br/&gt;الكوب مصنوع من الزجاج،&lt;br/&gt;الكرة مصنوعة من البلاستيك.</target>
         <note from="screen-id">01-01-04</note>
         <note from="screen-title">קלפים מתהפכים (FlipCardsReveal)</note>
         <note from="screen-type">FlipCardsReveal</note>
@@ -1230,7 +1230,7 @@
       </trans-unit>
       <trans-unit id="01-01-12-001" xml:space="preserve">
         <source xml:lang="he">גוף מעובד או גוף שאינו מעובד?</source>
-        <target>جسم مُعالَج أم جسم غير مُعالَج؟</target>
+        <target>جسم طبيعي أم جسم مُصَنَّع؟</target>
         <note from="screen-id">01-01-12</note>
         <note from="screen-title">גוף מעובד או גוף שאינו מעובד?</note>
         <note from="element-role">main-heading</note>
@@ -1247,7 +1247,7 @@
       </trans-unit>
       <trans-unit id="01-01-12-003" xml:space="preserve">
         <source xml:lang="he">&lt;b&gt;גוף מעובד&lt;/b&gt;&lt;br/&gt;גוף שהאדם שינה את צורתו, את מבנהו או את תכונותיו, כדי להתאימו לשימוש מסוים או ליצור ממנו מוצר&lt;br/&gt;למשל: אבן חן מלוטשת בתכשיט</source>
-        <target>&lt;b&gt;جسم مُعالَج&lt;/b&gt;&lt;br/&gt;جسم غيّر الإنسان شكله أو بنيته أو خصائصه، لتكييفه مع استخدام معيّن أو لإنتاج منتج منه&lt;br/&gt;على سبيل المثال: حجر كريم مصقول ومركّب في قطعة مجوهرات</target>
+        <target>&lt;b&gt;جسم مُصَنَّع&lt;/b&gt;&lt;br/&gt;جسم غيّر الإنسان شكله أو بنيته أو خصائصه، لتكييفه مع استخدام معيّن أو لإنتاج منتج منه&lt;br/&gt;على سبيل المثال: حجر كريم مصقول ومركّب في قطعة مجوهرات</target>
         <note from="screen-id">01-01-12</note>
         <note from="screen-title">גוף מעובד או גוף שאינו מעובד?</note>
         <note from="source-location">methodica-science-body-matter-01-01/index.html:842</note>
@@ -1263,14 +1263,14 @@
       </trans-unit>
       <trans-unit id="01-01-12-005" xml:space="preserve">
         <source xml:lang="he">&lt;b&gt;גוף שאינו מעובד&lt;/b&gt;&lt;br/&gt;גוף שלא עבר שינוי בידי האדם.&lt;br/&gt;למשל: אבן חן</source>
-        <target>&lt;b&gt;جسم غير مُعالَج&lt;/b&gt;&lt;br/&gt;جسم لم يطرأ عليه تغيير على يد الإنسان.&lt;br/&gt;على سبيل المثال: حجر كريم</target>
+        <target>&lt;b&gt;جسم طبيعي&lt;/b&gt;&lt;br/&gt;جسم لم يطرأ عليه تغيير على يد الإنسان.&lt;br/&gt;على سبيل المثال: حجر كريم</target>
         <note from="screen-id">01-01-12</note>
         <note from="screen-title">גוף מעובד או גוף שאינו מעובד?</note>
         <note from="source-location">methodica-science-body-matter-01-01/index.html:851</note>
       </trans-unit>
       <trans-unit id="01-01-12-006" xml:space="preserve">
         <source xml:lang="he">כדי להחליט אם גוף מעובד או לא, נשאל:&lt;br/&gt;&lt;b&gt;האם האדם שינה את הגוף בכוונה כדי ליצור מוצר או להתאים אותו לשימוש?&lt;/b&gt;&lt;br/&gt;&lt;b class="tf-note-blue"&gt;אם כן – זה גוף מעובד. אם לא – זה גוף לא מעובד.&lt;/b&gt;</source>
-        <target>لنقرر ما إذا كان الجسم مُعالَجًا أم لا، نسأل:&lt;br/&gt;&lt;b&gt;هل غيّر الإنسان الجسم عمدًا لإنتاج منتج أو لتكييفه للاستخدام؟&lt;/b&gt;&lt;br/&gt;&lt;b class="tf-note-blue"&gt;إذا كانت الإجابة نعم – فهو جسم مُعالَج. إذا كانت الإجابة لا – فهو جسم غير مُعالَج.&lt;/b&gt;</target>
+        <target>لنقرر ما إذا كان الجسم مُصَنَّعًا أم لا، نسأل:&lt;br/&gt;&lt;b&gt;هل غيّر الإنسان الجسم عمدًا لإنتاج منتج أو لتكييفه للاستخدام؟&lt;/b&gt;&lt;br/&gt;&lt;b class="tf-note-blue"&gt;إذا كانت الإجابة نعم – فهو جسم مُصَنَّع. إذا كانت الإجابة لا – فهو جسم طبيعي.&lt;/b&gt;</target>
         <note from="screen-id">01-01-12</note>
         <note from="screen-title">גוף מעובד או גוף שאינו מעובד?</note>
         <note from="source-location">methodica-science-body-matter-01-01/index.html:860</note>
@@ -1293,7 +1293,7 @@
       </trans-unit>
       <trans-unit id="01-01-13-001" xml:space="preserve">
         <source xml:lang="he">למעבדת שימור במוזיאון הגיעו ארבעה ממצאים מחפירה ארכאולוגית: גוש זהב, חלוק אבן, קערת אבן ותיבת עץ מעוטרת.&lt;br/&gt;אוצרת המוזיאון:&lt;br/&gt;"שניים מן הממצאים הם גופים שהאדם עיבד, ושניים לא. אני יכולה לדעת זאת גם בלי לדעת מאיזה חומר כל גוף עשוי".</source>
-        <target>وصلت إلى مختبر الترميم في المتحف أربع قطع أثرية من حفرية أثرية: سبيكة ذهب، حصاة حجرية، وعاء حجري، وصندوق خشبي مزخرف.&lt;br/&gt;أمينة المتحف:&lt;br/&gt;"اثنتان من القطع هما جسمان عالجهما الإنسان، واثنتان لم يعالجهما. يمكنني معرفة ذلك حتى دون معرفة من أي مادة صنع كل جسم".</target>
+        <target>وصلت إلى مختبر الترميم في المتحف أربع قطع أثرية من حفرية أثرية: سبيكة ذهب، حصاة حجرية، وعاء حجري، وصندوق خشبي مزخرف.&lt;br/&gt;أمينة المتحف:&lt;br/&gt;"اثنتان من القطع هما جسمان مُصَنَّعان (من صُنْع الإنسان)، واثنتان لم يعالجهما. يمكنني معرفة ذلك حتى دون معرفة من أي مادة صنع كل جسم".</target>
         <note from="screen-id">01-01-13</note>
         <note from="screen-title">שאלת גרירה: גוף מעובד/לא מעובד (DragAndDropQuestion)</note>
         <note from="screen-type">DragAndDropQuestion</note>
@@ -1381,7 +1381,7 @@
       </trans-unit>
       <trans-unit id="01-01-13-011" xml:space="preserve">
         <source xml:lang="he">גופים לא מעובדים</source>
-        <target>أجسام غير مُعالَجة</target>
+        <target>أجسام طبيعية</target>
         <note from="screen-id">01-01-13</note>
         <note from="screen-title">שאלת גרירה: גוף מעובד/לא מעובד (DragAndDropQuestion)</note>
         <note from="screen-type">DragAndDropQuestion</note>
@@ -1389,7 +1389,7 @@
       </trans-unit>
       <trans-unit id="01-01-13-012" xml:space="preserve">
         <source xml:lang="he">גופים מעובדים</source>
-        <target>أجسام مُعالَجة</target>
+        <target>أجسام مُصَنَّعة</target>
         <note from="screen-id">01-01-13</note>
         <note from="screen-title">שאלת גרירה: גוף מעובד/לא מעובד (DragAndDropQuestion)</note>
         <note from="screen-type">DragAndDropQuestion</note>
@@ -1434,7 +1434,7 @@
       </trans-unit>
       <trans-unit id="01-01-13-017" xml:space="preserve">
         <source xml:lang="he">כדי להחליט אם גוף הוא מעובד או לא, בודקים האם האדם &lt;b&gt;שינה אותו בכוונה &lt;/b&gt;כדי ליצור מוצר או להתאים אותו לשימוש.</source>
-        <target>لتحديد ما إذا كان الجسم مُعالَجًا أم لا، نفحص ما إذا كان الإنسان &lt;b&gt;قد غيّره بشكل مقصود&lt;/b&gt; لإنتاج منتج أو لتكييفه للاستخدام.</target>
+        <target>لتحديد ما إذا كان الجسم مُصَنَّعًا أم لا، نفحص ما إذا كان الإنسان &lt;b&gt;قد غيّره بشكل مقصود&lt;/b&gt; لإنتاج منتج أو لتكييفه للاستخدام.</target>
         <note from="screen-id">01-01-13</note>
         <note from="screen-title">שאלת גרירה: גוף מעובד/לא מעובד (DragAndDropQuestion)</note>
         <note from="screen-type">DragAndDropQuestion</note>
@@ -1494,7 +1494,7 @@
       </trans-unit>
       <trans-unit id="01-01-13-023" xml:space="preserve">
         <source xml:lang="he">כדי להחליט אם גוף הוא מעובד או לא, בודקים האם האדם &lt;b&gt;שינה אותו בכוונה &lt;/b&gt;כדי ליצור מוצר או להתאים אותו לשימוש.</source>
-        <target>لتحديد ما إذا كان الجسم مُعالَجًا أم لا، نفحص ما إذا كان الإنسان &lt;b&gt;قد غيّره بشكل مقصود&lt;/b&gt; لإنتاج منتج أو لتكييفه للاستخدام.</target>
+        <target>لتحديد ما إذا كان الجسم مُصَنَّعًا أم لا، نفحص ما إذا كان الإنسان &lt;b&gt;قد غيّره بشكل مقصود&lt;/b&gt; لإنتاج منتج أو لتكييفه للاستخدام.</target>
         <note from="screen-id">01-01-13</note>
         <note from="screen-title">שאלת גרירה: גוף מעובד/לא מעובד (DragAndDropQuestion)</note>
         <note from="screen-type">DragAndDropQuestion</note>
@@ -1514,7 +1514,7 @@
       </trans-unit>
       <trans-unit id="01-01-13-025" xml:space="preserve">
         <source xml:lang="he">כדי להחליט אם גוף הוא מעובד או לא, בודקים האם האדם &lt;b&gt;שינה אותו בכוונה &lt;/b&gt;כדי ליצור מוצר או להתאים אותו לשימוש.</source>
-        <target>لتحديد ما إذا كان الجسم مُعالَجًا أم لا، نفحص ما إذا كان الإنسان &lt;b&gt;قد غيّره بشكل مقصود&lt;/b&gt; لإنتاج منتج أو لتكييفه للاستخدام.</target>
+        <target>لتحديد ما إذا كان الجسم مُصَنَّعًا أم لا، نفحص ما إذا كان الإنسان &lt;b&gt;قد غيّره بشكل مقصود&lt;/b&gt; لإنتاج منتج أو لتكييفه للاستخدام.</target>
         <note from="screen-id">01-01-13</note>
         <note from="screen-title">שאלת גרירה: גוף מעובד/לא מעובד (DragAndDropQuestion)</note>
         <note from="screen-type">DragAndDropQuestion</note>
@@ -1632,7 +1632,7 @@
       </trans-unit>
       <trans-unit id="01-01-14-002" xml:space="preserve">
         <source xml:lang="he">&lt;b&gt;גוף:&lt;/b&gt; חפץ התופס מקום במרחב. גוף יכול להיות חי או דומם, טבעי או מעובד ומיוצר מחומרים שונים.&lt;br&gt;&lt;b&gt;גוף לא מעובד:&lt;/b&gt; גוף שלא עבר שינוי בידי האדם. למשל, אבן חן שנמצא בטבע, או גזע עץ אלון.&lt;br&gt;&lt;b&gt;גוף מעובד:&lt;/b&gt; גוף שהאדם שינה את צורתו, את מבנהו או את תכונותיו, כדי להתאימו לשימוש מסוים או ליצור ממנו מוצר. למשל, אבן חן מלוטשת בתכשיט, או עץ אלון מגולף ומשויף.&lt;br&gt;&lt;b&gt;חומר:&lt;/b&gt; מה שממנו עשויים גופים וחפצים (למשל, פלסטיק, זכוכית או סיליקון הם סוגים של חומרים).&lt;br&gt;&lt;b&gt;תכונות גוף:&lt;/b&gt; מתארות את הגוף. למשל, מסה, נפח וצורה הן תכונות המתארות גוף.&lt;br&gt;&lt;b&gt;תכונות חומר:&lt;/b&gt; מתארות את החומר, ועוזרות להבחין בין חומר אחד לאחר. למשל, צבע, ריח ומצב צבירה הן תכונות המתארות חומר.</source>
-        <target>&lt;b&gt;جسم:&lt;/b&gt; شيء يشغل حيّزًا من الفراغ. يمكن أن يكون الجسم حيًّا أو جامدًا، طبيعيًا أو مُعالَجًا، ومصنوعًا من مواد مختلفة.&lt;br&gt;&lt;b&gt;جسم غير مُعالَج:&lt;/b&gt; جسم لم يطرأ عليه تغيير على يد الإنسان. مثلًا، حجر كريم موجود في الطبيعة، أو جذع شجرة بلوط.&lt;br&gt;&lt;b&gt;جسم مُعالَج:&lt;/b&gt; جسم غيّر الإنسان شكله أو بنيته أو خصائصه، لتكييفه مع استخدام معيّن أو لإنتاج منتج منه. مثلًا، حجر كريم مصقول ومركّب في قطعة مجوهرات، أو خشب بلوط منحوت ومصقول.&lt;br&gt;&lt;b&gt;مادة:&lt;/b&gt; ما تصنع منه الأجسام والأشياء (مثلًا، البلاستيك والزجاج والسيليكون هي أنواع من المواد).&lt;br&gt;&lt;b&gt;خصائص الجسم:&lt;/b&gt; تصف الجسم. مثلًا، الكتلة والحجم والشكل هي خصائص تصف الجسم.&lt;br&gt;&lt;b&gt;خصائص المادة:&lt;/b&gt; تصف المادة، وتساعد على التمييز بين مادة وأخرى. مثلًا، اللون والرائحة وحالة المادة هي خصائص تصف المادة.</target>
+        <target>&lt;b&gt;الجسم:&lt;/b&gt; كل شيء يشغل حيّزاً من الفراغ. يمكن أن يكون الجسم حيّاً أو جماداً، طبيعيّاً أو مُصَنَّعاً، ومصنوعاً من مواد مختلفة.&lt;br&gt;&lt;b&gt;الجسم الطبيعي:&lt;/b&gt; جسم موجود في الطبيعة ولم يتدخل الإنسان في تشكيله أو صنعه. على سبيل المثال: حجر كريم خام موجود في الطبيعة، أو جذع شجرة بلوط.&lt;br&gt;&lt;b&gt;الجسم المُصَنَّع (من صُنْع الإنسان):&lt;/b&gt; جسم غيّر الإنسان شكله أو بنيته لتكييفه مع استخدام معيّن أو لإنتاج منتج منه. على سبيل المثال: حجر كريم مصقول ومركّب في قطعة مجوهرات، أو كرسي مصنوع من خشب البلوط.&lt;br&gt;&lt;b&gt;المادة:&lt;/b&gt; ما تُصنع منه الأجسام والأشياء (على سبيل المثال: البلاستيك، الزجاج، والسيليكون هي أنواع من المواد).&lt;br&gt;&lt;b&gt;خصائص الجسم:&lt;/b&gt; صفات تصف الجسم ذاته (على سبيل المثال: الكتلة، الحجم، والشكل).&lt;br&gt;&lt;b&gt;خصائص المادة:&lt;/b&gt; صفات تصف المادة وتساعد على التمييز بين مادة وأخرى (على سبيل المثال: اللون، الرائحة، وحالة المادة).</target>
         <note from="screen-id">01-01-14</note>
         <note from="screen-title">סיכום מושגים</note>
         <note from="element-role">body-text</note>
@@ -2032,7 +2032,7 @@
       </trans-unit>
       <trans-unit id="01-01-19-006" xml:space="preserve">
         <source xml:lang="he">&lt;b&gt;פלסטיק האוזניות,&lt;/b&gt; כי ממנו עשויים חלקים שונים במוצר.</source>
-        <target>&lt;b&gt;بلاستيك سماعات الرأس،&lt;/b&gt; لأنه تصنع منه أجزاء مختلفة في المنتج.</target>
+        <target>&lt;b&gt;بلاستيك سماعات الرأس،&lt;/b&gt; لأنه يُصنَع منه أجزاء مختلفة في المنتج.</target>
         <note from="screen-id">01-01-19</note>
         <note from="screen-title">שאלה רב-ברירה מלווה בתמונה (שאלה 1/2)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -2041,7 +2041,7 @@
       </trans-unit>
       <trans-unit id="01-01-19-007" xml:space="preserve">
         <source xml:lang="he">&lt;b&gt;גמישות הקשת,&lt;/b&gt; כי היא מסבירה איך הקשת מתכופפת.</source>
-        <target>&lt;b&gt;ليونة القوس،&lt;/b&gt; لأنها تشرح كيف ينثني القوس.</target>
+        <target>&lt;b&gt;ليونة القوس،&lt;/b&gt; لأنها تشرح كيف ينحني القوس.</target>
         <note from="screen-id">01-01-19</note>
         <note from="screen-title">שאלה רב-ברירה מלווה בתמונה (שאלה 1/2)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -2050,7 +2050,7 @@
       </trans-unit>
       <trans-unit id="01-01-19-008" xml:space="preserve">
         <source xml:lang="he">&lt;b&gt;מוליכות המתכת,&lt;/b&gt; כי היא קשורה לפעולת הרכיב הפנימי.</source>
-        <target>&lt;b&gt;موصلية المعدن،&lt;/b&gt; لأنها مرتبطة بوظيفة المكوّن الداخلي.</target>
+        <target>&lt;b&gt;الموصلية الكهربائية للمعدن،&lt;/b&gt; لأنها مرتبطة بوظيفة المكوِّن الداخلي.</target>
         <note from="screen-id">01-01-19</note>
         <note from="screen-title">שאלה רב-ברירה מלווה בתמונה (שאלה 1/2)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -2751,7 +2751,7 @@
       </trans-unit>
       <trans-unit id="01-02-01-004" xml:space="preserve">
         <source xml:lang="he">מידע על קצף זיכרון</source>
-        <target>معلومات عن رغوة الذاكرة</target>
+        <target>معلومات عن إسفنج الذاكرة</target>
         <note from="screen-id">01-02-01</note>
         <note from="screen-title">מסך הוטספוטים (3 חומרים, שקף 35)</note>
         <note from="element-role">accessibility-label</note>
@@ -2769,7 +2769,7 @@
       </trans-unit>
       <trans-unit id="01-02-01-006" xml:space="preserve">
         <source xml:lang="he">מידע על סיליקון גמיש</source>
-        <target>معلومات عن السيليكون المرن</target>
+        <target>معلومات عن السيليكون</target>
         <note from="screen-id">01-02-01</note>
         <note from="screen-title">מסך הוטספוטים (3 חומרים, שקף 35)</note>
         <note from="element-role">accessibility-label</note>
@@ -2829,7 +2829,7 @@
       </trans-unit>
       <trans-unit id="01-02-01-013" xml:space="preserve">
         <source xml:lang="he">קצף זיכרון</source>
-        <target>رغوة الذاكرة</target>
+        <target>إسفنج الذاكرة</target>
         <note from="screen-id">01-02-01</note>
         <note from="screen-title">מסך הוטספוטים (3 חומרים, שקף 35)</note>
         <note from="source-location">methodica-science-body-matter-01-02/script.js:401</note>
@@ -2837,7 +2837,7 @@
       </trans-unit>
       <trans-unit id="01-02-01-014" xml:space="preserve">
         <source xml:lang="he">חומר רך וגמיש שנמעך כשמופעל עליו לחץ, וחוזר לאט לצורה המקורית שלו.</source>
-        <target>مادة طرية ومرنة تنضغط عند تطبيق الضغط عليها، وتعود ببطء إلى شكلها الأصلي.</target>
+        <target>مادة طري ومرِنة تنضغط عند الضغط عليها، وتعود ببطء إلى شكلها الأصلي.</target>
         <note from="screen-id">01-02-01</note>
         <note from="screen-title">מסך הוטספוטים (3 חומרים, שקף 35)</note>
         <note from="source-location">methodica-science-body-matter-01-02/script.js:402</note>
@@ -2853,7 +2853,7 @@
       </trans-unit>
       <trans-unit id="01-02-01-016" xml:space="preserve">
         <source xml:lang="he">בד סינתטי קל עם חורים קטנים שמאפשרים מעבר אוויר.</source>
-        <target>قماش صناعي خفيف مع ثقوب صغيرة تسمح بمرور الهواء.</target>
+        <target>قماش اصطناعي خفيف يحتوي على ثقوب صغيرة تسمح بمرور الهواء.</target>
         <note from="screen-id">01-02-01</note>
         <note from="screen-title">מסך הוטספוטים (3 חומרים, שקף 35)</note>
         <note from="source-location">methodica-science-body-matter-01-02/script.js:406</note>
@@ -2861,7 +2861,7 @@
       </trans-unit>
       <trans-unit id="01-02-01-017" xml:space="preserve">
         <source xml:lang="he">סיליקון גמיש</source>
-        <target>سيليكون مرن</target>
+        <target>سيليكون</target>
         <note from="screen-id">01-02-01</note>
         <note from="screen-title">מסך הוטספוטים (3 חומרים, שקף 35)</note>
         <note from="source-location">methodica-science-body-matter-01-02/script.js:409</note>
@@ -2869,7 +2869,7 @@
       </trans-unit>
       <trans-unit id="01-02-01-018" xml:space="preserve">
         <source xml:lang="he">חומר גמיש, חלק ועמיד, שאינו סופג מים בקלות.</source>
-        <target>مادة مرنة وناعمة ومتينة، لا تمتص الماء بسهولة.</target>
+        <target>مادة ناعمة ومتينة ومقاومة للماء.</target>
         <note from="screen-id">01-02-01</note>
         <note from="screen-title">מסך הוטספוטים (3 חומרים, שקף 35)</note>
         <note from="source-location">methodica-science-body-matter-01-02/script.js:410</note>
@@ -3009,7 +3009,7 @@
       </trans-unit>
       <trans-unit id="01-02-02-016" xml:space="preserve">
         <source xml:lang="he">קצף זיכרון</source>
-        <target>رغوة الذاكرة</target>
+        <target>إسفنج الذاكرة</target>
         <note from="screen-id">01-02-02</note>
         <note from="screen-title">שאלה 1 סעיף א' מתוך 5 (בחירה יחידה + טבלה)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -3343,7 +3343,7 @@
       </trans-unit>
       <trans-unit id="01-02-03-008" xml:space="preserve">
         <source xml:lang="he">קצף זיכרון</source>
-        <target>رغوة الذاكرة</target>
+        <target>إسفنج الذاكرة</target>
         <note from="screen-id">01-02-03</note>
         <note from="screen-title">שאלה 1 סעיף ב' מתוך 5 (בחירה יחידה + טבלה)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -3361,7 +3361,7 @@
       </trans-unit>
       <trans-unit id="01-02-03-010" xml:space="preserve">
         <source xml:lang="he">סיליקון גמיש</source>
-        <target>سيليكون مرن</target>
+        <target>سيليكون</target>
         <note from="screen-id">01-02-03</note>
         <note from="screen-title">שאלה 1 סעיף ב' מתוך 5 (בחירה יחידה + טבלה)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -3402,7 +3402,7 @@
       </trans-unit>
       <trans-unit id="01-02-03-015" xml:space="preserve">
         <source xml:lang="he">קצף זיכרון</source>
-        <target>رغوة الذاكرة</target>
+        <target>إسفنج الذاكرة</target>
         <note from="screen-id">01-02-03</note>
         <note from="screen-title">שאלה 1 סעיף ב' מתוך 5 (בחירה יחידה + טבלה)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -4581,7 +4581,7 @@
       </trans-unit>
       <trans-unit id="01-02-06-006" xml:space="preserve">
         <source xml:lang="he">במעבדת שימור נבדקו ארבעה ממצאים מחפירה ארכאולוגית. האם יש מספיק</source>
-        <target>في مختبر الترميم، فحصت أربع قطع أثرية من حفرية أثرية. هل يوجد ما يكفي من</target>
+        <target>في مختبر الترميم، فحصت أربع قطعٍ أثرية من حفرية أثرية. هل يوجد ما يكفي من</target>
         <note from="screen-id">01-02-06</note>
         <note from="screen-title">שאלה 4 מתוך 5 (גרירה + היפוך קלפים, שקפים 40-41)</note>
         <note from="screen-type">DragAndDropQuestion</note>
@@ -4607,7 +4607,7 @@
       </trans-unit>
       <trans-unit id="01-02-06-009" xml:space="preserve">
         <source xml:lang="he">לקבוע אם הממצאים עברו עיבוד בידי אדם?</source>
-        <target>لتحديد ما إذا كانت القطع الأثرية قد خضعت للمعالجة على يد الإنسان؟</target>
+        <target>لتحديد ما إذا كانت القطع الأثرية أجسماً مُصنعة (من صُنع الإنسان)؟</target>
         <note from="screen-id">01-02-06</note>
         <note from="screen-title">שאלה 4 מתוך 5 (גרירה + היפוך קלפים, שקפים 40-41)</note>
         <note from="screen-type">DragAndDropQuestion</note>
@@ -4727,7 +4727,7 @@
       </trans-unit>
       <trans-unit id="01-02-06-023" xml:space="preserve">
         <source xml:lang="he">אין מספיק ראיות לקבוע שהממצא עבר עיבוד בידי אדם</source>
-        <target>لا توجد أدلة كافية لتحديد أن القطعة الأثرية خضعت للمعالجة على يد الإنسان</target>
+        <target>لا توجد أدلة كافية لتحديد أن القطعة الأثرية مُصنعة (من صُنع الإنسان).</target>
         <note from="screen-id">01-02-06</note>
         <note from="screen-title">שאלה 4 מתוך 5 (גרירה + היפוך קלפים, שקפים 40-41)</note>
         <note from="screen-type">DragAndDropQuestion</note>
@@ -4735,7 +4735,7 @@
       </trans-unit>
       <trans-unit id="01-02-06-024" xml:space="preserve">
         <source xml:lang="he">יש מספיק ראיות לקבוע שהממצא עבר עיבוד בידי אדם</source>
-        <target>توجد أدلة كافية لتحديد أن القطعة الأثرية خضعت للمعالجة على يد الإنسان</target>
+        <target>توجد أدلة كافية لتحديد أن القطعة الأثرية مُصنعة (من صُنع الإنسان).</target>
         <note from="screen-id">01-02-06</note>
         <note from="screen-title">שאלה 4 מתוך 5 (גרירה + היפוך קלפים, שקפים 40-41)</note>
         <note from="screen-type">DragAndDropQuestion</note>
@@ -6765,7 +6765,7 @@
       </trans-unit>
       <trans-unit id="01-03-03-011" xml:space="preserve">
         <source xml:lang="he">קצף זיכרון</source>
-        <target>رغوة الذاكرة</target>
+        <target>إسفنج الذاكرة</target>
         <note from="screen-id">01-03-03</note>
         <note from="screen-title">שאלה 3 מתוך 5 (בחירה יחידה + טבלה, שקף 47)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -6839,7 +6839,7 @@
       </trans-unit>
       <trans-unit id="01-03-03-020" xml:space="preserve">
         <source xml:lang="he">קצף זיכרון</source>
-        <target>رغوة الذاكرة</target>
+        <target>إسفنج الذاكرة</target>
         <note from="screen-id">01-03-03</note>
         <note from="screen-title">שאלה 3 מתוך 5 (בחירה יחידה + טבלה, שקף 47)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -7500,7 +7500,7 @@
       </trans-unit>
       <trans-unit id="01-03-05-006" xml:space="preserve">
         <source xml:lang="he">&lt;b&gt;לחצו על התמונה המשקפת חומר מעובד:&lt;/b&gt;</source>
-        <target>&lt;b&gt;اضغطوا على الصورة التي تعكس مادة مُعالَجة:&lt;/b&gt;</target>
+        <target>&lt;b&gt;اضغطوا على الصورة التي تعكس مادة مُصنعة:&lt;/b&gt;</target>
         <note from="screen-id">01-03-05</note>
         <note from="screen-title">שאלה 5 מתוך 5 (בחירת תמונה, שקף 49)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -7636,7 +7636,7 @@
       </trans-unit>
       <trans-unit id="01-03-05-021" xml:space="preserve">
         <source xml:lang="he">חשבו איזה חומר האדם ייצר או שינה בתהליך עיבוד.</source>
-        <target>فكّروا في المادة التي أنتجها الإنسان أو غيّرها في عملية المعالجة.</target>
+        <target>فكّروا في المادة التي أنتجها الإنسان أو غيّرها في عملية التصنيع.</target>
         <note from="screen-id">01-03-05</note>
         <note from="screen-title">שאלה 5 מתוך 5 (בחירת תמונה, שקף 49)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -7664,7 +7664,7 @@
       </trans-unit>
       <trans-unit id="01-03-05-024" xml:space="preserve">
         <source xml:lang="he">פלסטיק מיוצר בתהליך תעשייתי ולכן הוא חומר מעובד.</source>
-        <target>البلاستيك ينتج في عملية صناعية، ولذلك هو مادة مُعالَجة.</target>
+        <target>البلاستيك ينتج في عملية صناعية، ولذلك هو مادة مُصنعة.</target>
         <note from="screen-id">01-03-05</note>
         <note from="screen-title">שאלה 5 מתוך 5 (בחירת תמונה, שקף 49)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -7704,7 +7704,7 @@
       </trans-unit>
       <trans-unit id="01-03-05-028" xml:space="preserve">
         <source xml:lang="he">פלסטיק מיוצר בתהליך תעשייתי ולכן הוא חומר מעובד.</source>
-        <target>البلاستيك ينتج في عملية صناعية، ولذلك هو مادة مُعالَجة.</target>
+        <target>البلاستيك ينتج في عملية صناعية، ولذلك هو مادة مُصنعة.</target>
         <note from="screen-id">01-03-05</note>
         <note from="screen-title">שאלה 5 מתוך 5 (בחירת תמונה, שקף 49)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -7864,7 +7864,7 @@
       </trans-unit>
       <trans-unit id="01-03-07-006" xml:space="preserve">
         <source xml:lang="he">כן, כי גוש זהב הוא תמיד גוף מעובד.</source>
-        <target>نعم، لأن سبيكة الذهب هي دائمًا جسم مُعالَج.</target>
+        <target>نعم، لأن سبيكة الذهب هي دائمًا جسم مُصنع.</target>
         <note from="screen-id">01-03-07</note>
         <note from="screen-title">שאלה 1 מתוך 2 (בחירה יחידה + תמונה, שקף 51)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -7873,7 +7873,7 @@
       </trans-unit>
       <trans-unit id="01-03-07-007" xml:space="preserve">
         <source xml:lang="he">כן, כי גוף חלק הוא תמיד גוף מעובד.</source>
-        <target>نعم، لأن الجسم الأملس هو دائمًا جسم مُعالَج.</target>
+        <target>نعم، لأن الجسم الأملس هو دائمًا جسم مُصنع.</target>
         <note from="screen-id">01-03-07</note>
         <note from="screen-title">שאלה 1 מתוך 2 (בחירה יחידה + תמונה, שקף 51)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -7882,7 +7882,7 @@
       </trans-unit>
       <trans-unit id="01-03-07-008" xml:space="preserve">
         <source xml:lang="he">לא. צריך לחפש ראיות נוספות לכך שהאדם עיצב אותו.</source>
-        <target>لا. يجب البحث عن أدلة إضافية على أن الإنسان شكّله.</target>
+        <target>لا، يجب البحث عن أدلة إضافية تؤكّد أنَّ الإنسان قد صنعهُ (أو غيَّر شكلهُ).</target>
         <note from="screen-id">01-03-07</note>
         <note from="screen-title">שאלה 1 מתוך 2 (בחירה יחידה + תמונה, שקף 51)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -7958,7 +7958,7 @@
       </trans-unit>
       <trans-unit id="01-03-07-016" xml:space="preserve">
         <source xml:lang="he">צורה עגולה או חלקה אינה מספיקה לבדה כדי להחליט אם הגוף מעובד, כי גם תהליכים טבעיים יכולים להחליק ולעגל גופים.\nכדי לקבוע אם גוף עבר עיבוד, צריך לחפש &lt;b&gt;ראיות נוספות&lt;/b&gt; כמו סימני חיתוך, ליטוש, חריטה, חיבור בין חלקים, או צורה שנראית מותאמת לשימוש מסוים.</source>
-        <target>الشكل المستدير أو الأملس لا يكفي وحده لتحديد ما إذا كان الجسم مُعالَجًا، لأن العمليات الطبيعية يمكن أن تصقل الأجسام وتدوّرها أيضًا.\nلتحديد ما إذا كان الجسم قد خضع للمعالجة، يجب البحث عن &lt;b&gt;أدلة إضافية&lt;/b&gt; مثل علامات القطع، الصقل، النقش، الوصل بين الأجزاء، أو شكل يبدو مكيّفًا لاستخدام معيّن.</target>
+        <target>الشكل المستدير أو الأملس لا يكفي وحده لتحديد ما إذا كان الجسم مُصنعًا، لأن العمليات الطبيعية يمكن أن تصقل الأجسام وتدوّرها أيضًا.\nلتحديد ما إذا كان الجسم قد خضع للتصنيع، يجب البحث عن &lt;b&gt;أدلة إضافية&lt;/b&gt; مثل علامات القطع، الصقل، النقش، الوصل بين الأجزاء، أو شكل يبدو مكيّفًا لاستخدام معيّن.</target>
         <note from="screen-id">01-03-07</note>
         <note from="screen-title">שאלה 1 מתוך 2 (בחירה יחידה + תמונה, שקף 51)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -7998,7 +7998,7 @@
       </trans-unit>
       <trans-unit id="01-03-07-020" xml:space="preserve">
         <source xml:lang="he">צורה עגולה או חלקה אינה מספיקה לבדה כדי להחליט אם הגוף מעובד, כי גם תהליכים טבעיים יכולים להחליק ולעגל גופים.\nכדי לקבוע אם גוף עבר עיבוד, צריך לחפש &lt;b&gt;ראיות נוספות&lt;/b&gt; כמו סימני חיתוך, ליטוש, חריטה, חיבור בין חלקים, או צורה שנראית מותאמת לשימוש מסוים.</source>
-        <target>الشكل المستدير أو الأملس لا يكفي وحده لتحديد ما إذا كان الجسم مُعالَجًا، لأن العمليات الطبيعية يمكن أن تصقل الأجسام وتدوّرها أيضًا.\nلتحديد ما إذا كان الجسم قد خضع للمعالجة، يجب البحث عن &lt;b&gt;أدلة إضافية&lt;/b&gt; مثل علامات القطع، الصقل، النقش، الوصل بين الأجزاء، أو شكل يبدو مكيّفًا لاستخدام معيّن.</target>
+        <target>الشكل المستدير أو الأملس لا يكفي وحده لتحديد ما إذا كان الجسم مُصنعًا، لأن العمليات الطبيعية يمكن أن تصقل الأجسام وتدوّرها أيضًا.\nلتحديد ما إذا كان الجسم قد خضع للتصنيع، يجب البحث عن &lt;b&gt;أدلة إضافية&lt;/b&gt; مثل علامات القطع، الصقل، النقش، الوصل بين الأجزاء، أو شكل يبدو مكيّفًا لاستخدام معيّن.</target>
         <note from="screen-id">01-03-07</note>
         <note from="screen-title">שאלה 1 מתוך 2 (בחירה יחידה + תמונה, שקף 51)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
