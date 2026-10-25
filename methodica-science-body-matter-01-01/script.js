@@ -845,7 +845,7 @@ function rvGoToRead() {
    id/prefix s9→s10) לפי בקשה מפורשת — במיקומו הקודם יש עכשיו
    placeholder ריק (בלי סטייט, כמו מסכים 7-9).
    **עודכן (בקשה מפורשת): סרטון אמיתי סופק** —
-   https://youtu.be/ouaidi7S3l8 ("אבחנה בין גוף וחומר", משרד החינוך).
+   https://youtu.be/CASpdvCI9eQ ("אבחנה בין גוף וחומר", משרד החינוך).
    YouTube לא חושף קובץ להטמעה ישירה ב-<video src>, אז ה-placeholder
    הוחלף ב-YouTube IFrame Player API: `#s10-yt-player` (index.html) הוא
    ה-div שה-API הופך בפועל ל-<iframe> חי. `onYouTubeIframeAPIReady`
@@ -866,7 +866,7 @@ function onYouTubeIframeAPIReady() {
 
 function s10CreatePlayer() {
   s10Player = new YT.Player('s10-yt-player', {
-    videoId: 'ouaidi7S3l8',
+    videoId: 'CASpdvCI9eQ',
     playerVars: { rel: 0, modestbranding: 1, playsinline: 1 },
     events: {
       onReady: function (e) { e.target.playVideo(); },
