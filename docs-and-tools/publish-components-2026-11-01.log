@@ -1,0 +1,19 @@
+=== send-metadata PUBLISH (LIVE, one-way) ===
+[INFO] Base URL     : https://kata.cet.ac.il
+[INFO] Metadata dir : C:\Users\Vadim\OneDrive - methodic.co.il\Projects_ACTIVE\MOE\720\2026\methodica-ar-science-body-matter-01\git-repo\methodica-ar-science-body-matter-01\metadata
+[INFO] Mode         : PUBLISH (LIVE, one-way)
+[INFO] draft     methodica-ar-science-body-matter-01-01 (HTTP 200)
+[INFO] draft     methodica-ar-science-body-matter-01-02 (HTTP 200)
+[INFO] draft     methodica-ar-science-body-matter-01-03 (HTTP 200)
+[INFO] draft     methodica-ar-science-body-matter-01-04 (HTTP 200)
+[INFO] draft     methodica-ar-science-body-matter-01-05 (HTTP 200)
+[INFO] draft     methodica-ar-science-body-matter-01-06 (HTTP 200)
+[INFO] draft     methodica-ar-science-body-matter-01-07 (HTTP 200)
+[INFO] PUBLISHED methodica-ar-science-body-matter-01-01 (HTTP 200)
+[INFO] PUBLISHED methodica-ar-science-body-matter-01-02 (HTTP 200)
+[INFO] PUBLISHED methodica-ar-science-body-matter-01-03 (HTTP 200)
+[INFO] PUBLISHED methodica-ar-science-body-matter-01-04 (HTTP 200)
+[INFO] PUBLISHED methodica-ar-science-body-matter-01-05 (HTTP 200)
+[INFO] PUBLISHED methodica-ar-science-body-matter-01-06 (HTTP 200)
+[INFO] PUBLISHED methodica-ar-science-body-matter-01-07 (HTTP 200)
+[INFO] Publish done. published=7 skipped=0 read-back-not-published=0

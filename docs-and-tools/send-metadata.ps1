@@ -48,7 +48,16 @@ param(
     [switch] $ItemHostedRefOnly,
     # methodica-ar-science-body-matter-01 (2026-11-01): the Hebrew unit the Arabic components join.
     # See the PARENT UNIT note in CONFIG (2). '' restores the own-unit upsert of *_unit.json.
-    [string] $ParentUnitKey
+    [string] $ParentUnitKey,
+    # Read-only: GET each component in metadata/ and log its publication status (draft | published).
+    # Writes nothing. Logs to publish-metadata.log. (Ported from methodica-ar-math-ratio-04.)
+    [switch] $Status,
+    # LIVE and ONE-WAY: publishes every component of metadata/ that is still draft
+    # (POST /api/v1/component/publish?componentKey=<IRI>). A published component cannot return to
+    # draft, appears in the learning-platform catalog, and freezes its component and item ids.
+    # Refuses to start unless all components exist; stops at the first failure; skips ones already
+    # published; then reads every component back and requires status=published.
+    [switch] $Publish
 )
 
 # ============================================================================
@@ -80,6 +89,7 @@ if (-not $BaseUrl) { $BaseUrl = 'https://kata.cet.ac.il' }
 if (-not $MetadataDir) { $MetadataDir = Join-Path $RepoRoot 'metadata' }
 # Run log (git-ignored via *.log).
 $LogFile = Join-Path $RepoRoot 'send-metadata.log'
+if ($Status -or $Publish) { $LogFile = Join-Path $RepoRoot 'publish-metadata.log' }
 
 # ── (2) PER-UNIT — usually fine as-is ───────────────────────────────────────
 # PARENT UNIT — the Arabic components join the EXISTING Hebrew unit; there is no Arabic unit
@@ -602,7 +612,8 @@ function New-ItemBody {
 # ---- Main -------------------------------------------------------------------
 
 # Fresh log per run.
-$modeLabel = if ($DryRun) { 'DRY-RUN (no network)' } else { 'LIVE' }
+if (@($Status, $Publish, $DryRun | Where-Object { $_ }).Count -gt 1) { throw '-Status, -Publish and -DryRun are mutually exclusive.' }
+$modeLabel = if ($Status) { 'STATUS (read-only GETs)' } elseif ($Publish) { 'PUBLISH (LIVE, one-way)' } elseif ($DryRun) { 'DRY-RUN (no network)' } else { 'LIVE' }
 Set-Content -Path $LogFile -Value ("=== send-metadata {0} ===" -f $modeLabel) -Encoding UTF8
 
 $ApiKey = Resolve-ApiKey
@@ -619,6 +630,51 @@ if (-not (Test-Path $MetadataDir)) {
 Write-Log ("Base URL     : {0}" -f $BaseUrl)
 Write-Log ("Metadata dir : {0}" -f $MetadataDir)
 Write-Log ("Mode         : {0}" -f $modeLabel)
+
+# 0) Status (read-only) / Publish (live, one-way) — components only; units and items carry no status.
+if ($Status -or $Publish) {
+    $sComps = Get-ChildItem -Path $MetadataDir -Filter '*.json' | Where-Object { $_.Name -notlike '*_unit.json' } |
+        ForEach-Object { Get-Content -Raw -Path $_.FullName -Encoding UTF8 | ConvertFrom-Json } | Sort-Object { [int] $_.order }
+    function Get-ComponentStatus([string] $iri) {
+        $r = Invoke-Kata 'GET' ('/api/v1/component?componentKey=' + (Enc $iri)) $null
+        if ($r.Code -ne '200') { return @{ Code = $r.Code; Status = $null } }
+        try { $st = ($r.Body | ConvertFrom-Json).status } catch { $st = $null }
+        return @{ Code = $r.Code; Status = $st }
+    }
+    $rows = foreach ($c in $sComps) { $s = Get-ComponentStatus $c.id; [pscustomobject]@{ Slug = (Get-Slug $c.id); Iri = $c.id; Code = $s.Code; Status = $s.Status } }
+    foreach ($row in $rows) { Write-Log ("{0,-9} {1} (HTTP {2})" -f ($(if ($row.Status) { $row.Status } else { '?' })), $row.Slug, $row.Code) }
+    $missing = @($rows | Where-Object { $_.Code -ne '200' -or -not $_.Status })
+    if ($Status) {
+        Write-Log ("Status done. draft={0} published={1} unreadable={2} — nothing was written." -f `
+            @($rows | Where-Object Status -eq 'draft').Count, @($rows | Where-Object Status -eq 'published').Count, $missing.Count)
+        exit ($(if ($missing.Count) { 1 } else { 0 }))
+    }
+    if ($missing.Count) {
+        Write-Log ("REFUSED to publish: {0} component(s) unreadable — nothing was written." -f $missing.Count) 'ERROR'
+        exit 1
+    }
+    $published = 0; $skipped = 0
+    foreach ($row in $rows) {
+        if ($row.Status -eq 'published') { $skipped++; Write-Log ("SKIPPED  {0} (already published)" -f $row.Slug); continue }
+        $r = Invoke-Kata 'POST' ('/api/v1/component/publish?componentKey=' + (Enc $row.Iri)) $null
+        $after = $null; try { $after = ($r.Body | ConvertFrom-Json).status } catch {}
+        if ($r.Code -eq '200' -and $after -eq 'published') {
+            $published++; Write-Log ("PUBLISHED {0} (HTTP {1})" -f $row.Slug, $r.Code)
+        } else {
+            $snippet = ($r.Body -replace '\s+', ' '); if ($snippet.Length -gt 400) { $snippet = $snippet.Substring(0, 400) + '…' }
+            Write-Log ("FAILED   {0} (HTTP {1}, status={2}) {3} — stopping; later components untouched." -f $row.Slug, $r.Code, $after, $snippet) 'ERROR'
+            exit 1
+        }
+    }
+    # Read back — never trust a 2xx.
+    $bad = 0
+    foreach ($c in $sComps) {
+        $s = Get-ComponentStatus $c.id
+        if ($s.Status -ne 'published') { $bad++; Write-Log ("NOT PUBLISHED on read-back: {0} (HTTP {1}, status={2})" -f (Get-Slug $c.id), $s.Code, $s.Status) 'ERROR' }
+    }
+    Write-Log ("Publish done. published={0} skipped={1} read-back-not-published={2}" -f $published, $skipped, $bad)
+    exit ($(if ($bad) { 1 } else { 0 }))
+}
 
 # 1) Unit — either an existing parent unit (read-only) or this repo's own unit (upserted)
 if ($ParentUnitKey) {

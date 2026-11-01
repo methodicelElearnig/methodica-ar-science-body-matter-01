@@ -11,8 +11,10 @@ All 135 package files fetched from the CDN and compared by byte size with the pa
 ## KATA
 
 The seven Arabic components (31 items) sit inside the Hebrew unit `methodica-science-body-matter-01`
-(created 2026-11-01, `send-metadata-2026-11-01-create.log`). All seven are **`draft`**; the Hebrew
-components are `published`.
+(created 2026-11-01, `send-metadata-2026-11-01-create.log`). Created as `draft`; after the live run
+below they were **published** with `send-metadata.ps1 -Publish` (`publish-components-2026-11-01.log`:
+published=7, read-back-not-published=0). A separate GET of the unit afterwards: 14 components, all
+`published` (7 Hebrew, 7 Arabic), unit status `ready`.
 
 Launch links: `Tools/full-kata-link/New-KataLaunchLinks.ps1 -InputFile components-methodica-ar-science-body-matter-01.txt
 -StudentId VADIM-AR-BM01 -ResetState` — 7 of 7 OK.
@@ -31,4 +33,3 @@ Launch links: `Tools/full-kata-link/New-KataLaunchLinks.ps1 -InputFile component
 - A full walk of every screen, and the part finish (`completed` on the component).
 - 01-02 item 004 drag in Chrome and Edge.
 - The report modal was not submitted (it posts to the shared Google Form).
-- Publishing the Arabic components in KATA (`draft` → `published`).
