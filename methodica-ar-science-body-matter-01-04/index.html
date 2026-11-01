@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وحدة تعليمية 720 | الهدف 11 | وحدة 4</title>
+<link rel="stylesheet" href="styles.css?v=20261029c">
+<link rel="stylesheet" href="../unit-css/25-report.css?v=20261019">
+</head>
+<body>
+
+<!-- ═══ Boot cover (ADDING-REPORTING-AND-RESUME.md §8.11) ═══
+     Hides screen 0 while a saved position is read and painted, so the learner never sees the
+     first screen flash before the restored one. A SIBLING of #app (scaleApp transforms #app).
+     unit-js/50-loader.js removes it on every exit path (dropBootCover); this inline net removes it
+     after 800 ms regardless — or, while a restore is in flight (window.__resumeInFlight), waits for
+     it up to a hard 6 s. Copied from methodica-science-mass-weight-01. -->
+<div id="boot-cover" style="position:fixed;inset:0;z-index:9999;background:#fff"></div>
+<script>
+(function () {
+  var t0 = Date.now();
+  function tick() {
+    var c = document.getElementById('boot-cover');
+    if (!c || !c.parentNode) return;
+    if (window.__resumeInFlight && Date.now() - t0 < 6000) { setTimeout(tick, 100); return; }
+    c.parentNode.removeChild(c);
+  }
+  setTimeout(tick, 800);
+})();
+</script>
+
+<div id="app">
+
+  <!-- ============ מסך 1 — מסך מעבר: סיום תרגול, פתיחה למשימת כיתה (שקף 54) ============
+       "לשכפל את מסך 18 מסיין 1 ולהתאים את התוכן לפי שקף 54" — אותה
+       משפחת `.transition-*` בדיוק (הועתקה גלובלית ל-styles.css של
+       הסיין הזה). תוכן: 3 קטעי-טקסט (sub/TITLE/sub, בדיוק 3 — לא נדרש
+       קיקר נוסף כמו במסכי-מעבר קודמים). כפתור המשך: **בלי תווית
+       מותאמת** — בשונה ממסכי-מעבר קודמים (לא נמצאה תיבת-טקסט ייעודית
+       לתווית-כפתור בשקף 54 עצמו, כמו שהייתה בשקפים 23/33/44) —
+       "המשך" הגנרי. **דמות (עודכן): וידאו לופ מושתק אמיתי**
+       (green-avatar-hawai-dance.mp4/turquoise-avatar-hawai-dance.mp4,
+       סופקו בפועל — "גיף דמות עם שרשרת הוואי, רוקדת" מהערת ההפקה).
+       **עודכן (בקשה מפורשת): כפתור
+       "חזרה" חוצה-פרויקטים** — זרימה טבעית 1↔2↔3↔4↔5; חוזר לסיין 2
+       **למסך האחרון שלו** דרך `?start=last` (ראו script.js → אתחול). -->
+  <section class="screen active" data-screen="0" id="s0">
+    <div class="transition-content">
+      <div class="transition-title-block">
+        <p class="transition-sub">أنهيت التمرين بنجاح - كل الاحترام!</p>
+        <h2 class="transition-title">هذا وقت مناسب للتعلم بطريقة مختلفة أيضًا،</h2>
+        <p class="transition-sub">لأن التعلم يتم بعدّة طرق.</p>
+      </div>
+      <div class="transition-avatar-wrap">
+        <video class="transition-avatar" id="s0-avatar-video" autoplay loop muted playsinline disablepictureinpicture preload="auto" aria-label="شخصية مرافقة"></video>
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+        </div>
+        <div class="bar-actions">
+          <button class="btn-continue" onclick="goTo(1)">متابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 2 — משימת כיתה (שקף 55) ============
+       שוכפל ממסך 2 (data-screen="1", id="s1") בסיין 3 יעד 3 — ראו
+       הערה מלאה ב-styles.css לגבי הסטיות (left/right סימטרי, בלי
+       דמות+בועה — לא רלוונטיות לתוכן שקף 55). התוכן ממוספר 1-4
+       בפועל בתסריט (לא 3 קבוצות נפרדות כמו במקור) — נבנה כרשימת
+       `.s2-steps` אחת בת 4 סעיפים, כל אחד עם הובלה מודגשת + המשך
+       רגיל (מיזוג `<b>` בתוך אותו `<li>`, לא שתי מחלקות נפרדות). -->
+  <section class="screen" data-screen="1" id="s1">
+    <div class="s2-content gesture-cursor-grab">
+      <h1 class="s2-title">مهمّة صفيّة</h1>
+      <div class="s2-body">
+        <div class="s2-group">
+          <p class="s2-section-bold">اختاروا جسمًا واحدًا في الصف (على سبيل المثال: كرسي، طاولة، قنينة، ملف، مقبض باب، نافذة، حقيبة، مسطرة) وأجروا عليه استقصاءً.</p>
+          <p class="s2-section-bold">اكتبوا النتائج في الدفتر:</p>
+        </div>
+        <div class="s2-group">
+          <ol class="s2-steps">
+            <li><b>حدّدوا مادة واحدة على الأقل صنع منها الجسم - </b>على سبيل المثال: بلاستيك، معدن، خشب، قماش.</li>
+            <li><b>اجمعوا معطيات بمشاهدة بسيطة - </b>حدّدوا خاصيتين للجسم نفسه: مثل الشكل، المقاس، الحجم التقريبي أو الكتلة التقريبية. اكتبوا خاصيتين للمادة: مثل اللون، الرائحة، الشفافية، الليونة، اللمعان أو الملمس.</li>
+            <li><b>صوغوا ادّعاءً علميًا قصيرًا: </b>الـ__________ هو جسم، لأنه مصنوع من ______، وهو مادة. إحدى خصائص المادة هي ______، وقد حدّدتها بواسطة ______.</li>
+            <li><b>"ماذا لو؟" </b>فكّروا: ماذا لو كان الجسم نفسه مصنوعًا من مادة أخرى؟ كيف سيؤثر ذلك على استخدامه؟</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="bar-back">
+          <button class="btn-back" onclick="goTo(0, true)">عودة</button>
+        </div>
+        <div class="bar-actions">
+          <button id="s1-finish" class="btn-continue s2-btn-continue-wide" onclick="partFinish(this)">عُدتُ. يمكن المتابعة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- כפתור "מצאתם בעיה?" — רכיב גלובלי יחיד, מחוץ לכל .screen,
+       ישירות ב-#app, לפי 720-templates skill (_global-components.md) -->
+  <button id="report-btn" class="flag-btn" type="button" aria-label="هل واجهتم مشكلة؟" title="هل واجهتم مشكلة؟">
+    <span class="flag-btn-icon" aria-hidden="true">
+      <img class="flag-btn-icon-default" src="../unit-assets/img/flag-default.svg" alt="">
+      <img class="flag-btn-icon-hover" src="../unit-assets/img/flag-hover.svg" alt="">
+    </span>
+    <span class="flag-btn-label">هل واجهتم مشكلة؟</span>
+  </button>
+
+  <!-- הגדלת תמונה (img-zoom) — רכיב גלובלי יחיד, מחוץ לכל .screen,
+       ישירות ב-#app, לפי מפרט 720-templates _global-components.md.
+       כל תמונת תוכן שצריכה זום מוסיפה כפתור .img-zoom-btn משלה
+       בתוך ה-wrapper שלה (position:relative, בלי stacking context) -->
+  <div id="img-zoom-modal" class="img-zoom-modal hidden" aria-hidden="true" data-zoom-close="true">
+    <div class="img-zoom-modal__panel" role="dialog" aria-modal="true" aria-label="تكبير الصورة">
+      <button class="img-zoom-close" type="button" data-zoom-close="true" aria-label="إغلاق تكبير الصورة">
+        <svg class="img-zoom-close__icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect class="zc-bg" x="1" y="1" width="38" height="38" rx="19" stroke-width="2"/><path class="zc-x" d="M27.151 12.849C26.9275 12.6255 26.6244 12.5 26.3084 12.5C25.9924 12.5 25.6893 12.6255 25.4658 12.849L20 18.3147L14.5342 12.849C14.3107 12.6255 14.0076 12.5 13.6916 12.5C13.3756 12.5 13.0725 12.6255 12.849 12.849C12.6255 13.0725 12.5 13.3756 12.5 13.6916C12.5 14.0076 12.6255 14.3107 12.849 14.5342L18.3147 20L12.849 25.4658C12.6255 25.6893 12.5 25.9924 12.5 26.3084C12.5 26.6244 12.6255 26.9275 12.849 27.151C13.0725 27.3745 13.3756 27.5 13.6916 27.5C14.0076 27.5 14.3107 27.3745 14.5342 27.151L20 21.6853L25.4658 27.151C25.6893 27.3745 25.9924 27.5 26.3084 27.5C26.6244 27.5 26.9275 27.3745 27.151 27.151C27.3745 26.9275 27.5 26.6244 27.5 26.3084C27.5 25.9924 27.3745 25.6893 27.151 25.4658L21.6853 20L27.151 14.5342C27.3745 14.3107 27.5 14.0076 27.5 13.6916C27.5 13.3756 27.3745 13.0725 27.151 12.849Z"/></svg>
+      </button>
+      <div class="img-zoom-modal__stage"></div>
+    </div>
+  </div>
+
+
+  <!-- ═══ "هل واجهتم مشكلة؟" — issue-report dialogs (ADDING-REPORTING-AND-RESUME.md §7) ═══
+       Copied from methodica-science-mass-weight-01-02 (2026-10-19). Last children of #app, outside
+       every .screen: .report-modal-overlay is position:absolute; inset:0 against #app, so it aligns
+       with the scaled canvas. All three carry `hidden`; behaviour in ../unit-js/25-report.js, style in
+       ../unit-css/25-report.css. The .flag-btn above is wired by delegation — no onclick here. -->
+  <div id="report-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-modal-title">
+    <div class="report-modal-box">
+      <button class="report-close-btn" type="button" onclick="tryCloseReportModal()" aria-label="إغلاق">&#10005;</button>
+      <h2 class="report-modal-title" id="report-modal-title">الإبلاغ عن مشكلة</h2>
+      <p class="report-modal-body">هل هناك شيء غير واضح أو لا يعمل كما يجب؟<br>أبلغونا بما حدث لنتمكن من معالجة المشكلة.</p>
+
+      <div class="report-field">
+        <label class="report-label" for="report-type"><span class="required-star">*</span> ما نوع المشكلة</label>
+        <div class="report-custom-select" id="report-type-wrapper">
+          <button class="report-select-btn is-placeholder" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span class="report-select-value">اختاروا نوع المشكلة</span>
+          </button>
+          <ul class="report-select-list" role="listbox" hidden>
+            <li class="report-select-option" data-value="technical" role="option">عطل تقني أو شيء ما لا يعمل</li>
+            <li class="report-select-option" data-value="unclear" role="option">شيء غير واضح لي</li>
+            <li class="report-select-option" data-value="other" role="option">آخر</li>
+          </ul>
+          <input type="hidden" id="report-type" value="">
+        </div>
+        <span class="report-field-error" id="report-type-error" hidden>اختاروا نوع المشكلة</span>
+      </div>
+
+      <div class="report-field">
+        <label class="report-label" for="report-text"><span class="required-star">*</span> ماذا حدث؟</label>
+        <textarea class="report-textarea" id="report-text" maxlength="250" rows="4" placeholder="فصّلوا ماذا حدث لنتمكن من فهم المشكلة" onblur="reportTextBlur()"></textarea>
+        <span class="report-field-error" id="report-text-error" hidden>اكتبوا ماذا حدث</span>
+        <span class="report-char-count" id="report-char-count">0 / 250</span>
+      </div>
+
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="tryCloseReportModal()">إلغاء</button>
+        <button class="report-submit-btn" type="button" onclick="submitReport()" disabled>إرسال التبليغ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- מצב "הדיווח נשלח". דיאלוג נפרד מדיאלוג הנטישה שמתחתיו — אין לאחד ביניהם. -->
+  <div id="report-thanks-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-thanks-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-thanks-title">تم إرسال التبليغ، شكرًا!</h2>
+      <p class="report-modal-body">تلقّينا التبليغ وسنعالجه في أقرب وقت.</p>
+      <div class="report-actions">
+        <button class="report-submit-btn" type="button" onclick="closeReportThanks()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- אישור נטישה: נפתח רק כשיש קלט שלא נשלח. -->
+  <div id="report-confirm-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-confirm-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-confirm-title">هل تريدون إغلاق النافذة فعلًا؟</h2>
+      <p class="report-modal-body">إذا ضغطتم على إغلاق فلن يتم إرسال التبليغ</p>
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="forceCloseReportModal()">إغلاق النافذة</button>
+        <button class="report-submit-btn" type="button" onclick="backToReportForm()">أريد التبليغ</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+<!-- 720 platform layer (reporting / resume): shared files first, the part's own script, 90-boot last.
+     Same ?v= in every part (guide §3.4); 90-boot.js is a separate tag on purpose (§3.2). -->
+<script src="../unit-js/10-identity.js?v=20261019"></script>
+<script src="../unit-js/20-xapi.js?v=20261019"></script>
+<script src="../unit-js/25-report.js?v=20261019"></script>
+<script src="../unit-js/40-resume.js?v=20261019"></script>
+<script src="../unit-js/50-loader.js?v=20261019"></script>
+<script src="script.js?v=20261029c"></script>
+<script src="../unit-js/90-boot.js?v=20261019"></script>
+</body>
+</html>

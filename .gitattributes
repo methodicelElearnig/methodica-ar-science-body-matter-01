@@ -1,0 +1,30 @@
+# Line endings, pinned so every clone agrees (copied from methodica-science-mass-measure-03).
+#
+# Without this file the repo's line endings depend on each machine's core.autocrlf.
+# `eol=lf` also pins the WORKING TREE to LF on Windows: deployment packages are copied
+# from the working tree and verified byte for byte, so every machine must produce the
+# same bytes.
+
+* text=auto eol=lf
+
+# Explicit binary, so auto-detection is never the only thing standing between a font
+# file and corruption.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.mp4   binary
+*.webm  binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.pptx  binary
+*.docx  binary
+
+# SVG is XML — text, not an image format. "*.svg binary" is a common and silently
+# damaging mistake: it would kill diffs and merges on the illustrations.
+*.svg   text eol=lf
+
+# The XLIFF translation export is XML too.
+*.xlf   text eol=lf

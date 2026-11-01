@@ -1,0 +1,44 @@
+# Source material — large and not part of the built lomda.
+*.pptx
+*.ppt
+*.docx
+*.doc
+
+# Loose working notes at the repo root stay local. Anchored to the root on purpose:
+# FOLDERS-AND-MEDIA-RENAMING.md, docs-and-tools/*.md and _test/README.md are tracked.
+/ARCHITECTURE.md
+/PROJECT_BRIEF.md
+/SELF-QA*.md
+/Critical-requirement-*.md
+/SESSION_TASK.md
+/WORK_PROGRESS.md
+
+# The Kata API key — the one live credential allowed on disk. Never commit it; the
+# package allowlist (docs-and-tools/package-allowlist.ps1) keeps it out of deployments.
+kata-api-key.txt
+
+# Logs written by the metadata / packaging scripts…
+*.log
+# …except run records archived on purpose (archive before any run).
+!docs-and-tools/send-metadata-*.log
+!docs-and-tools/retrieve-metadata-*.log
+!docs-and-tools/publish-components-*.log
+
+# Catalogue snapshot pulled down to diff against metadata/ — not a source of truth.
+metadata-from/
+
+# Built packages live beside the repo, never inside it; belt and braces.
+deployments/
+
+# Test harness dependencies: install jsdom OUTSIDE this OneDrive tree and point
+# NODE_PATH at it (see _test/README.md).
+node_modules/
+
+# State snapshots from docs-and-tools/save-restore-state.html may hold a real learner's answers.
+docs-and-tools/states/*
+!docs-and-tools/states/.gitkeep
+
+# Windows / OneDrive
+Thumbs.db
+desktop.ini
+.DS_Store
