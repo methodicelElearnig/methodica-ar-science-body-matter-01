@@ -45,7 +45,10 @@ param(
     # Deliberately sends no `order` and no `questions`, so the item-order 409 trap
     # cannot fire and — far more important right now — so a catalogue-side edit to a
     # question can never be overwritten by this mode.
-    [switch] $ItemHostedRefOnly
+    [switch] $ItemHostedRefOnly,
+    # methodica-ar-science-body-matter-01 (2026-11-01): the Hebrew unit the Arabic components join.
+    # See the PARENT UNIT note in CONFIG (2). '' restores the own-unit upsert of *_unit.json.
+    [string] $ParentUnitKey
 )
 
 # ============================================================================
@@ -79,6 +82,18 @@ if (-not $MetadataDir) { $MetadataDir = Join-Path $RepoRoot 'metadata' }
 $LogFile = Join-Path $RepoRoot 'send-metadata.log'
 
 # ── (2) PER-UNIT — usually fine as-is ───────────────────────────────────────
+# PARENT UNIT — the Arabic components join the EXISTING Hebrew unit; there is no Arabic unit
+# in KATA. KATA binds a learning objective to exactly one unit (a separate Arabic unit got
+# 409 "objective already bound to a unit (strict 1:1)" on methodica-ar-math-ratio-01 and
+# methodica-ar-math-percent-08), and the KATA team's instruction is to add the Arabic
+# components to the existing unit. Ported 2026-11-01 from methodica-ar-math-ratio-04 3c028d7.
+#
+# When set, the unit is READ-ONLY: one GET confirms it exists, *_unit.json is not read, and
+# no POST/PATCH ever goes to the unit — a PATCH here would overwrite the Hebrew unit's title,
+# sectors and audience with this repo's values. Components are created under this key.
+# -ParentUnitKey '' restores the original behaviour (upsert this repo's own *_unit.json).
+if (-not $PSBoundParameters.ContainsKey('ParentUnitKey')) { $ParentUnitKey = 'methodica-science-body-matter-01' }
+
 # Where the CONTENT is served from, for hostedContentRef — the field Kata launches the
 # component from. It must resolve.
 #
@@ -92,10 +107,11 @@ $LogFile = Join-Path $RepoRoot 'send-metadata.log'
 # one, for every component of this unit.
 #
 # Take this from the unit's own DEPLOY.md deploy target. No trailing slash.
-$ContentBaseUrl = 'https://lomdot.education.gov.il/metodica/720/science/body-matter/01'
+# Arabic hosting path (as ar-ratio-04 .../720/ar/math/ratio/04); serves the parts on 2026-11-01.
+$ContentBaseUrl = 'https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01'
 # Title language key: wraps a string title into the API object, e.g.
 #   "מדידת מסה" -> { "Hebrew": "מדידת מסה" }. Change only for non-Hebrew content.
-$TitleLangKey = 'he'   # KATA-API.md rule 2026-10-19: the UI reads only the ISO codes he / ar
+$TitleLangKey = 'ar'   # KATA-API.md rule 2026-10-19: the UI reads only the ISO codes he / ar
 # ⚠️ NO LONGER SENT (2026-09-09). v2.5 §2.6 renamed the v2.4 component field
 # `manufacture` to the unit field `manufacturer` and retyped it as the ministry's
 # supplier number. It is moot either way, because KATA derives the value itself
@@ -604,16 +620,28 @@ Write-Log ("Base URL     : {0}" -f $BaseUrl)
 Write-Log ("Metadata dir : {0}" -f $MetadataDir)
 Write-Log ("Mode         : {0}" -f $modeLabel)
 
-# 1) Unit
-$unitFile = Get-ChildItem -Path $MetadataDir -Filter '*_unit.json' | Select-Object -First 1
-if (-not $unitFile) { Write-Log "No *_unit.json found in $MetadataDir" 'ERROR'; exit 1 }
-$unit = Get-Content -Raw -Path $unitFile.FullName -Encoding UTF8 | ConvertFrom-Json
-$unitKey = Get-Slug $unit.id
+# 1) Unit — either an existing parent unit (read-only) or this repo's own unit (upserted)
+if ($ParentUnitKey) {
+    $unitKey = $ParentUnitKey
+    $unit = $null
+} else {
+    $unitFile = Get-ChildItem -Path $MetadataDir -Filter '*_unit.json' | Select-Object -First 1
+    if (-not $unitFile) { Write-Log "No *_unit.json found in $MetadataDir" 'ERROR'; exit 1 }
+    $unit = Get-Content -Raw -Path $unitFile.FullName -Encoding UTF8 | ConvertFrom-Json
+    $unitKey = Get-Slug $unit.id
+}
 
 # In -ItemHostedRefOnly the unit is not touched at all — the whole point of that mode
 # is that exactly one field per item changes and nothing else in the catalogue moves.
 $unitOk = $true
-if (-not $ItemHostedRefOnly) {
+if ($ParentUnitKey) {
+    Write-Log ("Parent unit  : {0} (read-only, not modified)" -f $unitKey)
+    $r = Invoke-Kata 'GET' "/api/v1/content-units/$unitKey" $null
+    $unitOk = $DryRun -or ($r.Code -eq '200')
+    if (-not $unitOk) {
+        Write-Log ("Parent unit {0} not found or not readable (HTTP {1}) — nothing sent." -f $unitKey, $r.Code) 'ERROR'
+    }
+} elseif (-not $ItemHostedRefOnly) {
     $unitBody  = New-UnitBody $unit
     $unitPatch = Remove-Key $unitBody 'uniqueKey'
     $unitOk = Send-Entity -Label "unit $unitKey" `

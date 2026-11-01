@@ -4,7 +4,9 @@
   "learningUnitId": "methodica-ar-science-body-matter-01",
   "componentPurpose": "practice",
   "isAssessment": true,
-  "recommendedAfterFail": [],
+  "recommendedAfterFail": [
+    "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-07/"
+  ],
   "isRequired": true,
   "relativeDifficulty": 5,
   "masteryLevel": null,
