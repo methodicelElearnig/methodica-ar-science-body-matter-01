@@ -1,0 +1,33 @@
+{
+  "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-04/",
+  "title": "مهمّة صفيّة",
+  "learningUnitId": "methodica-ar-science-body-matter-01",
+  "componentPurpose": "practice",
+  "isAssessment": false,
+  "recommendedAfterFail": [],
+  "isRequired": true,
+  "relativeDifficulty": 3,
+  "masteryLevel": null,
+  "order": 4,
+  "depthLevel": "core-curriculum-basic",
+  "cognitiveLevels": [
+    "applying-a-model-or-procedure"
+  ],
+  "languages": [
+    "Arabic"
+  ],
+  "skills": [],
+  "estimatedTimeInMinutes": 1,
+  "createdAt": "2026-10-25T00:00:00.000Z",
+  "updatedAt": "2026-10-25T00:00:00.000Z",
+  "subContent": [
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-04/methodica-ar-science-body-matter-01-04-001/",
+      "title": "استقصاء جسم ومادة في الصف",
+      "informationToBot": "מטרת הפריט: יישום מציאותי של המושגים — חקר גוף אחד בכיתה, זיהוי החומר שלו ותכונותיו, וניסוח טענה מדעית. כיווני חשיבה ואסטרטגיות: הלומד בוחר גוף בכיתה, מציין חומר אחד, שתי תכונות גוף ושתי תכונות חומר, מנסח טענה בנוסח: 'ה-___ הוא גוף, מפני שהוא עשוי מ-___, שהוא חומר. אחת מתכונות החומר היא ___, וזיהיתי אותה באמצעות ___', ועונה על 'מה היה קורה אם?'. טעויות נפוצות: בלבול בין תכונות גוף לתכונות חומר בתצפית; בחירת תכונה שלא ניתן לבדוק בתצפית פשוטה; טענה ללא נימוק. מידע נוסף: משימת כיתה פיזית — הלומד כותב במחברת, אין תשובה שנאספת ואין הערכה במערכת. הפריט נפתח במסך 'זמן טוב ללמוד גם בצורה אחרת'. צילום מסך: לא צורף.",
+      "contentType": "project-or-inquiry-task",
+      "mediaFormat": "text",
+      "questions": []
+    }
+  ]
+}

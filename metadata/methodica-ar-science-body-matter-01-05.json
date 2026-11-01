@@ -1,0 +1,171 @@
+{
+  "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-05/",
+  "title": "لنتحدَّ أنفسنا",
+  "learningUnitId": "methodica-ar-science-body-matter-01",
+  "componentPurpose": "practice",
+  "isAssessment": false,
+  "recommendedAfterFail": [],
+  "isRequired": false,
+  "relativeDifficulty": 5,
+  "masteryLevel": null,
+  "order": 5,
+  "depthLevel": "core-curriculum-basic",
+  "cognitiveLevels": [
+    "analyzing"
+  ],
+  "languages": [
+    "Arabic"
+  ],
+  "skills": [],
+  "estimatedTimeInMinutes": 11,
+  "createdAt": "2026-10-25T00:00:00.000Z",
+  "updatedAt": "2026-10-25T00:00:00.000Z",
+  "subContent": [
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-05/methodica-ar-science-body-matter-01-05-001/",
+      "title": "مختبر القناني — قنينة للشرب",
+      "informationToBot": "מטרת הפריט: תרגול מתקדם — בחירת חומר לבקבוק שתייה לפי 3 דרישות (שקיפות, שבירות, קשיות) על סמך התנסות בסימולציה 'מעבדת הבקבוקים'. כיווני חשיבה ואסטרטגיות: הלומד בודק בסימולציה את זכוכית, פלסטיק שקוף ומתכת, ומחליט לפי הדרישות: שקיפות גבוהה, שבירות נמוכה וקשיות גבוהה — פלסטיק שקוף. טעויות נפוצות: בחירה בזכוכית (שקופה וקשה אך שבירה) או במתכת (אינה שקופה) תוך התעלמות מאחת הדרישות. מידע נוסף: הפריט נפתח במסך 'זמן ל-4 שאלות מתקדמות'. כולל יישומון/סימולציה. מותר שני ניסיונות; ללא רמז. צילום מסך: לא צורף.",
+      "contentType": "simulation",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-05/methodica-ar-science-body-matter-01-05-001/q1",
+          "questionType": "choice",
+          "questionText": "بعد التجربة، أي مادة تناسب صنع القنينة منها وفقًا للمتطلبات (قابلية كسر منخفضة، شفافية عالية، وصلابة عالية)؟",
+          "answers": [
+            "زجاج",
+            "بلاستيك شفاف",
+            "معدن"
+          ],
+          "correctAnswers": [
+            "بلاستيك شفاف"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-05/methodica-ar-science-body-matter-01-05-002/",
+      "title": "مختبر القناني — قنينة لمكاتب الهايتك",
+      "informationToBot": "מטרת הפריט: תרגול מתקדם — בחירת חומר כשהדרישות משתנות (שקיפות לא נדרשת, שבירות נמוכה, קשיות ללא דרישה) וניסוח טענה מדעית. כיווני חשיבה ואסטרטגיות: סעיף א: הלומד מסיק שכשרק שבירות נמוכה חשובה — מתכת. סעיף ב: משלים טענה מדעית ממחסן מילים: התכונה היחידה החשובה היא שבירות, ברמה נמוכה, ולכן החומר המתאים הוא מתכת. טעויות נפוצות: בחירה בחומר שמתאים לבקבוק הראשון (פלסטיק שקוף) מתוך קיבעון; שימוש בתכונות שלא נדרשו. מידע נוסף: כולל סימולציה, שני סעיפים (א, ב). בסעיף ב' 3 מילים ל-3 מקומות בלי מסיחים. מותר שני ניסיונות; ללא רמז. צילום מסך: לא צורף.",
+      "contentType": "simulation",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-05/methodica-ar-science-body-matter-01-05-002/q1",
+          "questionType": "choice",
+          "questionText": "أ. أي مادة تناسب صنع قنينة المكتب وفقًا للمتطلبات (قابلية كسر منخفضة، شفافية منخفضة، وصلابة دون متطلبات خاصة)؟",
+          "answers": [
+            "زجاج",
+            "بلاستيك شفاف",
+            "معدن"
+          ],
+          "correctAnswers": [
+            "معدن"
+          ]
+        },
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-05/methodica-ar-science-body-matter-01-05-002/q2",
+          "questionType": "matching",
+          "questionText": "ب. أكملوا الادّعاء العلمي: وفقًا لمتطلبات تطوير قنينة المكتب، الخاصية الوحيدة المهمة للقنينة هي ___ على مستوى ___. لذلك، من بين المواد الثلاث، الأنسب لإنتاج قنينة المكتب هو: ___.",
+          "answers": {
+            "source": [
+              "قابلية الكسر",
+              "منخفضة",
+              "معدن"
+            ],
+            "target": [
+              "الخاصية الوحيدة المهمة للقنينة هي",
+              "على مستوى",
+              "الأنسب لإنتاج قنينة المكتب هو"
+            ]
+          },
+          "correctAnswers": [
+            {
+              "source": "قابلية الكسر",
+              "target": "الخاصية الوحيدة المهمة للقنينة هي"
+            },
+            {
+              "source": "منخفضة",
+              "target": "على مستوى"
+            },
+            {
+              "source": "معدن",
+              "target": "الأنسب لإنتاج قنينة المكتب هو"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-05/methodica-ar-science-body-matter-01-05-003/",
+      "title": "علبة طعام قابلة لإعادة الاستخدام",
+      "informationToBot": "מטרת הפריט: תרגול מתקדם — בחירת חומר על סמך טבלת נתונים בכמה תכונות והצדקה מבוססת נתונים. כיווני חשיבה ואסטרטגיות: הלומד מתאים לדרישות (קלה, לא נשברת בקלות, עמידה במים) את החומר שנתוניו מתאימים: פלסטיק קשיח — שבירות נמוכה ועמידות גבוהה במים. זכוכית שבירה, וקרטון מצופה עמידותו בינונית. טעויות נפוצות: בחירה לפי תכונה אחת בלבד (שקיפות של זכוכית); בחירה בקרטון לפי 'פחות שקוף' — תכונה לא רלוונטית; טענה ש'כולם מתאימים'. מידע נוסף: מותר שני ניסיונות ויש רמז. צילום מסך: לא צורף.",
+      "contentType": "practice",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-05/methodica-ar-science-body-matter-01-05-003/q1",
+          "questionType": "choice",
+          "questionText": "فريق تطوير يخطط لعلبة طعام قابلة لإعادة الاستخدام للطلاب. يجب أن تكون العلبة خفيفة، لا تنكسر بسهولة، ومقاومة للماء. أمامكم جدول معطيات عن ثلاث مواد محتملة لصنع العلبة. أي مادة تناسب وفقًا للمعطيات في الجدول؟",
+          "answers": [
+            "زجاج - لأنه شفاف ومقاوم للماء.",
+            "بلاستيك صلب - لأنه مقاوم للماء وقابلية كسره منخفضة.",
+            "جميع المواد مناسبة بنفس القدر، لأن كل واحدة منها لها ميزة مختلفة.",
+            "كرتون مطلي - لأنه أقل شفافية من المواد الأخرى."
+          ],
+          "correctAnswers": [
+            "بلاستيك صلب - لأنه مقاوم للماء وقابلية كسره منخفضة."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-05/methodica-ar-science-body-matter-01-05-004/",
+      "title": "تحديد مواد غير معروفة حسب الخصائص",
+      "informationToBot": "מטרת הפריט: תרגול מתקדם — זיהוי חומר/גוף לפי מכלול תכונות שנצפו בבדיקות (שקיפות, מגנטיות, מסיסות במים, מוליכות חשמל). כיווני חשיבה ואסטרטגיות: הלומד קורא את מאפייני שלוש הדגימות ומתאים: דגימה ב' (לא שקופה, נמשכת למגנט, מוליכה חשמל) — מתכת מגנטית; דגימה א' (שקופה, לא מוליכה) — חלון שקוף; דגימה ג' (מתמוססת במים) — חומר מסיס במים. טעויות נפוצות: התייחסות לתכונה אחת בלבד והתעלמות משאר התכונות; בלבול בין דגימות ב' לג' שתיהן אינן שקופות. מידע נוסף: שאלת גרירה של 3 דגימות ל-3 חומרים/גופים. מותר שני ניסיונות; ללא כפתור רמז. צילום מסך: לא צורף.",
+      "contentType": "practice",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-05/methodica-ar-science-body-matter-01-05-004/q1",
+          "questionType": "matching",
+          "questionText": "في المختبر فحصت ثلاث عينات من مواد غير معروفة. في كل عينة لوحظت خصائص مختلفة للمادة. طابقوا بين العينة والمادة أو الجسم المناسب لها: العينة أ: يمكن الرؤية من خلالها بوضوح، لا تنجذب إلى المغناطيس، لا تذوب في الماء، غير موصلة للكهرباء. العينة ب: لا يمكن الرؤية من خلالها، تنجذب إلى المغناطيس، لا تذوب في الماء، موصلة للكهرباء. العينة ج: لا يمكن الرؤية من خلالها، لا تنجذب إلى المغناطيس، تذوب في الماء، غير موصلة للكهرباء.",
+          "answers": {
+            "source": [
+              "عيّنة أ",
+              "عيّنة ب",
+              "عيّنة ج"
+            ],
+            "target": [
+              "معدن مغناطيسي",
+              "نافذة شفافة",
+              "مادة قابلة للذوبان في الماء"
+            ]
+          },
+          "correctAnswers": [
+            {
+              "source": "عيّنة أ",
+              "target": "نافذة شفافة"
+            },
+            {
+              "source": "عيّنة ب",
+              "target": "معدن مغناطيسي"
+            },
+            {
+              "source": "عيّنة ج",
+              "target": "مادة قابلة للذوبان في الماء"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-05/methodica-ar-science-body-matter-01-05-005/",
+      "title": "حذاء الجري الذي يعيد الطاقة",
+      "informationToBot": "מטרת הפריט: העשרה — היכרות עם החומרים והתכונות של נעל ריצה תחרותית כדוגמה לבחירת חומרים לפי תפקיד. כיווני חשיבה ואסטרטגיות: הלומד לוחץ על חלקי הנעל בתמונה וקורא על החומר של כל חלק ותכונותיו. טעויות נפוצות: אין הערכה בפריט — מסך 'הידעת?' בלבד. מידע נוסף: מסך העשרה בסוף הרכיב, ללא שאלה. צילום מסך: לא צורף.",
+      "contentType": "motivational",
+      "mediaFormat": "interactive-content",
+      "questions": []
+    }
+  ]
+}

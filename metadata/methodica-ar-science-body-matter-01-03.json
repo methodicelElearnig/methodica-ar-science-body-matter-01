@@ -1,0 +1,215 @@
+{
+  "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-03/",
+  "title": "وقت التدريب 2",
+  "learningUnitId": "methodica-ar-science-body-matter-01",
+  "componentPurpose": "practice",
+  "isAssessment": false,
+  "recommendedAfterFail": [
+    "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-02/"
+  ],
+  "isRequired": false,
+  "relativeDifficulty": 2,
+  "masteryLevel": null,
+  "order": 3,
+  "depthLevel": "core-curriculum-basic",
+  "cognitiveLevels": [
+    "applying-a-model-or-procedure"
+  ],
+  "languages": [
+    "Arabic"
+  ],
+  "skills": [],
+  "estimatedTimeInMinutes": 14,
+  "createdAt": "2026-10-25T00:00:00.000Z",
+  "updatedAt": "2026-10-25T00:00:00.000Z",
+  "subContent": [
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-03/methodica-ar-science-body-matter-01-03-001/",
+      "title": "خصائص المواد في الهاتف المحمول",
+      "informationToBot": "מטרת הפריט: תרגול בסיסי — הבחנה בין חומר לתכונה ובין תכונות החומר לבין הגוף עצמו בטלפון נייד. כיווני חשיבה ואסטרטגיות: הלומד מסמן את כל התשובות שהן תכונות של חומרים המרכיבים את הטלפון: הקשיות והצבע. 'הפלסטיק' הוא חומר ו'הטלפון עצמו' הוא גוף. טעויות נפוצות: סימון 'הפלסטיק' (חומר) או 'הטלפון עצמו' (גוף) כתכונה. מידע נוסף: הפריט נפתח במסך 'אין כמו תרגול לחיזוק הלמידה' (5 שאלות, יש רמז מההתחלה, צריך לענות נכון על 4 לפחות). בחירה מרובה. מותר שני ניסיונות. צילום מסך: לא צורף.",
+      "contentType": "practice",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-03/methodica-ar-science-body-matter-01-03-001/q1",
+          "questionType": "choice",
+          "questionText": "في الهاتف المحمول، ما هي خصائص المواد المكوّنة له؟ اختاروا جميع الإجابات الصحيحة",
+          "answers": [
+            "البلاستيك",
+            "الصلابة",
+            "الهاتف نفسه",
+            "اللون"
+          ],
+          "correctAnswers": [
+            "الصلابة",
+            "اللون"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-03/methodica-ar-science-body-matter-01-03-002/",
+      "title": "خصائص المادة",
+      "informationToBot": "מטרת הפריט: תרגול בסיסי — זיהוי תכונות חומר מתוך רשימה שכוללת גם תכונות גוף. כיווני חשיבה ואסטרטגיות: הלומד מסמן את תכונות החומר: שקיפות, קשיות, מוליכות חשמל. מסה ונפח הן תכונות גוף. טעויות נפוצות: סימון מסה ונפח כתכונות חומר, או השמטת אחת מתכונות החומר. מידע נוסף: בחירה מרובה. מותר שני ניסיונות ויש רמז. צילום מסך: לא צורף.",
+      "contentType": "practice",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-03/methodica-ar-science-body-matter-01-03-002/q1",
+          "questionType": "choice",
+          "questionText": "أي من الخيارات هي خصائص المادة؟ اختاروا جميع الإجابات المناسبة.",
+          "answers": [
+            "شفافية",
+            "صلابة",
+            "الموصلية الكهربائية",
+            "كتلة",
+            "حجم"
+          ],
+          "correctAnswers": [
+            "شفافية",
+            "صلابة",
+            "الموصلية الكهربائية"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-03/methodica-ar-science-body-matter-01-03-003/",
+      "title": "المادة التي يصنع منها القوس",
+      "informationToBot": "מטרת הפריט: תרגול בסיסי — קריאת טבלה שמתארת חלקי אוזניות, חומר ותכונה בולטת, וזיהוי החומר של חלק מסוים. כיווני חשיבה ואסטרטגיות: הלומד קורא בטבלה: קשת — פלסטיק — גמישות; כרית אוזן — קצף זיכרון — רכות; חיבור פנימי — מתכת — מוליכות חשמלית, ובוחר את החומר של הקשת. טעויות נפוצות: בחירה בתכונה/בחומר של שורה אחרת בטבלה (למשל מתכת או קצף זיכרון). מידע נוסף: מותר שני ניסיונות; ללא רמז. צילום מסך: לא צורף.",
+      "contentType": "practice",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-03/methodica-ar-science-body-matter-01-03-003/q1",
+          "questionType": "choice",
+          "questionText": "انظروا إلى الجدول الموجود على اليسار، وهو يصف مواد 3 أجزاء في سماعات الرأس. ما هي المادة التي يصنع منها القوس؟",
+          "answers": [
+            "سيليكون",
+            "بلاستيك",
+            "إسفنج الذاكرة",
+            "معدن"
+          ],
+          "correctAnswers": [
+            "بلاستيك"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-03/methodica-ar-science-body-matter-01-03-004/",
+      "title": "اختيار المادة حسب الخصائص والوظيفة",
+      "informationToBot": "מטרת הפריט: תרגול בסיסי — ניסוח עיקרון מדעי: בבחירת חומר בודקים את תכונות החומר ומתאימים אותן לתפקיד החלק. כיווני חשיבה ואסטרטגיות: הלומד משלים את הפסקה בשני תפריטים: 'הן צריכות לבדוק את ה[תכונות] של החומר, ולבחור חומר שמתאים ל[תפקיד] של אותו חלק'. טעויות נפוצות: בחירה ב'צבע' או 'שם' במקום 'תכונות', או ב'תכונות' במקום 'תפקיד' בחלק השני. מידע נוסף: שני תפריטים נפתחים (אפשרויות שונות בכל תפריט). מותר שני ניסיונות ויש רמז. צילום מסך: לא צורף.",
+      "contentType": "practice",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-03/methodica-ar-science-body-matter-01-03-004/q1",
+          "questionType": "performance",
+          "questionText": "أكملوا الفقرة: عندما تختار المهندسات مادة لجزء معين في سماعات الرأس، يجب عليهن فحص ال___ الخاصة بالمادة، واختيار مادة مناسبة لـ___ ذلك الجزء.",
+          "answers": null,
+          "correctAnswers": [
+            {
+              "stepId": "القائمة 1",
+              "response": "خصائص"
+            },
+            {
+              "stepId": "القائمة 2",
+              "response": "وظيفة"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-03/methodica-ar-science-body-matter-01-03-005/",
+      "title": "تحديد مادة مُصنعة",
+      "informationToBot": "מטרת הפריט: תרגול בסיסי — יישום ההבחנה בין גוף מעובד לבלתי מעובד על 4 דוגמאות. כיווני חשיבה ואסטרטגיות: הלומד לוחץ על התמונה שמשקפת גוף מעובד: קוביית פלסטיק (הפלסטיק עבר עיבוד בידי אדם). גזע עץ, צמר שנגזז וחלוק נחל אינם מעובדים במובן שנלמד. טעויות נפוצות: בחירה בצמר שנגזז (נראה כמו 'חומר שהאדם שינה') או בגזע עץ שנחתך. מידע נוסף: ארבע תמונות, בחירה יחידה. מותר שני ניסיונות ויש רמז. צילום מסך: לא צורף.",
+      "contentType": "practice",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-03/methodica-ar-science-body-matter-01-03-005/q1",
+          "questionType": "choice",
+          "questionText": "اضغطوا على الصورة التي تعكس مادة مُصنعة:",
+          "answers": [
+            "جذع شجرة",
+            "صوف مجزوز",
+            "مكعب بلاستيكي",
+            "حصاة نهر"
+          ],
+          "correctAnswers": [
+            "مكعب بلاستيكي"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-03/methodica-ar-science-body-matter-01-03-006/",
+      "title": "سبيكة ذهب مستديرة وملساء — هل خضعت للمعالجة؟",
+      "informationToBot": "מטרת הפריט: תרגול ברמה גבוהה יותר — הבנה שמראה חלק או חומר מסוים אינם מספיקים כדי לקבוע שגוף עובד; נדרשות ראיות לעיצוב מכוון בידי אדם. כיווני חשיבה ואסטרטגיות: הלומד בוחר שצריך לחפש ראיות נוספות לכך שהאדם עיצב את הגוף, כי החומר (זהב) והחלקות לבדם אינם מוכיחים עיבוד. טעויות נפוצות: הנחה שגוש זהב הוא תמיד מעובד, או שגוף חלק הוא תמיד מעובד, או שמספיק לבדוק מאיזה חומר הוא עשוי. מידע נוסף: הפריט נפתח במסך 'יופי של עבודה! הנה עוד 2 תרגילים ברמת קושי גבוהה יותר'. מותר שני ניסיונות; ללא רמז. צילום מסך: לא צורף.",
+      "contentType": "practice",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-03/methodica-ar-science-body-matter-01-03-006/q1",
+          "questionType": "choice",
+          "questionText": "تخيّلوا سبيكة ذهب تبدو مستديرة وملساء جدًا. هل يمكن أن نحدد فورًا أنه خضع للمعالجة؟",
+          "answers": [
+            "نعم، لأن سبيكة الذهب هي دائمًا جسم مُصنع.",
+            "نعم، لأن الجسم الأملس هو دائمًا جسم مُصنع.",
+            "لا، يجب البحث عن أدلة إضافية تؤكّد أنَّ الإنسان قد صنعهُ (أو غيَّر شكلهُ).",
+            "لا. يجب فقط فحص المادة المصنوع منها."
+          ],
+          "correctAnswers": [
+            "لا، يجب البحث عن أدلة إضافية تؤكّد أنَّ الإنسان قد صنعهُ (أو غيَّر شكلهُ)."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-03/methodica-ar-science-body-matter-01-03-007/",
+      "title": "تصنيف الخصائص حسب جدول معطيات",
+      "informationToBot": "מטרת הפריט: תרגול ברמה גבוהה יותר — מיון תכונות לתכונות גוף ותכונות חומר על סמך השוואה בין שתי קופסאות. כיווני חשיבה ואסטרטגיות: הלומד משווה בטבלה שתי קופסאות פלסטיק: מסה (40 מול 120) ונפח (קטן מול גדול) שונים — תכונות גוף; צבע וגמישות זהים — תכונות חומר. טעויות נפוצות: הנחה שצבע או גמישות הם תכונות גוף, או שמסה ונפח הם תכונות חומר; אי-שימוש בנתוני הטבלה. מידע נוסף: שאלת גרירה של 4 תכונות ל-2 קבוצות. מותר שני ניסיונות; ללא רמז. צילום מסך: לא צורף.",
+      "contentType": "practice",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-03/methodica-ar-science-body-matter-01-03-007/q1",
+          "questionType": "matching",
+          "questionText": "استعينوا بالجدول أدناه واسحبوا كل خاصية إلى المكان المناسب:",
+          "answers": {
+            "source": [
+              "كتلة",
+              "حجم",
+              "لون",
+              "ليونة"
+            ],
+            "target": [
+              "خصائص الجسم",
+              "خصائص المادة"
+            ]
+          },
+          "correctAnswers": [
+            {
+              "source": "كتلة",
+              "target": "خصائص الجسم"
+            },
+            {
+              "source": "حجم",
+              "target": "خصائص الجسم"
+            },
+            {
+              "source": "لون",
+              "target": "خصائص المادة"
+            },
+            {
+              "source": "ليونة",
+              "target": "خصائص المادة"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
