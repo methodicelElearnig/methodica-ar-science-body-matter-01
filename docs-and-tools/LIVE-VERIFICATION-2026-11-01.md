@@ -28,8 +28,30 @@ Launch links: `Tools/full-kata-link/New-KataLaunchLinks.ps1 -InputFile component
 | 03 | Screen 4 (item 004, performance): dropdowns "خصائص" / "وظيفة" → `answered.last`, response `القائمة 1[.]خصائص[,]القائمة 2[.]وظيفة`, success true — identical to KATA's `correctXapiResponsesPattern`; state saved 204 |
 | 07 | Screen 1: hint → `requested.1`; wrong answer → `answered`, response `مسحوق أ`, success false, questionId `…/methodica-ar-science-body-matter-01-07-001/q1`; statements 200, state 204. **Reload of the same launch link: state load 200, screen 1 restored with the selection, the wrong-answer feedback and the retry gate (check disabled).** |
 
+## Full click-through, all seven parts finished
+
+Fresh launch links for a new student, `New-KataLaunchLinks.ps1 … -StudentId VADIM-AR-BM01-FULL -ResetState`
+(7 of 7 OK). Every screen of every part was walked in the in-app browser against the live CDN and
+KATA, each part through to its finish; requests were logged in the page.
+
+| Part | Items | Checked on the way | Component `completed` |
+|---|---|---|---|
+| 01 | 001–011 (003 skipped: "read myself" path) | character chosen (`character-2`); 005 dropdowns; 007 drag wrong → partial feedback → corrected; 011 drag | success true, score 1 |
+| 02 | 001–005 | character from 01 adopted; 001/q2 wrong → hint (`requested`) → correct; 003 multi-select wrong → correct; 004 flipped-card drag, card text not mirrored | success true, score 1 |
+| 03 | 001–007 | 002 hint; 004 dropdowns wrong (`القائمة 1[.]لون…`, false) → correct; 006–007 bonus questions | success true, score 1 |
+| 04 | 001 | classroom task | success true (no score) |
+| 05 | 001–005 | bottles-lab applet: Arabic, `lang="ar"`, no Hebrew, glass + drop test works; 004 response `عيّنة أ[.]نافذة شفافة…`; 005 four sneaker hotspots | success true, score 1 |
+| 06 | 001 (q1–q4) | q4 response = metadata targets, byte for byte | success true, score 1 |
+| 07 | 001 (q1–q4) | all answers per metadata; **reload after the finish: state 200, last screen restored with feedback, finish disabled** | success true, score 1 |
+
+Every statement returned 200 and every state save 204; the only non-2xx was the expected state 404 on
+each part's first launch. Every `answered` response was in Arabic, matching the metadata strings.
+
+Note: with the Browser pane hidden, the 05 applet iframes (`loading="lazy"`) stay `about:blank`;
+forced to load, the applet works. This is the hidden pane, not the package.
+
 ## Not checked here
 
-- A full walk of every screen, and the part finish (`completed` on the component).
-- 01-02 item 004 drag in Chrome and Edge.
+- 01-02 item 004 drag in Chrome and Edge with a real mouse (Vadim checks it).
 - The report modal was not submitted (it posts to the shared Google Form).
+- The video path of 01 (screens 3/10) beyond the embed id.
