@@ -799,6 +799,7 @@ function handleS3CardKey(event, cardEl) {
    לפי הדוקס):** מסך הוידאו מגיע ישירות ממסך 4, לא דרך מסכים 7-10
    (שהם תוכן נתיב-הקריאה בלבד — "תכונות", חוט נחושת, מסקנה). */
 function advanceFromS3() {
+  xapiSelectedLearningType(s3SelectedPath);   // the confirmed choice (the s3 continue button), not the card click
   if (s3SelectedPath === 'read') goTo(4);
   else if (s3SelectedPath === 'video') goTo(10);
 }
@@ -874,12 +875,14 @@ function resetScreenState4() {
    — לא למסך 10 (שהוא תוכן נתיב-קריאה אמיתי כעת, לא placeholder-כניסה
    לוידאו כמו שהונח בטעות קודם). */
 function rvGoToVideo() {
+  xapiSelectedLearningType('video');   // switching path from the toggle is a choice too
   goTo(10);
 }
 
 /* חוזר תמיד למסך 5 (הראשון במסלול הקריאה) — אין עדיין "המסך האחרון
    שביקרתי בו" נשמר; אם יידרש בעתיד resume למקום המדויק, להוסיף כאן. */
 function rvGoToRead() {
+  xapiSelectedLearningType('read');    // switching path from the toggle is a choice too
   goTo(4);
 }
 
@@ -2343,6 +2346,9 @@ var SCREEN_TO_SUBCONTENT = {
 var XAPI_COMP_SLUG = 'methodica-ar-science-body-matter-01-01';
 var XAPI_COMP_ID   = XAPI_ID_PREFIX + XAPI_COMP_SLUG + '/';
 var XAPI_EVAL_ITEMS = { '005': 1, '007': 1, '010': 1, '011': 1 };   /* items whose question is graded in CODE (xapiAnswered call sites) */
+/* The s3 learning-path choice ('selected', learning-type — unit-js/20-xapi.js xapiSelectedLearningType):
+   s3SelectedPath -> the path's first item and its catalogue mediaFormat (the statement's response). */
+var XAPI_LEARNING_PATHS = { video: { item: '003', mediaFormat: 'video' }, read: { item: '004', mediaFormat: 'text' } };
 var XAPI_METADATA_FILE = '../metadata/methodica-ar-science-body-matter-01-01.json';
 var XAPI_END_BTN = 'dqx20-check';                               /* the part's last button (D-8, restoreEndedButton) */
 

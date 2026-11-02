@@ -317,6 +317,45 @@ if (JSDOM) for (const c of COMPONENTS) {
   const btn2 = w2.document.getElementById(cfg.XAPI_END_BTN);
   ok(c, 'D-8: finished button stays disabled after a reload with the ledger', btn2 && btn2.disabled);
 
+  /* 4b' — the s3 learning-path choice (monday.com 28.10.26, guide §6.3a): 'selected', category
+     learning-type, object = the component, response = the chosen path item's catalogue mediaFormat;
+     once per distinct path, on the confirmed choice and the toggles; silent while a restore paints. */
+  if (c === '01') {
+    const paths = r.w.eval('XAPI_LEARNING_PATHS');
+    const sub = Object.fromEntries((META[c].subContent || []).map((s) => [s.id.replace(/\/$/, '').slice(-3), s]));
+    ok(c, 'XAPI_LEARNING_PATHS: every path item exists and its mediaFormat equals the catalogue',
+       Object.keys(paths).length === 2 && Object.values(paths).every((p) => sub[p.item] && sub[p.item].mediaFormat === p.mediaFormat), JSON.stringify(paths));
+    const map = cfg.SCREEN_TO_SUBCONTENT;
+    ok(c, 'XAPI_LEARNING_PATHS: each path item is the item its first screen reports (video s10, read s4)',
+       map[10] && map[10][0] === paths.video.item && map[4] && map[4][0] === paths.read.item);
+    const r6 = loadPart(c); const w6 = r6.w; const sel = [];
+    w6.METADATA = META[c]; w6.XAPI_USING_G = true; let doc6 = null;
+    w6.loadState720 = () => doc6; w6.saveState720 = (id, o) => { doc6 = JSON.parse(JSON.stringify(o)); return true; };
+    w6.saveState720Debounced = (id, o) => { doc6 = JSON.parse(JSON.stringify(o)); };
+    w6.sendStatement720 = function (verb, type, result, ctx) { if (verb === 'selected') sel.push({ type, result, ctx }); };
+    w6.readUnitState(); w6._resumeReady = true;
+    const card = (v) => w6.document.querySelector('#s3 .option-card[data-value="' + v + '"]');
+    w6.goTo(3); w6.s3SelectPath(card('read')); w6.s3SelectPath(card('video'));
+    const onClick = sel.length;
+    w6.advanceFromS3(); const first = sel.slice(); const landed = w6.eval('currentScreen');
+    w6.goTo(3); w6.s3SelectPath(card('video')); w6.advanceFromS3(); const repick = sel.length;
+    w6.rvGoToRead(); const toRead = sel.slice(1); const readScreen = w6.eval('currentScreen');
+    w6.rvGoToVideo(); const back = sel.length;
+    w6._unitState = w6.emptyUnitState(); sel.length = 0;
+    w6._restoring = true; w6.goTo(3); w6.advanceFromS3(); w6._restoring = false; const restoring = sel.length;
+    const one = (l, f) => l.length === 1 && l[0].type === 'onlinelesson' && l[0].ctx && l[0].ctx.category === 'learning-type'
+      && !l[0].ctx.objectId && !l[0].ctx.questionId && l[0].result && l[0].result.response === f;
+    ok(c, 'choice: a card click sends nothing (only the confirmed choice reports)', onClick === 0, String(onClick));
+    ok(c, 'choice: the s3 continue on video sends one selected — learning-type, component object, response "' + paths.video.mediaFormat + '"',
+       one(first, paths.video.mediaFormat) && landed === 10, JSON.stringify(first) + ' landed ' + landed);
+    ok(c, 'choice: re-picking the same path sends nothing', repick === 1, String(repick));
+    ok(c, 'choice: switching to reading from the toggle sends one selected, response "' + paths.read.mediaFormat + '"',
+       one(toRead, paths.read.mediaFormat) && readScreen === 4, JSON.stringify(toRead));
+    ok(c, 'choice: switching back to an already-reported path sends nothing', back === 2, String(back));
+    ok(c, 'choice: nothing is sent while a restore paints', restoring === 0, String(restoring));
+    ok(c, 'choice: no console.error', r6.errors.length === 0, r6.errors.slice(0, 2).join(' | '));
+  }
+
   /* 4c — response builders round-trip the catalogue (H9/H10): the correct answer formats to the canonical string */
   r = loadPart(c); w = r.w; w.METADATA = META[c]; w.XAPI_USING_G = true;
   for (const it of META[c].subContent || []) {
