@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>وحدة تعليمية 720 | الهدف 11 | وحدة 2</title>
-<link rel="stylesheet" href="styles.css?v=20261029c">
+<link rel="stylesheet" href="styles.css?v=20261103">
 <link rel="stylesheet" href="../unit-css/25-report.css?v=20261019">
 </head>
 <body>
@@ -570,7 +570,11 @@
        שבר חרס, לוחית נחושת. אין מספיק ראיות: אבן צור, שבר עצם").
        כפתור "אפשר רמז?" פעיל אחרי ניסיון ראשון שגוי (לפי הדוקס — לא
        "ללא רמז" כפי שההערה הישנה בשקף 40 אומרת; תוכן הרמז מנוסח מחדש
-       מתוך הסבר התשובה הנכונה עצמו, לא הומצא). -->
+       מתוך הסבר התשובה הנכונה עצמו, לא הומצא).
+       תוקן (2026-11-03, MOE "שאלות גרירה לא עובדות בטאבלט"): הגרירה הטבעית
+       (HTML5 DnD) הוחלפה בגרירת Pointer Events (../unit-js/30-pointer-dnd.js) —
+       עובדת גם במגע. הקשה קצרה (< 6px תזוזה) = היפוך הקלף, תזוזה = גרירה.
+       אין עוד handlers inline על הקלפים/המאגר/האזורים — הכול ב-script.js. -->
   <section class="screen" data-screen="6" id="s27">
     <div class="qnav" id="s27-qnav">
       <div class="qnav-item">
@@ -605,10 +609,8 @@
         <p class="ddq27-question"><b>اضغطوا على القطع الأثرية لقراءة الأدلة، وصنّفوها في المجموعة المناسبة.</b></p>
       </div>
 
-      <div class="ddq27-source-bank" id="ddq27-source-bank" ondragover="ddq27DragOver(event)" ondrop="ddq27DropToSource(event)">
-        <div class="ddq27-drag-item" id="ddq27-flint" draggable="true" data-correct="insufficient"
-             ondragstart="ddq27DragStart(event,'ddq27-flint')" ondragend="ddq27DragEnd('ddq27-flint')"
-             onclick="ddq27Flip('ddq27-flint')">
+      <div class="ddq27-source-bank" id="ddq27-source-bank">
+        <div class="ddq27-drag-item" id="ddq27-flint" data-correct="insufficient">
           <div class="ddq27-card-inner">
             <div class="ddq27-card-front">
               <span class="ddq27-item-badge"></span>
@@ -620,9 +622,7 @@
             </div>
           </div>
         </div>
-        <div class="ddq27-drag-item" id="ddq27-bone" draggable="true" data-correct="insufficient"
-             ondragstart="ddq27DragStart(event,'ddq27-bone')" ondragend="ddq27DragEnd('ddq27-bone')"
-             onclick="ddq27Flip('ddq27-bone')">
+        <div class="ddq27-drag-item" id="ddq27-bone" data-correct="insufficient">
           <div class="ddq27-card-inner">
             <div class="ddq27-card-front">
               <span class="ddq27-item-badge"></span>
@@ -634,9 +634,7 @@
             </div>
           </div>
         </div>
-        <div class="ddq27-drag-item" id="ddq27-pottery" draggable="true" data-correct="sufficient"
-             ondragstart="ddq27DragStart(event,'ddq27-pottery')" ondragend="ddq27DragEnd('ddq27-pottery')"
-             onclick="ddq27Flip('ddq27-pottery')">
+        <div class="ddq27-drag-item" id="ddq27-pottery" data-correct="sufficient">
           <div class="ddq27-card-inner">
             <div class="ddq27-card-front">
               <span class="ddq27-item-badge"></span>
@@ -648,9 +646,7 @@
             </div>
           </div>
         </div>
-        <div class="ddq27-drag-item" id="ddq27-copper" draggable="true" data-correct="sufficient"
-             ondragstart="ddq27DragStart(event,'ddq27-copper')" ondragend="ddq27DragEnd('ddq27-copper')"
-             onclick="ddq27Flip('ddq27-copper')">
+        <div class="ddq27-drag-item" id="ddq27-copper" data-correct="sufficient">
           <div class="ddq27-card-inner">
             <div class="ddq27-card-front">
               <span class="ddq27-item-badge"></span>
@@ -666,11 +662,11 @@
 
       <div class="ddq27-zones-row">
         <div class="ddq27-zone-wrap">
-          <div class="ddq27-zone" id="ddq27-zone-insufficient" ondragover="ddq27DragOver(event)" ondragenter="ddq27DragEnter(event,'ddq27-zone-insufficient')" ondragleave="ddq27DragLeave(event,'ddq27-zone-insufficient')" ondrop="ddq27Drop(event,'insufficient')"></div>
+          <div class="ddq27-zone" id="ddq27-zone-insufficient"></div>
           <p class="ddq27-zone-label">لا توجد أدلة كافية لتحديد أن القطعة الأثرية مُصنعة (من صُنع الإنسان).</p>
         </div>
         <div class="ddq27-zone-wrap">
-          <div class="ddq27-zone" id="ddq27-zone-sufficient" ondragover="ddq27DragOver(event)" ondragenter="ddq27DragEnter(event,'ddq27-zone-sufficient')" ondragleave="ddq27DragLeave(event,'ddq27-zone-sufficient')" ondrop="ddq27Drop(event,'sufficient')"></div>
+          <div class="ddq27-zone" id="ddq27-zone-sufficient"></div>
           <p class="ddq27-zone-label">توجد أدلة كافية لتحديد أن القطعة الأثرية مُصنعة (من صُنع الإنسان).</p>
         </div>
       </div>
@@ -1023,9 +1019,10 @@
 <script src="../unit-js/10-identity.js?v=20261019"></script>
 <script src="../unit-js/20-xapi.js?v=20261102"></script>
 <script src="../unit-js/25-report.js?v=20261019"></script>
+<script src="../unit-js/30-pointer-dnd.js?v=20261103"></script>
 <script src="../unit-js/40-resume.js?v=20261019"></script>
 <script src="../unit-js/50-loader.js?v=20261019"></script>
-<script src="script.js?v=20261102"></script>
+<script src="script.js?v=20261103"></script>
 <script src="../unit-js/90-boot.js?v=20261019"></script>
 </body>
 </html>

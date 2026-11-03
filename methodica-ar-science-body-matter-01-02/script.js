@@ -1335,7 +1335,11 @@ scqFbMakeDraggable('s26-popup');
 
 /* =========================================================
    מסך 28 (s27) — שאלה 4 מתוך 5: גרירה (מיון ל-2 קבוצות) + היפוך
-   קלפים. מנגנון הגרירה שוכפל 1:1 ממסך 14 (ddq13*→ddq27*). היפוך
+   קלפים. מנגנון הגרירה שוכפל במקור 1:1 ממסך 14 (ddq13*→ddq27*);
+   תוקן (2026-11-03, MOE "שאלות גרירה לא עובדות בטאבלט"): הגרירה הטבעית
+   (HTML5 DnD) הוחלפה ב-createPointerDnd מ-../unit-js/30-pointer-dnd.js
+   (Pointer Events — עכבר ומגע): הקשה קצרה = ddq27Flip, תזוזה > 6px =
+   גרירה עם רוח-DOM; ההנחה/ההחזרה למאגר ב-ddq27PlaceItem. היפוך
    (ddq27Flip) חד-כיווני, לפי ברירת המחדל של FlipCardsReveal — לא
    נדרש כדי לסמן/לבדוק תשובה (הבדיקה היא ברמת-אזור, בדיוק כמו מסך
    14), רק כדי לקרוא את הראיות בגב הקלף.
@@ -1372,7 +1376,6 @@ const DDQ27_TEXTS = {
 
 let ddq27Done = false;
 let ddq27Attempts = 0;
-let ddq27DragId = null;
 let ddq27AnswerSnapshot = null;
 let ddq27Revealed = false;
 /* Retry gate (guide §8.8 rule 9): board signature of the non-final wrong attempt, persisted as `lw`. */
@@ -1450,7 +1453,8 @@ function ddq27Flip(itemId) {
        מוצג ישר, בלי טרנספורמציה.
    שני הצדדים קיימים ב-3D רק בזמן האנימציה (is-animating, 0.55s), ואז
    transitionend/transitioncancel → ddq27Settle. כרטיסים משוחזרים (resume)
-   מיושבים ישירות. תצוגת-הגרירה הנפרדת נשארת לחלון האנימציה בלבד. */
+   מיושבים ישירות. מאז 2026-11-03 אין תצוגת-גרירה נפרדת: רוח-הגרירה הוא
+   עותק DOM (30-pointer-dnd.js), ו-onGhost מייצב אותו על הצד המוצג. */
 function ddq27Settle(item) {
   item.classList.remove('is-animating');
   item.classList.toggle('is-settled', item.classList.contains('is-flipped'));
@@ -1465,104 +1469,42 @@ function ddq27Settle(item) {
   });
 });
 
-function ddq27DragStart(event, itemId) {
-  if (ddq27Done) { event.preventDefault(); return; }
-  gestureHintHide('s27-drag'); /* נעלם ברגע שהלומד מתחיל לגרור */
-  /* תוקן (2026-08-05): First-attempt retry feedback dismissal — ראו
-     ddq13DragStart לפירוט המלא. */
-  if (ddq27Attempts > 0) document.getElementById('ddq27-popup').classList.remove('visible');
-  ddq27DragId = itemId;
-  event.dataTransfer.effectAllowed = 'move';
-  event.dataTransfer.setData('text/plain', itemId);
-  ddq27FlippedDragPreview(event, document.getElementById(itemId));
-  setTimeout(function () {
-    const el = document.getElementById(itemId);
-    if (el) el.classList.add('is-dragging');
-  }, 0);
-}
-
-/* תוקן (2026-10-21, תקלת monday "בשאלת מיון הממצאים הארכאולוגיים, כשגוררים
-   ממצא, כרטיס הראיות הכחול מוצג בתמונת מראה"): הדפדפן מצלם את תצוגת-הגרירה
-   בלי preserve-3d/backface-visibility, כך שבכרטיס הפוך רואים את
-   .ddq27-card-back עם ה-rotateY(180deg) שלו — הפוך. לכרטיס הפוך בונים
-   תצוגת-גרירה נפרדת: עותק של צד-הראיות בלי סיבוב, באותו גודל/סקאלה
-   (אותה טכניקה כמו dragPillPreview). כרטיס שלא הופך — תצוגה רגילה. */
-function ddq27FlippedDragPreview(event, el) {
-  if (!el || !el.classList.contains('is-flipped') || el.classList.contains('is-settled')) return;
-  if (!event.dataTransfer || !event.dataTransfer.setDragImage) return;
-  const back = el.querySelector('.ddq27-card-back');
-  if (!back) return;
-  const rect = el.getBoundingClientRect();
-  const scale = el.offsetWidth ? rect.width / el.offsetWidth : 1;
-  const preview = back.cloneNode(true);
-  preview.classList.add('ddq27-drag-preview');
-  preview.style.width = el.offsetWidth + 'px';
-  preview.style.height = el.offsetHeight + 'px';
-  preview.style.transform = 'scale(' + scale + ')';
-  /* בדיוק על הכרטיס (בתוך ال-viewport, כי הלומד אוחז בו) — لا מחוץ למסך. */
-  preview.style.top = rect.top + 'px';
-  preview.style.left = rect.left + 'px';
-  document.body.appendChild(preview);
-  event.dataTransfer.setDragImage(
-    preview,
-    Math.min(Math.max(event.clientX - rect.left, 0), rect.width),
-    Math.min(Math.max(event.clientY - rect.top, 0), rect.height)
-  );
-  setTimeout(function () { preview.remove(); }, 0);
-}
-
-function ddq27DragEnd(itemId) {
-  const el = document.getElementById(itemId);
-  if (el) el.classList.remove('is-dragging');
-  ddq27DragId = null;
-}
-
-function ddq27DragOver(event) {
-  event.preventDefault();
-  event.dataTransfer.dropEffect = 'move';
-}
-
-function ddq27DragEnter(event, zoneId) {
-  event.preventDefault();
-  const zone = document.getElementById(zoneId);
-  if (zone) zone.classList.add('drag-over');
-}
-
-function ddq27DragLeave(event, zoneId) {
-  const zone = document.getElementById(zoneId);
-  if (zone && !zone.contains(event.relatedTarget)) zone.classList.remove('drag-over');
-}
-
-function ddq27Drop(event, targetZone) {
-  event.preventDefault();
+/* הנחת פריט באזור ('insufficient' | 'sufficient') או החזרתו למאגר (null).
+   משותף ל-onDrop של גרירת ה-Pointer; ddq27RevealCorrect/RestoreMine/applyResumeDom
+   ממשיכים עם appendChild משלהם. */
+function ddq27PlaceItem(itemId, zoneKey) {
   if (ddq27Done) return;
-  const itemId = event.dataTransfer.getData('text/plain') || ddq27DragId;
-  if (!itemId) return;
-  const zoneEl = document.getElementById('ddq27-zone-' + targetZone);
   const itemEl = document.getElementById(itemId);
-  if (zoneEl && itemEl) {
-    zoneEl.classList.remove('drag-over');
-    if (itemEl.parentElement) itemEl.parentElement.removeChild(itemEl);
-    zoneEl.appendChild(itemEl);
-  }
+  const dest = document.getElementById(zoneKey ? 'ddq27-zone-' + zoneKey : 'ddq27-source-bank');
+  if (!itemEl || !dest) return;
+  if (itemEl.parentElement !== dest) dest.appendChild(itemEl);
+  /* appendChild מבטל transition רץ (אין transitionend) — מייצבים כמו applyResumeDom */
+  if (itemEl.classList.contains('is-animating')) ddq27Settle(itemEl);
   ddq27UpdateCheckBtn();
   ddq27ClearZoneStates();
 }
 
-function ddq27DropToSource(event) {
-  event.preventDefault();
-  if (ddq27Done) return;
-  const itemId = event.dataTransfer.getData('text/plain') || ddq27DragId;
-  if (!itemId) return;
-  const bank = document.getElementById('ddq27-source-bank');
-  const itemEl = document.getElementById(itemId);
-  if (itemEl && bank && itemEl.parentElement !== bank) {
-    if (itemEl.parentElement) itemEl.parentElement.removeChild(itemEl);
-    bank.appendChild(itemEl);
-  }
-  ddq27UpdateCheckBtn();
-  ddq27ClearZoneStates();
-}
+/* גרירת Pointer Events (עכבר + מגע) — ראו ../unit-js/30-pointer-dnd.js. המאזינים
+   יושבים על הקלפים עצמם, ולכן שורדים appendChild (הטלה, חשיפה, resume, reset). */
+const ddq27Dnd = createPointerDnd({
+  canDrag: function () { return !ddq27Done; },
+  onPick: function () {                        /* הלחיצה הפכה לגרירה (מעבר ל-6px) */
+    gestureHintHide('s27-drag');               /* נעלם ברגע שהלומד מתחיל לגרור */
+    /* First-attempt retry feedback dismissal — ראו ddq13DragStart לפירוט המלא. */
+    if (ddq27Attempts > 0) document.getElementById('ddq27-popup').classList.remove('visible');
+  },
+  onGhost: function (ghost) {                  /* העותק חי מחוץ ל-#app: מקפיאים אותו על הצד המוצג */
+    ghost.classList.remove('is-animating', 'ddq27-no-anim', 'correct', 'wrong');
+    if (ghost.classList.contains('is-flipped')) ghost.classList.add('is-settled');
+  },
+  onTap: function (dragId) { ddq27Flip(dragId); },   /* במאגר או באזור: היפוך במקום */
+  onDrop: function (dragId, targetId) { ddq27PlaceItem(dragId, targetId === 'bank' ? null : targetId); }
+  /* אין onCancel: ה-helper מסיר את הרוח ואת .dragging; הקלף נשאר היכן שהיה */
+});
+DDQ27_ITEM_IDS.forEach(function (id) { ddq27Dnd.attachSource(document.getElementById(id), id); });
+ddq27Dnd.attachTarget(document.getElementById('ddq27-zone-insufficient'), 'insufficient');
+ddq27Dnd.attachTarget(document.getElementById('ddq27-zone-sufficient'), 'sufficient');
+ddq27Dnd.attachTarget(document.getElementById('ddq27-source-bank'), 'bank');
 
 function ddq27ShowFeedback(kind, isCorrect) {
   const box = document.getElementById('ddq27-popup');
@@ -1732,7 +1674,6 @@ function resetScreenState27() {
   })) return;
 
   ddq27Attempts = 0;
-  ddq27DragId = null;
   ddq27AnswerSnapshot = null;
   ddq27Revealed = false;
   ddq27LastWrong = null;

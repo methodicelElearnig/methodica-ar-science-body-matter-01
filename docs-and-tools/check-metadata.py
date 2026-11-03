@@ -225,7 +225,7 @@ def ui_choice(body, js, const):
 def ui_drag_category(body, prefix):
     """ddq13 / ddq27 / s8b: draggable label + data-correct -> zone label."""
     items = []
-    for m in re.finditer(r'<div class="' + prefix + r'-drag-item" id="[^"]+" draggable="true" data-correct="([^"]+)"(.*?)(?=<div class="' + prefix + r'-drag-item"|<div class="' + prefix + r'-zones-row")', body, re.S):
+    for m in re.finditer(r'<div class="' + prefix + r'-drag-item" id="[^"]+" (?:draggable="true" )?data-correct="([^"]+)"(.*?)(?=<div class="' + prefix + r'-drag-item"|<div class="' + prefix + r'-zones-row")', body, re.S):
         lab = re.search(r'class="' + prefix + r'-item-(?:label|word)">(.*?)</(?:p|span)>', m.group(2), re.S)
         items.append((strip_tags(lab.group(1)), m.group(1)))
     zones = []

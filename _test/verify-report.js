@@ -24,7 +24,7 @@ const REPO = path.join(__dirname, '..');
 const UNIT_SLUG = 'methodica-ar-science-body-matter-01';
 const COMPONENTS = ['01', '02', '03', '04', '05', '06', '07'];
 const PREFIX = 'https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/';
-const SHARED = ['10-identity', '20-xapi', '25-report', '40-resume', '50-loader', '90-boot'];
+const SHARED = ['10-identity', '20-xapi', '25-report', '30-pointer-dnd', '40-resume', '50-loader', '90-boot'];
 const HOOKS = ['capturePartPayload', 'applyResumeVars', 'applyResumeDom', 'restoreScreenUI'];
 
 const compSlug = (c) => UNIT_SLUG + '-' + c;
@@ -119,7 +119,7 @@ for (const c of COMPONENTS) {
   /* script tags: shared first, script.js, 90-boot last; one ?v= per file across parts */
   const tags = [...htmlc.matchAll(/<script src="([^"]+)"><\/script>/g)].map((m) => m[1]).filter((u) => !/^https?:/.test(u));
   const names = tags.map((u) => path.posix.basename(u.split('?')[0]));
-  const expect = SHARED.slice(0, 5).map((n) => n + '.js').concat(['script.js', '90-boot.js']);
+  const expect = SHARED.slice(0, -1).map((n) => n + '.js').concat(['script.js', '90-boot.js']);
   ok(c, 'platform script tags in order, 90-boot last', JSON.stringify(names) === JSON.stringify(expect), names.join(' '));
   for (const u of tags) {
     const v = (/[?&]v=([^&#]+)/.exec(u) || [])[1];
@@ -222,7 +222,7 @@ for (const n of ['xapiQMeta', 'xapiResponse', 'xapiChoiceResponse', 'xapiMatchin
 ok('shared', 'xapiAnswered writes XAPI_Q_RESULTS first, outside the try', /function xapiAnswered\([^)]*\) \{\n  XAPI_Q_RESULTS\[item \+ '\/' \+ qKey\] = !!correct;\n/.test(xapi));
 ok('shared', 'retired builders not defined', !/function xapi(Zone|Fields|Multi)Answer\(/.test(xapi));
 ok('shared', 'definition-only files have no top-level side effects (except 90-boot)',
-   SHARED.slice(0, 5).every((s) => !/^\(function|^[a-zA-Z_$][\w$]*\(.*\);\s*$/m.test(stripComments(read(path.join(BASE, 'unit-js', s + '.js'))).replace(/^(?:var|let|const|function)[\s\S]*?\n(?=\S)/gm, ''))));
+   SHARED.slice(0, -1).every((s) => !/^\(function|^[a-zA-Z_$][\w$]*\(.*\);\s*$/m.test(stripComments(read(path.join(BASE, 'unit-js', s + '.js'))).replace(/^(?:var|let|const|function)[\s\S]*?\n(?=\S)/gm, ''))));
 ok('shared', '90-boot calls bootXAPI last', /initReportModal\(\);[\s\S]*bootXAPI\(\);\n\}\)\(\);/.test(read(path.join(BASE, 'unit-js', '90-boot.js'))));
 
 /* ══════════════════ 4. runtime (jsdom) ══════════════════ */

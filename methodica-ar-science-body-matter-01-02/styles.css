@@ -1680,9 +1680,16 @@ img { display: block; max-width: none; }
   flex-shrink: 0;
   cursor: grab;
   user-select: none;
+  -webkit-user-select: none;
+  /* גרירת Pointer (30-pointer-dnd.js): בלי גלילה/זום של הדף מתחת לאצבע,
+     בלי גרירת-תמונה טבעית ובלי תפריט לחיצה-ארוכה ב-iPad. */
+  touch-action: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
   perspective: 1000px;
 }
-.ddq27-drag-item.is-dragging { opacity: 0.4; }
+/* .dragging = המקור בזמן שרוח-הגרירה קיים (מוגדר ב-30-pointer-dnd.js) */
+.ddq27-drag-item.dragging { opacity: 0.4; }
 .ddq27-card-inner {
   position: relative;
   width: 100%;
@@ -1697,7 +1704,9 @@ img { display: block; max-width: none; }
 /* תוקן (2026-10-29, monday): אחרי שאנימציית ההיפוך הסתיימה (is-settled,
    ראו ddq27Flip ב-script.js) הכרטיס יורד מ-3D — בלי rotateY, צד-הממצא
    מוסתר וצד-הראיות מוצג ישר — כך שצילום הגרירה הטבעי של הדפדפן אינו
-   מראה. אותו מראה בדיוק, רק בלי טרנספורמציה. */
+   מראה. אותו מראה בדיוק, רק בלי טרנספורמציה.
+   מאז 2026-11-03 רוח-הגרירה הוא עותק DOM (.pointer-drag-ghost, ראו למטה) —
+   הכללים כאן נשארים נכונים גם לו. */
 .ddq27-drag-item.is-flipped.is-settled .ddq27-card-inner,
 .ddq27-drag-item.ddq27-no-anim .ddq27-card-inner { transition: none !important; }
 .ddq27-drag-item.is-flipped.is-settled .ddq27-card-inner { transform: none; }
@@ -1708,6 +1717,14 @@ img { display: block; max-width: none; }
    (הבאג האמיתי — גם כרטיס שלא נהפך נגרר כריבוע כחול בכתב-מראה). בזמן
    האנימציה (is-animating, ddq27Flip) שני הצדדים חוזרים ל-3D. */
 .ddq27-drag-item:not(.is-flipped):not(.is-animating) .ddq27-card-back { visibility: hidden; }
+/* רוח-הגרירה של Pointer DnD (30-pointer-dnd.js): עותק של הקלף, מוצמד ל-body
+   מחוץ ל-#app ומוקפא על הצד המוצג (onGhost → is-settled). כל כלל כאן
+   class-scoped (לא תחת #s27) — אחרת העותק לא יתאים. מסגרת תכלת לפי
+   720-templates DragAndDropQuestion (מצב Selected). */
+.ddq27-drag-item.pointer-drag-ghost { cursor: grabbing; opacity: 1; }
+.ddq27-drag-item.pointer-drag-ghost .ddq27-card-inner { transition: none !important; }
+.ddq27-drag-item.pointer-drag-ghost .ddq27-card-front { border: 3px solid var(--subject-500); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+.ddq27-drag-item.pointer-drag-ghost .ddq27-card-back { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
 .ddq27-card-front, .ddq27-card-back {
   position: absolute;
   inset: 0;
@@ -1802,21 +1819,8 @@ img { display: block; max-width: none; }
    רוחב פנימי במקום ~104px. אומת ב-Playwright מול כל 4 הטקסטים בפועל
    (לא רק הארוך ביותר) שהם עדיין נכנסים בלי להיחתך (.ddq27-card-back
    הוא overflow:hidden). */
-/* תצוגת-גרירה של כרטיס הפוך באמצע אנימציית ההיפוך (ddq27FlippedDragPreview
-   ב-script.js): עותק של .ddq27-card-back בלי rotateY ובלי
-   backface-visibility. תוקן (2026-10-29): מונח בדיוק על הכרטיס (top/left
-   נקבעים inline מ-getBoundingClientRect) — בתוך ה-viewport. הגרסה הקודמת
-   כתבה top:-500px ואז inset:auto שביטל אותו, והעותק נחת בקצה הימני של
-   החלון, חלקו או כולו מחוץ למסך — ודפדפן שמקבל תמונה ריקה חוזר לצילום
-   הכרטיס המסובב (המראה). */
-.ddq27-card-back.ddq27-drag-preview {
-  position: fixed;
-  z-index: 2147483000;
-  transform-origin: 0 0;
-  backface-visibility: visible;
-  -webkit-backface-visibility: visible;
-  pointer-events: none;
-}
+/* הוסר (2026-11-03): .ddq27-card-back.ddq27-drag-preview — תצוגת-הגרירה הטבעית
+   (setDragImage) אינה בשימוש עוד; ראו .pointer-drag-ghost למעלה. */
 .ddq27-card-back-text {
   direction: rtl;
   font-family: Calibri, Arial, sans-serif;
