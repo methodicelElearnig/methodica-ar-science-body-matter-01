@@ -1107,14 +1107,54 @@ const DQX4_SLOT_LABELS = {
 
 let dqx4Placement = {};
 DQX4_DRAG_IDS.forEach(function (id) { dqx4Placement[id] = 'source'; });
-let dqx4DragActive = null;
-let dqx4DropHandled = false;
 let dqx4Checked = false;
 let dqx4Attempts = 0;
 let dqx4Done = false;
 let dqx4AnswerSnapshot = null;
 let dqx4ShowingCorrect = false; // true = הלוח מציג כרגע את התשובה הנכונה (§9)
 let dqx4LastWrong = null; // Retry gate (guide §8.8 rule 9): board signature of the last non-final wrong attempt, persisted as `lw`
+
+/* גרירת Pointer Events (עכבר + מגע) — ../unit-js/30-pointer-dnd.js (תוקן 2026-11-03, MOE
+   "גרירה לא עובדת בטאבלט"). dqx4Render בונה את כרטיסי הבנק והמילים המוצבות מחדש בכל
+   רינדור ומצמיד כל אחד מהם (attachSource); התיבות והבנק מוצמדים פעם אחת כאן.
+   dqx4Placement נשאר המודל היחיד; הטלה מחוץ ליעד = חזרה לבנק (כמו dragend בלי drop). */
+const dqx4Dnd = createPointerDnd({
+  canDrag: function () { return !dqx4Checked && !dqx4Done; },
+  onPick: function (dragId, src) {                      /* הלחיצה הפכה לגרירה (מעבר ל-6px) */
+    gestureHintHide('s4-drag');                       /* נעלם ברגע שהלומד מתחיל לגרור */
+    if (dqx4Attempts > 0) document.getElementById('dqx4-popup').classList.remove('visible');
+    if (src.classList.contains('dqx-drop-word')) {     /* מילה מוצבת: התיבה "מתרוקנת" חזותית עד ההטלה */
+      const oldZone = document.getElementById(dqx4Placement[dragId]);
+      if (oldZone) { oldZone.classList.remove('correct', 'incorrect', 'filled'); oldZone.classList.add('drag-origin'); }
+    }
+  },
+  onGhost: function (ghost, src) {                      /* רוח אחיד: גלולת dqx-drag-card, גם כשגוררים מילה מוצבת */
+    const dragId = src.dataset.pdragId;
+    if (src.classList.contains('dqx-drop-word')) {
+      const ref = document.getElementById(dragId) || document.getElementById(dqx4Placement[dragId]);
+      ghost.className = 'dqx-drag-card pointer-drag-ghost';
+      ghost.textContent = DQX4_LABELS[dragId];
+      if (ref) { ghost.style.width = ref.offsetWidth + 'px'; ghost.style.height = ref.offsetHeight + 'px'; }
+    }
+  },
+  onDrop: function (dragId, targetId) {
+    if (targetId === 'bank') {
+      dqx4Placement[dragId] = 'source';
+    } else {
+      const zone = document.getElementById(targetId);
+      if (zone) zone.classList.remove('correct', 'incorrect');
+      DQX4_DRAG_IDS.forEach(function (dId) { if (dqx4Placement[dId] === targetId && dId !== dragId) dqx4Placement[dId] = 'source'; });
+      dqx4Placement[dragId] = targetId;
+    }
+    dqx4Render();
+  },
+  onCancel: function (dragId) {                         /* הטלה מחוץ ליעד: כמו dragend בלי drop — חזרה לבנק */
+    dqx4Placement[dragId] = 'source';
+    dqx4Render();
+  }
+});
+DQX4_TARGET_IDS.forEach(function (tId) { dqx4Dnd.attachTarget(document.getElementById(tId), tId); });
+dqx4Dnd.attachTarget(document.getElementById('dqx4-word-bank'), 'bank');
 let s4AnimPlayed = false;
 
 let dqx4Order = DQX4_DRAG_IDS.slice();
@@ -1155,9 +1195,7 @@ function dqx4Render() {
     if (dqx4Placement[dragId] === 'source') {
       card.textContent = DQX4_LABELS[dragId];
       if (!dqx4Checked) {
-        card.draggable = true;
-        card.ondragstart = function (e) { dqx4DragStart(e, dragId); };
-        card.ondragend = dqx4DragEnd;
+        dqx4Dnd.attachSource(card, dragId);   /* Pointer DnD (30-pointer-dnd.js) */
       } else {
         card.classList.add('locked');
       }
@@ -1188,10 +1226,8 @@ function dqx4Render() {
       wordEl.className = 'dqx-drop-word';
       wordEl.textContent = DQX4_LABELS[placedId];
       if (!dqx4Checked) {
-        wordEl.draggable = true;
         wordEl.style.cursor = 'grab';
-        wordEl.ondragstart = function (e) { dqx4PlacedDragStart(e, placedId); };
-        wordEl.ondragend = dqx4DragEnd;
+        dqx4Dnd.attachSource(wordEl, placedId);   /* מילה מוצבת נגררת חזרה / לתיבה אחרת */
       }
       zone.appendChild(iconEl);
       zone.appendChild(wordEl);
@@ -1205,117 +1241,7 @@ function dqx4Render() {
   if (btn && !dqx4Done) btn.disabled = !allFilled || dqx4Sig() === dqx4LastWrong; // Retry gate (rule 9)
 }
 
-/* תצוגת-גרירה: "גלולה" אמיתית (רקע לבן, גבול כחול, טקסט במרכז). בלי זה
-   הדפדפן מצלם רק את ה-<span> של המילה (בגרירה מתוך תיבה) או עותק שקוף של
-   כרטיס הבנק. refEl = האלמנט שממנו נגזרים הגודל/הסקאלה (הכרטיס או תיבת
-   היעד), cls = מחלקת הגלולה. */
-function dragPillPreview(event, refEl, label, cls) {
-  if (!event.dataTransfer || !event.dataTransfer.setDragImage || !refEl) return;
-  const rect = refEl.getBoundingClientRect();
-  const scale = refEl.offsetWidth ? rect.width / refEl.offsetWidth : 1;
-  const pill = document.createElement('div');
-  pill.className = cls + ' drag-pill-preview';
-  pill.textContent = label;
-  pill.style.width = refEl.offsetWidth + 'px';
-  pill.style.height = refEl.offsetHeight + 'px';
-  pill.style.transform = 'scale(' + scale + ')';
-  document.body.appendChild(pill);
-  event.dataTransfer.setDragImage(
-    pill,
-    Math.min(Math.max(event.clientX - rect.left, 0), rect.width),
-    Math.min(Math.max(event.clientY - rect.top, 0), rect.height)
-  );
-  setTimeout(function () { pill.remove(); }, 0);
-}
 
-function dqx4DragStart(event, dragId) {
-  if (dqx4Checked) { event.preventDefault(); return; }
-  gestureHintHide('s4-drag'); /* נעלם ברגע שהלומד מתחיל לגרור */
-  /* תוקן (2026-08-05): First-attempt retry feedback dismissal — ראו
-     ddq13DragStart בסיין 1 לפירוט המלא. */
-  if (dqx4Attempts > 0) document.getElementById('dqx4-popup').classList.remove('visible');
-  dqx4DragActive = dragId;
-  dqx4DropHandled = false;
-  event.dataTransfer.setData('text/plain', dragId);
-  event.dataTransfer.effectAllowed = 'move';
-  dragPillPreview(event, event.currentTarget || event.target, DQX4_LABELS[dragId], 'dqx-drag-card');
-  setTimeout(function () {
-    const card = document.getElementById(dragId);
-    if (card) card.classList.add('dragging');
-  }, 0);
-}
-
-function dqx4PlacedDragStart(event, dragId) {
-  if (dqx4Checked) { event.preventDefault(); return; }
-  if (dqx4Attempts > 0) document.getElementById('dqx4-popup').classList.remove('visible');
-  dqx4DragActive = dragId;
-  dqx4DropHandled = false;
-  event.dataTransfer.setData('text/plain', dragId);
-  event.dataTransfer.effectAllowed = 'move';
-  const wordEl = event.currentTarget || event.target;
-  const oldZone = document.getElementById(dqx4Placement[dragId]);
-  dragPillPreview(event, oldZone || wordEl, DQX4_LABELS[dragId], 'dqx-drag-card');
-  /* תוקן (2026-10-04): אין עוד dqx4Render() סינכרוני כאן — הוא ניתק את
-     המילה הנגררת מה-DOM באמצע הגרירה, ולכן dragend לא הופעל, והכרטיס
-     שבבנק נתקע בשקיפות אחרי החזרה. ה-DOM נשאר יציב עד drop/dragend;
-     התיבה רק "מתרוקנת" חזותית (.drag-origin) והכרטיס בבנק נשאר ghost. */
-  if (oldZone) oldZone.classList.remove('correct', 'incorrect', 'filled');
-  setTimeout(function () {
-    if (dqx4DragActive === dragId && oldZone) oldZone.classList.add('drag-origin');
-  }, 0);
-}
-
-function dqx4DragEnd() {
-  if (!dqx4DropHandled && dqx4DragActive) {
-    dqx4Placement[dqx4DragActive] = 'source';
-  }
-  dqx4Render();
-  dqx4DragActive = null;
-  dqx4DropHandled = false;
-  document.querySelectorAll('#s4 .drag-hover').forEach(function (z) { z.classList.remove('drag-hover'); });
-}
-
-function dqx4DragOver(event, targetId) {
-  if (dqx4Checked) return;
-  event.preventDefault();
-  event.dataTransfer.dropEffect = 'move';
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.add('drag-hover');
-}
-
-function dqx4DragEnter(event, targetId) {
-  event.preventDefault();
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.add('drag-hover');
-}
-
-function dqx4DragLeave(event, targetId) {
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.remove('drag-hover');
-}
-
-function dqx4Drop(event, targetId) {
-  event.preventDefault();
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.remove('drag-hover', 'correct', 'incorrect');
-  if (dqx4Checked || !dqx4DragActive) return;
-  dqx4DropHandled = true;
-  DQX4_DRAG_IDS.forEach(function (dId) {
-    if (dqx4Placement[dId] === targetId && dId !== dqx4DragActive) dqx4Placement[dId] = 'source';
-  });
-  dqx4Placement[dqx4DragActive] = targetId;
-  dqx4DragActive = null;
-  dqx4Render();
-}
-
-function dqx4DropToBank(event) {
-  event.preventDefault();
-  if (dqx4Checked || !dqx4DragActive) return;
-  dqx4DropHandled = true;
-  dqx4Placement[dqx4DragActive] = 'source';
-  dqx4DragActive = null;
-  dqx4Render();
-}
 
 function dqx4ShowFeedback(title, body, kind) {
   const box = document.getElementById('dqx4-popup');

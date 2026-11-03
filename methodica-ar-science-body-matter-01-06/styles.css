@@ -411,7 +411,7 @@ img { display: block; max-width: none; }
   margin: 0 4px; gap: 10px; width: 180px; height: 42px; padding: 0 16px; box-sizing: border-box;
   border-radius: 12px; border: 1px dashed rgba(0, 0, 0, 0.6); background: #f3f4f5;
 }
-.dqx-drop.drag-hover { border: 1px dashed var(--subject-500); background: #fff; }
+.dqx-drop.drag-hover, .dqx-drop.drag-over { border: 1px dashed var(--subject-500); background: #fff; }
 .dqx-drop.filled { border: 1.5px solid var(--subject-500); background: #d4f3ff; }
 .dqx-drop.correct { border: 1.5px solid #609e12 !important; background: #fff !important; }
 .dqx-drop.incorrect { border: 1.5px solid #b20010 !important; background: #fff !important; }
@@ -436,13 +436,16 @@ img { display: block; max-width: none; }
 }
 .dqx-drag-card:hover:not(.ghost):not(.locked) { border-color: var(--subject-500); box-shadow: 0 2px 6px rgba(1, 157, 229, 0.2); }
 /* Figma 5340:25533 (State 02 Dragging): הגלולה שנגררת נשארת לבנה ואטומה עם גבול 1.5px أزرق — בלי شفافية/אפור. */
-.dqx-drag-card.dragging { opacity: 1; border-color: var(--subject-500); }
-.drag-pill-preview { position: fixed; top: -500px; left: 0; margin: 0; box-sizing: border-box; transform-origin: 0 0; background: #fff !important; border: 1.5px solid var(--subject-500) !important; color: #303030 !important; opacity: 1 !important; pointer-events: none; }
+/* .dragging = המקור בזמן שרוח-הגרירה (.pointer-drag-ghost, עותק מוצמד ל-body מחוץ ל-#app) עוקב
+   אחרי המצביע: נראה כמו מקום-שמור, בדיוק כמו .ghost. ראו 30-pointer-dnd.js. */
+.dqx-drag-card.dragging { color: transparent; background: #f3f4f5; border: 1px solid rgba(174, 174, 174, 0.3); }
+.dqx-drag-card.pointer-drag-ghost { opacity: 1; cursor: grabbing; background: #fff; border: 1.5px solid var(--subject-500); color: #303030; box-shadow: 0 2px 6px rgba(1, 157, 229, 0.2); }
 /* המילה נגררת מתוך תיבת-יעד: התיבה נראית ריקה */
 .dqx-drop.drag-origin { border: 1px dashed rgba(0, 0, 0, 0.6) !important; background: #f3f4f5 !important; }
 .dqx-drop.drag-origin > * { visibility: hidden; }
 .dqx-drag-card.ghost { color: transparent; background: #f3f4f5; border: 1px solid rgba(174, 174, 174, 0.3); pointer-events: none; }
 .dqx-drag-card.locked { cursor: default; }
+.dqx-drag-card, .dqx-drop-word { touch-action: none; -webkit-user-drag: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
 
 /* מסך 5 (s4) — תוקן (2026-08-09), לפי בקשה מפורשת: 180px (ברירת
    המחדל) לא מספיק לתווית הארוכה ביותר בבנק-המילים כאן ("יריעת

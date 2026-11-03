@@ -1041,7 +1041,6 @@ let ddq13Done = false;
 let ddq13Attempts = 0;
 let ddq13AnswerSnapshot = null;
 let ddq13Revealed = false;
-let ddq13DragId = null;
 /* Retry gate (guide §8.8 rule 9): board signature of the non-final wrong attempt, persisted as `lw`. */
 let ddq13LastWrong = null;
 /* The dealt bank order (shuffled once at load, see shuffleContainerChildren) — persisted, never re-dealt on
@@ -1082,87 +1081,41 @@ function ddq13ClearZoneStates() {
   });
 }
 
-function ddq13DragStart(event, itemId) {
-  if (ddq13Done) { event.preventDefault(); return; }
-  gestureHintHide('s13-drag'); /* נעלם ברגע שהלומד מתחיל לגרור */
-  /* תוקן (2026-08-05): "First-attempt retry feedback dismissal" —
-     720-templates skill (_global-components.md → "Feedback popup
-     system"). התחלת גרירה חדשה (=תחילת תיקון) מסלקת את משוב-הניסיון-
-     הלא-אחרון (אין כפתור סגירה עוד — ראו שם). לא נוגע בהצלחה/כישלון-
-     סופי (אלה חסומים ע"י ddq13Done, שכבר עוצר כל DragStart למעלה). */
-  if (ddq13Attempts > 0) document.getElementById('ddq13-popup').classList.remove('visible');
-  ddq13DragId = itemId;
-  event.dataTransfer.effectAllowed = 'move';
-  event.dataTransfer.setData('text/plain', itemId);
-  setTimeout(function () {
-    const el = document.getElementById(itemId);
-    if (el) el.classList.add('is-dragging');
-  }, 0);
-}
-
-function ddq13DragEnd(itemId) {
-  const el = document.getElementById(itemId);
-  if (el) el.classList.remove('is-dragging');
-  ddq13DragId = null;
-}
-
-function ddq13DragOver(event) {
-  event.preventDefault();
-  event.dataTransfer.dropEffect = 'move';
-}
-
-function ddq13DragEnter(event, zoneId) {
-  event.preventDefault();
-  const zone = document.getElementById(zoneId);
-  if (zone) zone.classList.add('drag-over');
-}
-
-function ddq13DragLeave(event, zoneId) {
-  const zone = document.getElementById(zoneId);
-  if (zone && !zone.contains(event.relatedTarget)) zone.classList.remove('drag-over');
-}
-
-function ddq13Drop(event, targetZone) {
-  event.preventDefault();
+/* הנחת פריט באזור או החזרתו למאגר (zoneKey=null). משותף ל-onDrop/onTap של גרירת
+   ה-Pointer (../unit-js/30-pointer-dnd.js, תוקן 2026-11-03 — MOE "גרירה לא עובדת בטאבלט");
+   RevealCorrect/RestoreMine/applyResumeDom ממשיכים עם appendChild משלהם. */
+function ddq13PlaceItem(itemId, zoneKey) {
   if (ddq13Done) return;
-  const itemId = event.dataTransfer.getData('text/plain') || ddq13DragId;
-  if (!itemId) return;
-  const zoneEl = document.getElementById('ddq13-zone-' + targetZone);
   const itemEl = document.getElementById(itemId);
-  if (zoneEl && itemEl) {
-    zoneEl.classList.remove('drag-over');
-    if (itemEl.parentElement) itemEl.parentElement.removeChild(itemEl);
-    zoneEl.appendChild(itemEl);
-  }
+  const dest = document.getElementById(zoneKey ? 'ddq13-zone-' + zoneKey : 'ddq13-source-bank');
+  if (!itemEl || !dest) return;
+  if (itemEl.parentElement !== dest) dest.appendChild(itemEl);
   ddq13UpdateCheckBtn();
   ddq13ClearZoneStates();
 }
 
-function ddq13DropToSource(event) {
-  event.preventDefault();
-  if (ddq13Done) return;
-  const itemId = event.dataTransfer.getData('text/plain') || ddq13DragId;
-  if (!itemId) return;
-  const bank = document.getElementById('ddq13-source-bank');
-  const itemEl = document.getElementById(itemId);
-  if (itemEl && bank && itemEl.parentElement !== bank) {
-    if (itemEl.parentElement) itemEl.parentElement.removeChild(itemEl);
-    bank.appendChild(itemEl);
-  }
-  ddq13UpdateCheckBtn();
-  ddq13ClearZoneStates();
-}
-
-function ddq13ItemClick(itemId) {
-  if (ddq13Done) return;
-  const el = document.getElementById(itemId);
-  const bank = document.getElementById('ddq13-source-bank');
-  if (!el || !bank || el.parentElement === bank) return;
-  el.parentElement.removeChild(el);
-  bank.appendChild(el);
-  ddq13ClearZoneStates();
-  ddq13UpdateCheckBtn();
-}
+/* גרירת Pointer Events (עכבר + מגע). המאזינים יושבים על הפריטים עצמם, ולכן שורדים
+   appendChild (הטלה, חשיפה, resume, reset). הקשה קצרה על פריט מוצב = החזרה למאגר
+   (ההתנהגות הישנה של ddq13ItemClick). */
+const ddq13Dnd = createPointerDnd({
+  canDrag: function () { return !ddq13Done; },
+  onPick: function () {                         /* הלחיצה הפכה לגרירה (מעבר ל-6px) */
+    gestureHintHide('s13-drag');               /* נעלם ברגע שהלומד מתחיל לגרור */
+    /* First-attempt retry feedback dismissal — 720-templates "Feedback popup system". */
+    if (ddq13Attempts > 0) document.getElementById('ddq13-popup').classList.remove('visible');
+  },
+  onGhost: function (ghost) { ghost.classList.remove('correct', 'wrong', 'filled'); },
+  onTap: function (dragId) {
+    const el = document.getElementById(dragId);
+    if (el && el.parentElement && el.parentElement.id !== 'ddq13-source-bank') ddq13PlaceItem(dragId, null);
+  },
+  onDrop: function (dragId, targetId) { ddq13PlaceItem(dragId, targetId === 'bank' ? null : targetId); }
+  /* אין onCancel: ה-helper מסיר את הרוח ואת .dragging; הפריט נשאר היכן שהיה */
+});
+DDQ13_ITEM_IDS.forEach(function (id) { ddq13Dnd.attachSource(document.getElementById(id), id); });
+ddq13Dnd.attachTarget(document.getElementById('ddq13-zone-unprocessed'), 'unprocessed');
+ddq13Dnd.attachTarget(document.getElementById('ddq13-zone-processed'), 'processed');
+ddq13Dnd.attachTarget(document.getElementById('ddq13-source-bank'), 'bank');
 
 function ddq13ShowFeedback(kind, isCorrect) {
   const box = document.getElementById('ddq13-popup');
@@ -1321,7 +1274,6 @@ function resetScreenState13() {
   })) return;
 
   ddq13Attempts = 0;
-  ddq13DragId = null;
   ddq13AnswerSnapshot = null;
   ddq13Revealed = false;
   ddq13LastWrong = null;
@@ -1618,8 +1570,6 @@ const DQX20_SHARED_EXPLANATION =
 
 let dqx20Placement = {};
 DQX20_DRAG_IDS.forEach(function (id) { dqx20Placement[id] = 'source'; });
-let dqx20DragActive = null;
-let dqx20DropHandled = false;
 let dqx20Checked = false;
 let dqx20Attempts = 0;
 let dqx20Done = false;
@@ -1627,6 +1577,48 @@ let dqx20AnswerSnapshot = null;
 let dqx20Revealed = false;
 /* Retry gate (guide §8.8 rule 9): board signature of the non-final wrong attempt, persisted as `lw`. */
 let dqx20LastWrong = null;
+
+/* גרירת Pointer Events (עכבר + מגע) — ../unit-js/30-pointer-dnd.js (תוקן 2026-11-03, MOE
+   "גרירה לא עובדת בטאבלט"). dqx20Render בונה את כרטיסי הבנק והמילים המוצבות מחדש בכל
+   רינדור ומצמיד כל אחד מהם (attachSource); התיבות והבנק מוצמדים פעם אחת כאן.
+   dqx20Placement נשאר המודל היחיד; הטלה מחוץ ליעד = חזרה לבנק (כמו dragend בלי drop). */
+const dqx20Dnd = createPointerDnd({
+  canDrag: function () { return !dqx20Checked && !dqx20Done; },
+  onPick: function (dragId, src) {                      /* הלחיצה הפכה לגרירה (מעבר ל-6px) */
+    gestureHintHide('s20-drag');                       /* נעלם ברגע שהלומד מתחיל לגרור */
+    if (dqx20Attempts > 0) document.getElementById('dqx20-popup').classList.remove('visible');
+    if (src.classList.contains('dqx-drop-word')) {     /* מילה מוצבת: התיבה "מתרוקנת" חזותית עד ההטלה */
+      const oldZone = document.getElementById(dqx20Placement[dragId]);
+      if (oldZone) { oldZone.classList.remove('correct', 'incorrect', 'filled'); oldZone.classList.add('drag-origin'); }
+    }
+  },
+  onGhost: function (ghost, src) {                      /* רוח אחיד: גלולת dqx-drag-card, גם כשגוררים מילה מוצבת */
+    const dragId = src.dataset.pdragId;
+    if (src.classList.contains('dqx-drop-word')) {
+      const ref = document.getElementById(dragId) || document.getElementById(dqx20Placement[dragId]);
+      ghost.className = 'dqx-drag-card pointer-drag-ghost';
+      ghost.textContent = DQX20_LABELS[dragId];
+      if (ref) { ghost.style.width = ref.offsetWidth + 'px'; ghost.style.height = ref.offsetHeight + 'px'; }
+    }
+  },
+  onDrop: function (dragId, targetId) {
+    if (targetId === 'bank') {
+      dqx20Placement[dragId] = 'source';
+    } else {
+      const zone = document.getElementById(targetId);
+      if (zone) zone.classList.remove('correct', 'incorrect');
+      DQX20_DRAG_IDS.forEach(function (dId) { if (dqx20Placement[dId] === targetId && dId !== dragId) dqx20Placement[dId] = 'source'; });
+      dqx20Placement[dragId] = targetId;
+    }
+    dqx20Render();
+  },
+  onCancel: function (dragId) {                         /* הטלה מחוץ ליעד: כמו dragend בלי drop — חזרה לבנק */
+    dqx20Placement[dragId] = 'source';
+    dqx20Render();
+  }
+});
+DQX20_TARGET_IDS.forEach(function (tId) { dqx20Dnd.attachTarget(document.getElementById(tId), tId); });
+dqx20Dnd.attachTarget(document.getElementById('dqx20-word-bank'), 'bank');
 
 /* slot → placed label ('—' when empty), compares by label (rule 9). */
 function dqx20Sig() {
@@ -1663,9 +1655,7 @@ function dqx20Render() {
     if (dqx20Placement[dragId] === 'source') {
       card.textContent = DQX20_LABELS[dragId];
       if (!dqx20Checked) {
-        card.draggable = true;
-        card.ondragstart = function (e) { dqx20DragStart(e, dragId); };
-        card.ondragend = dqx20DragEnd;
+        dqx20Dnd.attachSource(card, dragId);   /* Pointer DnD (30-pointer-dnd.js) */
       } else {
         card.classList.add('locked');
       }
@@ -1699,10 +1689,8 @@ function dqx20Render() {
       wordEl.className = 'dqx-drop-word';
       wordEl.textContent = DQX20_LABELS[placedId];
       if (!dqx20Checked) {
-        wordEl.draggable = true;
         wordEl.style.cursor = 'grab';
-        wordEl.ondragstart = function (e) { dqx20PlacedDragStart(e, placedId); };
-        wordEl.ondragend = dqx20DragEnd;
+        dqx20Dnd.attachSource(wordEl, placedId);   /* מילה מוצבת נגררת חזרה / לתיבה אחרת */
       }
       /* אייקון ראשון ב-DOM, מילה שנייה — בתוך .dqx-drop (direction:rtl)
          זה ממקם את האייקון פיזית בקצה הימני של התיבה (לפי בקשה מפורשת
@@ -1719,117 +1707,7 @@ function dqx20Render() {
   if (btn && !dqx20Done) btn.disabled = !allFilled || dqx20Sig() === dqx20LastWrong;   /* Retry gate (rule 9) */
 }
 
-/* תצוגת-גרירה: "גלולה" אמיתית (רקע לבן, גבול כחול, טקסט במרכז). בלי זה
-   הדפדפן מצלם רק את ה-<span> של המילה (בגרירה מתוך תיבה) או עותק שקוף של
-   כרטיס הבנק. refEl = האלמנט שממנו נגזרים הגודל/הסקאלה (הכרטיס או תיבת
-   היעד), cls = מחלקת הגלולה. */
-function dragPillPreview(event, refEl, label, cls) {
-  if (!event.dataTransfer || !event.dataTransfer.setDragImage || !refEl) return;
-  const rect = refEl.getBoundingClientRect();
-  const scale = refEl.offsetWidth ? rect.width / refEl.offsetWidth : 1;
-  const pill = document.createElement('div');
-  pill.className = cls + ' drag-pill-preview';
-  pill.textContent = label;
-  pill.style.width = refEl.offsetWidth + 'px';
-  pill.style.height = refEl.offsetHeight + 'px';
-  pill.style.transform = 'scale(' + scale + ')';
-  document.body.appendChild(pill);
-  event.dataTransfer.setDragImage(
-    pill,
-    Math.min(Math.max(event.clientX - rect.left, 0), rect.width),
-    Math.min(Math.max(event.clientY - rect.top, 0), rect.height)
-  );
-  setTimeout(function () { pill.remove(); }, 0);
-}
 
-function dqx20DragStart(event, dragId) {
-  if (dqx20Checked) { event.preventDefault(); return; }
-  gestureHintHide('s20-drag'); /* נעלם ברגע שהלומד מתחיל לגרור */
-  /* תוקן (2026-08-05): First-attempt retry feedback dismissal — ראו
-     ddq13DragStart לפירוט המלא. */
-  if (dqx20Attempts > 0) document.getElementById('dqx20-popup').classList.remove('visible');
-  dqx20DragActive = dragId;
-  dqx20DropHandled = false;
-  event.dataTransfer.setData('text/plain', dragId);
-  event.dataTransfer.effectAllowed = 'move';
-  dragPillPreview(event, event.currentTarget || event.target, DQX20_LABELS[dragId], 'dqx-drag-card');
-  setTimeout(function () {
-    const card = document.getElementById(dragId);
-    if (card) card.classList.add('dragging');
-  }, 0);
-}
-
-function dqx20PlacedDragStart(event, dragId) {
-  if (dqx20Checked) { event.preventDefault(); return; }
-  if (dqx20Attempts > 0) document.getElementById('dqx20-popup').classList.remove('visible');
-  dqx20DragActive = dragId;
-  dqx20DropHandled = false;
-  event.dataTransfer.setData('text/plain', dragId);
-  event.dataTransfer.effectAllowed = 'move';
-  const wordEl = event.currentTarget || event.target;
-  const oldZone = document.getElementById(dqx20Placement[dragId]);
-  dragPillPreview(event, oldZone || wordEl, DQX20_LABELS[dragId], 'dqx-drag-card');
-  /* תוקן (2026-10-04): אין עוד dqx20Render() סינכרוני כאן — הוא ניתק את
-     המילה הנגרר מה-DOM באמצע הגרירה, ולכן dragend לא הופעל, והכרטיס
-     שבבנק נתקע בשקיפות אחרי החזרה. עכשיו ה-DOM נשאר יציב עד drop/dragend;
-     התיבה רק "מתרוקנת" חזותית (.drag-origin) והכרטיס בבנק נשאר ghost. */
-  if (oldZone) oldZone.classList.remove('correct', 'incorrect', 'filled');
-  setTimeout(function () {
-    if (dqx20DragActive === dragId && oldZone) oldZone.classList.add('drag-origin');
-  }, 0);
-}
-
-function dqx20DragEnd() {
-  if (!dqx20DropHandled && dqx20DragActive) {
-    dqx20Placement[dqx20DragActive] = 'source';
-  }
-  dqx20Render();
-  dqx20DragActive = null;
-  dqx20DropHandled = false;
-  document.querySelectorAll('#s20 .drag-hover').forEach(function (z) { z.classList.remove('drag-hover'); });
-}
-
-function dqx20DragOver(event, targetId) {
-  if (dqx20Checked) return;
-  event.preventDefault();
-  event.dataTransfer.dropEffect = 'move';
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.add('drag-hover');
-}
-
-function dqx20DragEnter(event, targetId) {
-  event.preventDefault();
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.add('drag-hover');
-}
-
-function dqx20DragLeave(event, targetId) {
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.remove('drag-hover');
-}
-
-function dqx20Drop(event, targetId) {
-  event.preventDefault();
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.remove('drag-hover', 'correct', 'incorrect');
-  if (dqx20Checked || !dqx20DragActive) return;
-  dqx20DropHandled = true;
-  DQX20_DRAG_IDS.forEach(function (dId) {
-    if (dqx20Placement[dId] === targetId && dId !== dqx20DragActive) dqx20Placement[dId] = 'source';
-  });
-  dqx20Placement[dqx20DragActive] = targetId;
-  dqx20DragActive = null;
-  dqx20Render();
-}
-
-function dqx20DropToBank(event) {
-  event.preventDefault();
-  if (dqx20Checked || !dqx20DragActive) return;
-  dqx20DropHandled = true;
-  dqx20Placement[dqx20DragActive] = 'source';
-  dqx20DragActive = null;
-  dqx20Render();
-}
 
 function dqx20ShowFeedback(title, body, kind) {
   const box = document.getElementById('dqx20-popup');

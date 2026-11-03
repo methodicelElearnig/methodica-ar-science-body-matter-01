@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>وحدة تعليمية 720 | الهدف 11 | وحدة 1</title>
-<link rel="stylesheet" href="styles.css?v=20261103">
+<link rel="stylesheet" href="styles.css?v=20261103b">
 <link rel="stylesheet" href="../unit-css/25-report.css?v=20261019">
 </head>
 <body>
@@ -931,33 +931,29 @@
            .ddq13-item-imgwrap, חלון-חיתוך קבוע) וגם את שם האלמנט
            (דרישה מפורשת בדוקס, לא קיים במסך 20 המקורי) — שניהם בתוך
            אותו גבול, לפי בקשה מפורשת (2026-08-03). -->
-      <div class="ddq13-source-bank" id="ddq13-source-bank" ondragover="ddq13DragOver(event)" ondrop="ddq13DropToSource(event)">
-        <div class="ddq13-drag-item" id="ddq13-gold" draggable="true" data-correct="unprocessed"
-             ondragstart="ddq13DragStart(event,'ddq13-gold')" ondragend="ddq13DragEnd('ddq13-gold')" onclick="ddq13ItemClick('ddq13-gold')">
+      <div class="ddq13-source-bank" id="ddq13-source-bank">
+        <div class="ddq13-drag-item" id="ddq13-gold" data-correct="unprocessed">
           <div class="ddq13-item-frame">
             <span class="ddq13-item-badge"></span>
             <div class="ddq13-item-imgwrap"><img src="assets/images/gold-nugget.png" alt="سبيكة ذهب" draggable="false"></div>
             <p class="ddq13-item-label">سبيكة ذهب</p>
           </div>
         </div>
-        <div class="ddq13-drag-item" id="ddq13-pebble" draggable="true" data-correct="unprocessed"
-             ondragstart="ddq13DragStart(event,'ddq13-pebble')" ondragend="ddq13DragEnd('ddq13-pebble')" onclick="ddq13ItemClick('ddq13-pebble')">
+        <div class="ddq13-drag-item" id="ddq13-pebble" data-correct="unprocessed">
           <div class="ddq13-item-frame">
             <span class="ddq13-item-badge"></span>
             <div class="ddq13-item-imgwrap"><img src="../unit-assets/img/river-pebble.png" alt="حصاة نهر" draggable="false"></div>
             <p class="ddq13-item-label">حصاة نهر</p>
           </div>
         </div>
-        <div class="ddq13-drag-item" id="ddq13-box" draggable="true" data-correct="processed"
-             ondragstart="ddq13DragStart(event,'ddq13-box')" ondragend="ddq13DragEnd('ddq13-box')" onclick="ddq13ItemClick('ddq13-box')">
+        <div class="ddq13-drag-item" id="ddq13-box" data-correct="processed">
           <div class="ddq13-item-frame">
             <span class="ddq13-item-badge"></span>
             <div class="ddq13-item-imgwrap"><img src="assets/images/wooden-box.png" alt="صندوق خشبي" draggable="false"></div>
             <p class="ddq13-item-label">صندوق خشبي</p>
           </div>
         </div>
-        <div class="ddq13-drag-item" id="ddq13-bowl" draggable="true" data-correct="processed"
-             ondragstart="ddq13DragStart(event,'ddq13-bowl')" ondragend="ddq13DragEnd('ddq13-bowl')" onclick="ddq13ItemClick('ddq13-bowl')">
+        <div class="ddq13-drag-item" id="ddq13-bowl" data-correct="processed">
           <div class="ddq13-item-frame">
             <span class="ddq13-item-badge"></span>
             <div class="ddq13-item-imgwrap"><img src="assets/images/stone-bowl.png" alt="وعاء حجري" draggable="false"></div>
@@ -969,19 +965,11 @@
       <!-- אזורי גרירה — לפי מבנה מסך 20 יעד 2 (.s21-zones-row/.s21-zone-wrap/.s21-zone) -->
       <div class="ddq13-zones-row">
         <div class="ddq13-zone-wrap">
-          <div class="ddq13-zone" id="ddq13-zone-unprocessed"
-               ondragover="ddq13DragOver(event)"
-               ondragenter="ddq13DragEnter(event,'ddq13-zone-unprocessed')"
-               ondragleave="ddq13DragLeave(event,'ddq13-zone-unprocessed')"
-               ondrop="ddq13Drop(event,'unprocessed')"></div>
+          <div class="ddq13-zone" id="ddq13-zone-unprocessed"></div>
           <p class="ddq13-zone-label">أجسام طبيعية</p>
         </div>
         <div class="ddq13-zone-wrap">
-          <div class="ddq13-zone" id="ddq13-zone-processed"
-               ondragover="ddq13DragOver(event)"
-               ondragenter="ddq13DragEnter(event,'ddq13-zone-processed')"
-               ondragleave="ddq13DragLeave(event,'ddq13-zone-processed')"
-               ondrop="ddq13Drop(event,'processed')"></div>
+          <div class="ddq13-zone" id="ddq13-zone-processed"></div>
           <p class="ddq13-zone-label">أجسام مُصَنَّعة</p>
         </div>
       </div><!-- /.ddq13-zones-row -->
@@ -1410,29 +1398,17 @@
 
         <div class="dqx-sentences">
           <p class="dqx-sentence">السماعات هي
-            <span class="dqx-drop" id="dqx20-target-1"
-                  ondragover="dqx20DragOver(event,'dqx20-target-1')"
-                  ondragenter="dqx20DragEnter(event,'dqx20-target-1')"
-                  ondragleave="dqx20DragLeave(event,'dqx20-target-1')"
-                  ondrop="dqx20Drop(event,'dqx20-target-1')"></span>.
+            <span class="dqx-drop" id="dqx20-target-1"></span>.
           </p>
           <p class="dqx-sentence">البلاستيك الذي يصنع منه جسم السماعة هو
-            <span class="dqx-drop" id="dqx20-target-2"
-                  ondragover="dqx20DragOver(event,'dqx20-target-2')"
-                  ondragenter="dqx20DragEnter(event,'dqx20-target-2')"
-                  ondragleave="dqx20DragLeave(event,'dqx20-target-2')"
-                  ondrop="dqx20Drop(event,'dqx20-target-2')"></span>.
+            <span class="dqx-drop" id="dqx20-target-2"></span>.
           </p>
           <p class="dqx-sentence">ليونة القوس هي
-            <span class="dqx-drop" id="dqx20-target-3"
-                  ondragover="dqx20DragOver(event,'dqx20-target-3')"
-                  ondragenter="dqx20DragEnter(event,'dqx20-target-3')"
-                  ondragleave="dqx20DragLeave(event,'dqx20-target-3')"
-                  ondrop="dqx20Drop(event,'dqx20-target-3')"></span>.
+            <span class="dqx-drop" id="dqx20-target-3"></span>.
           </p>
         </div>
 
-        <div class="dqx-word-bank" id="dqx20-word-bank" ondragover="event.preventDefault()" ondrop="dqx20DropToBank(event)">
+        <div class="dqx-word-bank" id="dqx20-word-bank">
           <div class="dqx-source-slot" id="slot-dqx20-drag-guf"></div>
           <div class="dqx-source-slot" id="slot-dqx20-drag-homer"></div>
           <div class="dqx-source-slot" id="slot-dqx20-drag-tehuna"></div>
@@ -1608,7 +1584,7 @@
 <script src="../unit-js/30-pointer-dnd.js?v=20261103"></script>
 <script src="../unit-js/40-resume.js?v=20261019"></script>
 <script src="../unit-js/50-loader.js?v=20261019"></script>
-<script src="script.js?v=20261103"></script>
+<script src="script.js?v=20261103b"></script>
 <script src="../unit-js/90-boot.js?v=20261019"></script>
 </body>
 </html>

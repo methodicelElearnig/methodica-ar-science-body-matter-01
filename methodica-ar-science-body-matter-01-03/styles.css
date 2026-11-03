@@ -863,9 +863,18 @@ img { display: block; max-width: none; }
   cursor: grab;
   user-select: none;
   white-space: nowrap;
+  /* גרירת Pointer (30-pointer-dnd.js): בלי גלילה/זום של הדף מתחת לאצבע,
+     בלי גרירת-תמונה טבעית ובלי תפריט לחיצה-ארוכה ב-iPad. */
+  touch-action: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
 }
 .s8b-drag-item:hover { border-color: var(--subject-500); }
-.s8b-drag-item.is-dragging { opacity: 0.35; cursor: grabbing; border-color: var(--subject-500); }
+/* .dragging = המקור בזמן שרוח-הגרירה קיים; .pointer-drag-ghost = העותק שעוקב אחרי המצביע
+   (מוצמד ל-body מחוץ ל-#app). ראו 30-pointer-dnd.js. */
+.s8b-drag-item.dragging { opacity: 0.35; cursor: grabbing; border-color: var(--subject-500); }
+.s8b-drag-item.pointer-drag-ghost { opacity: 1; cursor: grabbing; background: #fff; border-color: var(--subject-500); box-shadow: 0 2px 6px rgba(1, 157, 229, 0.2); }
 /* "הונח, טרם נבדק" — מצב שלישי נבדל, זהה סמנטית ל-.dqx-drop.filled */
 .s8b-drag-item.filled { border: 1.5px solid var(--subject-500); background: #d4f3ff; }
 .s8b-drag-item.filled .s8b-item-word { font-size: 22px; color: #222; }

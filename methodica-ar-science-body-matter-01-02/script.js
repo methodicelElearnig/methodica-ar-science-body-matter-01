@@ -1745,8 +1745,6 @@ const DQX28_SHARED_EXPLANATION =
 
 let dqx28Placement = {};
 DQX28_DRAG_IDS.forEach(function (id) { dqx28Placement[id] = 'source'; });
-let dqx28DragActive = null;
-let dqx28DropHandled = false;
 let dqx28Checked = false;
 let dqx28Attempts = 0;
 let dqx28Done = false;
@@ -1754,6 +1752,48 @@ let dqx28AnswerSnapshot = null;
 let dqx28Revealed = false;
 /* Retry gate (guide §8.8 rule 9): board signature of the non-final wrong attempt, persisted as `lw`. */
 let dqx28LastWrong = null;
+
+/* גרירת Pointer Events (עכבר + מגע) — ../unit-js/30-pointer-dnd.js (תוקן 2026-11-03, MOE
+   "גרירה לא עובדת בטאבלט"). dqx28Render בונה את כרטיסי הבנק והמילים המוצבות מחדש בכל
+   רינדור ומצמיד כל אחד מהם (attachSource); התיבות והבנק מוצמדים פעם אחת כאן.
+   dqx28Placement נשאר המודל היחיד; הטלה מחוץ ליעד = חזרה לבנק (כמו dragend בלי drop). */
+const dqx28Dnd = createPointerDnd({
+  canDrag: function () { return !dqx28Checked && !dqx28Done; },
+  onPick: function (dragId, src) {                      /* הלחיצה הפכה לגרירה (מעבר ל-6px) */
+    gestureHintHide('s28-drag');                       /* נעלם ברגע שהלומד מתחיל לגרור */
+    if (dqx28Attempts > 0) document.getElementById('dqx28-popup').classList.remove('visible');
+    if (src.classList.contains('dqx-drop-word')) {     /* מילה מוצבת: התיבה "מתרוקנת" חזותית עד ההטלה */
+      const oldZone = document.getElementById(dqx28Placement[dragId]);
+      if (oldZone) { oldZone.classList.remove('correct', 'incorrect', 'filled'); oldZone.classList.add('drag-origin'); }
+    }
+  },
+  onGhost: function (ghost, src) {                      /* רוח אחיד: גלולת dqx-drag-card, גם כשגוררים מילה מוצבת */
+    const dragId = src.dataset.pdragId;
+    if (src.classList.contains('dqx-drop-word')) {
+      const ref = document.getElementById(dragId) || document.getElementById(dqx28Placement[dragId]);
+      ghost.className = 'dqx-drag-card pointer-drag-ghost';
+      ghost.textContent = DQX28_LABELS[dragId];
+      if (ref) { ghost.style.width = ref.offsetWidth + 'px'; ghost.style.height = ref.offsetHeight + 'px'; }
+    }
+  },
+  onDrop: function (dragId, targetId) {
+    if (targetId === 'bank') {
+      dqx28Placement[dragId] = 'source';
+    } else {
+      const zone = document.getElementById(targetId);
+      if (zone) zone.classList.remove('correct', 'incorrect');
+      DQX28_DRAG_IDS.forEach(function (dId) { if (dqx28Placement[dId] === targetId && dId !== dragId) dqx28Placement[dId] = 'source'; });
+      dqx28Placement[dragId] = targetId;
+    }
+    dqx28Render();
+  },
+  onCancel: function (dragId) {                         /* הטלה מחוץ ליעד: כמו dragend בלי drop — חזרה לבנק */
+    dqx28Placement[dragId] = 'source';
+    dqx28Render();
+  }
+});
+DQX28_TARGET_IDS.forEach(function (tId) { dqx28Dnd.attachTarget(document.getElementById(tId), tId); });
+dqx28Dnd.attachTarget(document.getElementById('dqx28-word-bank'), 'bank');
 
 /* slot → placed label ('—' when empty), compares by label (rule 9). */
 function dqx28Sig() {
@@ -1788,9 +1828,7 @@ function dqx28Render() {
       card.id = dragId;
       card.textContent = DQX28_LABELS[dragId];
       if (!dqx28Checked) {
-        card.draggable = true;
-        card.ondragstart = function (e) { dqx28DragStart(e, dragId); };
-        card.ondragend = dqx28DragEnd;
+        dqx28Dnd.attachSource(card, dragId);   /* Pointer DnD (30-pointer-dnd.js) */
       } else {
         card.classList.add('locked');
       }
@@ -1819,9 +1857,8 @@ function dqx28Render() {
       wordEl.className = 'dqx-drop-word';
       wordEl.textContent = DQX28_LABELS[placedId];
       if (!dqx28Checked) {
-        wordEl.draggable = true;
-        wordEl.ondragstart = function (e) { dqx28PlacedDragStart(e, placedId); };
-        wordEl.ondragend = dqx28DragEnd;
+        wordEl.style.cursor = 'grab';
+        dqx28Dnd.attachSource(wordEl, placedId);   /* מילה מוצבת נגררת חזרה / לתיבה אחרת */
       }
       zone.appendChild(iconEl);
       zone.appendChild(wordEl);
@@ -1835,111 +1872,7 @@ function dqx28Render() {
   if (btn && !dqx28Done) btn.disabled = !allFilled || dqx28Sig() === dqx28LastWrong;   /* Retry gate (rule 9) */
 }
 
-/* תצוגת-גרירה: "גלולה" אמיתית (רקע לבן, גבול כחול, טקסט במרכז). בלי זה
-   הדפדפן מצלם רק את ה-<span> של המילה (בגרירה מתוך תיבה) או עותק שקוף של
-   כרטיס הבנק. refEl = האלמנט שממנו נגזרים הגודל/הסקאלה (הכרטיס או תיבת
-   היעד), cls = מחלקת הגלולה. */
-function dragPillPreview(event, refEl, label, cls) {
-  if (!event.dataTransfer || !event.dataTransfer.setDragImage || !refEl) return;
-  const rect = refEl.getBoundingClientRect();
-  const scale = refEl.offsetWidth ? rect.width / refEl.offsetWidth : 1;
-  const pill = document.createElement('div');
-  pill.className = cls + ' drag-pill-preview';
-  pill.textContent = label;
-  pill.style.width = refEl.offsetWidth + 'px';
-  pill.style.height = refEl.offsetHeight + 'px';
-  pill.style.transform = 'scale(' + scale + ')';
-  document.body.appendChild(pill);
-  event.dataTransfer.setDragImage(
-    pill,
-    Math.min(Math.max(event.clientX - rect.left, 0), rect.width),
-    Math.min(Math.max(event.clientY - rect.top, 0), rect.height)
-  );
-  setTimeout(function () { pill.remove(); }, 0);
-}
 
-function dqx28DragStart(event, dragId) {
-  if (dqx28Checked) { event.preventDefault(); return; }
-  gestureHintHide('s28-drag'); /* נעלם ברגע שהלומד מתחיל לגרור */
-  /* תוקן (2026-08-05): First-attempt retry feedback dismissal — ראו
-     ddq13DragStart לפירוט המלא. */
-  if (dqx28Attempts > 0) document.getElementById('dqx28-popup').classList.remove('visible');
-  dqx28DragActive = dragId;
-  dqx28DropHandled = false;
-  event.dataTransfer.effectAllowed = 'move';
-  event.dataTransfer.setData('text/plain', dragId);
-  dragPillPreview(event, event.currentTarget || event.target, DQX28_LABELS[dragId], 'dqx-drag-card');
-}
-
-function dqx28PlacedDragStart(event, dragId) {
-  if (dqx28Checked) { event.preventDefault(); return; }
-  if (dqx28Attempts > 0) document.getElementById('dqx28-popup').classList.remove('visible');
-  dqx28DragActive = dragId;
-  dqx28DropHandled = false;
-  event.dataTransfer.effectAllowed = 'move';
-  event.dataTransfer.setData('text/plain', dragId);
-  const wordEl = event.currentTarget || event.target;
-  const oldZone = document.getElementById(dqx28Placement[dragId]);
-  dragPillPreview(event, oldZone || wordEl, DQX28_LABELS[dragId], 'dqx-drag-card');
-  /* תוקן (2026-10-04): אין עוד dqx28Render() סינכרוני כאן — הוא ניתק את
-     המילה הנגררת מה-DOM באמצע הגרירה (dragend לא הופעל). ה-DOM נשאר
-     יציב עד drop/dragend; התיבה רק "מתרוקנת" חזותית (.drag-origin). */
-  if (oldZone) oldZone.classList.remove('correct', 'incorrect', 'filled');
-  setTimeout(function () {
-    if (dqx28DragActive === dragId && oldZone) oldZone.classList.add('drag-origin');
-  }, 0);
-}
-
-function dqx28DragEnd() {
-  if (!dqx28DropHandled && dqx28DragActive) {
-    dqx28Placement[dqx28DragActive] = 'source';
-  }
-  dqx28Render();
-  dqx28DragActive = null;
-  dqx28DropHandled = false;
-}
-
-function dqx28DragOver(event, targetId) {
-  if (dqx28Checked) return;
-  event.preventDefault();
-  event.dataTransfer.dropEffect = 'move';
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.add('drag-hover');
-}
-
-function dqx28DragEnter(event, targetId) {
-  event.preventDefault();
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.add('drag-hover');
-}
-
-function dqx28DragLeave(event, targetId) {
-  const zone = document.getElementById(targetId);
-  if (zone && !zone.contains(event.relatedTarget)) zone.classList.remove('drag-hover');
-}
-
-function dqx28Drop(event, targetId) {
-  event.preventDefault();
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.remove('drag-hover', 'correct', 'incorrect');
-  if (dqx28Checked || !dqx28DragActive) return;
-  dqx28DropHandled = true;
-  DQX28_DRAG_IDS.forEach(function (dId) {
-    if (dqx28Placement[dId] === targetId && dId !== dqx28DragActive) dqx28Placement[dId] = 'source';
-  });
-  dqx28Placement[dqx28DragActive] = targetId;
-  dqx28DragActive = null;
-  dqx28Render();
-}
-
-function dqx28DropToBank(event) {
-  event.preventDefault();
-  if (dqx28Checked || !dqx28DragActive) return;
-  dqx28DropHandled = true;
-  dqx28Placement[dqx28DragActive] = 'source';
-  dqx28DragActive = null;
-  dqx28Render();
-}
 
 function dqx28ShowFeedback(title, body, kind) {
   const box = document.getElementById('dqx28-popup');
@@ -2083,7 +2016,6 @@ function resetScreenState28() {
     dqx28Render();
     return;
   }
-  dqx28DragActive = null;
   dqx28Checked = false;
   dqx28AnswerSnapshot = null;
   dqx28Revealed = false;

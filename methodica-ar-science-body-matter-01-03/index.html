@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>وحدة تعليمية 720 | الهدف 11 | وحدة 3</title>
-<link rel="stylesheet" href="styles.css?v=20261103">
+<link rel="stylesheet" href="styles.css?v=20261103b">
 <link rel="stylesheet" href="../unit-css/25-report.css?v=20261019">
 </head>
 <body>
@@ -749,31 +749,27 @@
         </table>
       </div>
       <div class="s8b-drag-area">
-        <div class="s8b-source-bank" id="s8b-source-bank" ondragover="s8bDragOver(event)" ondrop="s8bDropToSource(event)">
-          <div class="s8b-drag-item" id="s8b-mass" draggable="true" data-correct="body"
-               ondragstart="s8bDragStart(event,'s8b-mass')" ondragend="s8bDragEnd('s8b-mass')" onclick="s8bItemClick('s8b-mass')">
+        <div class="s8b-source-bank" id="s8b-source-bank">
+          <div class="s8b-drag-item" id="s8b-mass" data-correct="body">
             <span class="s8b-item-badge"></span><span class="s8b-item-word">كتلة</span>
           </div>
-          <div class="s8b-drag-item" id="s8b-volume" draggable="true" data-correct="body"
-               ondragstart="s8bDragStart(event,'s8b-volume')" ondragend="s8bDragEnd('s8b-volume')" onclick="s8bItemClick('s8b-volume')">
+          <div class="s8b-drag-item" id="s8b-volume" data-correct="body">
             <span class="s8b-item-badge"></span><span class="s8b-item-word">حجم</span>
           </div>
-          <div class="s8b-drag-item" id="s8b-color" draggable="true" data-correct="material"
-               ondragstart="s8bDragStart(event,'s8b-color')" ondragend="s8bDragEnd('s8b-color')" onclick="s8bItemClick('s8b-color')">
+          <div class="s8b-drag-item" id="s8b-color" data-correct="material">
             <span class="s8b-item-badge"></span><span class="s8b-item-word">لون</span>
           </div>
-          <div class="s8b-drag-item" id="s8b-flex" draggable="true" data-correct="material"
-               ondragstart="s8bDragStart(event,'s8b-flex')" ondragend="s8bDragEnd('s8b-flex')" onclick="s8bItemClick('s8b-flex')">
+          <div class="s8b-drag-item" id="s8b-flex" data-correct="material">
             <span class="s8b-item-badge"></span><span class="s8b-item-word">ليونة</span>
           </div>
         </div>
         <div class="s8b-zones-row">
           <div class="s8b-zone-wrap">
-            <div class="s8b-zone" id="s8b-zone-body" ondragover="s8bDragOver(event)" ondragenter="s8bDragEnter(event,'s8b-zone-body')" ondragleave="s8bDragLeave(event,'s8b-zone-body')" ondrop="s8bDrop(event,'body')"></div>
+            <div class="s8b-zone" id="s8b-zone-body"></div>
             <p class="s8b-zone-label">خصائص الجسم</p>
           </div>
           <div class="s8b-zone-wrap">
-            <div class="s8b-zone" id="s8b-zone-material" ondragover="s8bDragOver(event)" ondragenter="s8bDragEnter(event,'s8b-zone-material')" ondragleave="s8bDragLeave(event,'s8b-zone-material')" ondrop="s8bDrop(event,'material')"></div>
+            <div class="s8b-zone" id="s8b-zone-material"></div>
             <p class="s8b-zone-label">خصائص المادة</p>
           </div>
         </div>
@@ -979,7 +975,7 @@
 <script src="../unit-js/30-pointer-dnd.js?v=20261103"></script>
 <script src="../unit-js/40-resume.js?v=20261019"></script>
 <script src="../unit-js/50-loader.js?v=20261019"></script>
-<script src="script.js?v=20261103"></script>
+<script src="script.js?v=20261103b"></script>
 <script src="../unit-js/90-boot.js?v=20261019"></script>
 </body>
 </html>

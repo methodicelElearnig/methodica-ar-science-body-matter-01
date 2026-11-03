@@ -791,14 +791,54 @@ const DQX5_SLOT_LABELS = {
 
 let dqx5Placement = {};
 DQX5_DRAG_IDS.forEach(function (id) { dqx5Placement[id] = 'source'; });
-let dqx5DragActive = null;
-let dqx5DropHandled = false;
 let dqx5Checked = false;
 let dqx5Attempts = 0;
 let dqx5Done = false;
 let dqx5AnswerSnapshot = null;
 let dqx5ShowingCorrect = false; // true = board currently shows the §9 reveal (correct answers)
 let dqx5LastWrong = null; // Retry gate (guide §8.8 rule 9): dqx5Sig() of the non-final wrong submission
+
+/* גרירת Pointer Events (עכבר + מגע) — ../unit-js/30-pointer-dnd.js (תוקן 2026-11-03, MOE
+   "גרירה לא עובדת בטאבלט"). dqx5Render בונה את כרטיסי הבנק והמילים המוצבות מחדש בכל
+   רינדור ומצמיד כל אחד מהם (attachSource); התיבות והבנק מוצמדים פעם אחת כאן.
+   dqx5Placement נשאר המודל היחיד; הטלה מחוץ ליעד = חזרה לבנק (כמו dragend בלי drop). */
+const dqx5Dnd = createPointerDnd({
+  canDrag: function () { return !dqx5Checked && !dqx5Done; },
+  onPick: function (dragId, src) {                      /* הלחיצה הפכה לגרירה (מעבר ל-6px) */
+    gestureHintHide('s5-drag');                       /* נעלם ברגע שהלומד מתחיל לגרור */
+    if (dqx5Attempts > 0) document.getElementById('dqx5-popup').classList.remove('visible');
+    if (src.classList.contains('dqx-drop-word')) {     /* מילה מוצבת: התיבה "מתרוקנת" חזותית עד ההטלה */
+      const oldZone = document.getElementById(dqx5Placement[dragId]);
+      if (oldZone) { oldZone.classList.remove('correct', 'incorrect', 'filled'); oldZone.classList.add('drag-origin'); }
+    }
+  },
+  onGhost: function (ghost, src) {                      /* רוח אחיד: גלולת dqx-drag-card, גם כשגוררים מילה מוצבת */
+    const dragId = src.dataset.pdragId;
+    if (src.classList.contains('dqx-drop-word')) {
+      const ref = document.getElementById(dragId) || document.getElementById(dqx5Placement[dragId]);
+      ghost.className = 'dqx-drag-card pointer-drag-ghost';
+      ghost.textContent = DQX5_LABELS[dragId];
+      if (ref) { ghost.style.width = ref.offsetWidth + 'px'; ghost.style.height = ref.offsetHeight + 'px'; }
+    }
+  },
+  onDrop: function (dragId, targetId) {
+    if (targetId === 'bank') {
+      dqx5Placement[dragId] = 'source';
+    } else {
+      const zone = document.getElementById(targetId);
+      if (zone) zone.classList.remove('correct', 'incorrect');
+      DQX5_DRAG_IDS.forEach(function (dId) { if (dqx5Placement[dId] === targetId && dId !== dragId) dqx5Placement[dId] = 'source'; });
+      dqx5Placement[dragId] = targetId;
+    }
+    dqx5Render();
+  },
+  onCancel: function (dragId) {                         /* הטלה מחוץ ליעד: כמו dragend בלי drop — חזרה לבנק */
+    dqx5Placement[dragId] = 'source';
+    dqx5Render();
+  }
+});
+DQX5_TARGET_IDS.forEach(function (tId) { dqx5Dnd.attachTarget(document.getElementById(tId), tId); });
+dqx5Dnd.attachTarget(document.getElementById('dqx5-word-bank'), 'bank');
 
 /* The feedback texts, hoisted so the resume painter shows exactly what dqx5Check showed. */
 const DQX5_FB = {
@@ -841,9 +881,7 @@ function dqx5Render() {
     if (dqx5Placement[dragId] === 'source') {
       card.textContent = DQX5_LABELS[dragId];
       if (!dqx5Checked) {
-        card.draggable = true;
-        card.ondragstart = function (e) { dqx5DragStart(e, dragId); };
-        card.ondragend = dqx5DragEnd;
+        dqx5Dnd.attachSource(card, dragId);   /* Pointer DnD (30-pointer-dnd.js) */
       } else {
         card.classList.add('locked');
       }
@@ -874,10 +912,8 @@ function dqx5Render() {
       wordEl.className = 'dqx-drop-word';
       wordEl.textContent = DQX5_LABELS[placedId];
       if (!dqx5Checked) {
-        wordEl.draggable = true;
         wordEl.style.cursor = 'grab';
-        wordEl.ondragstart = function (e) { dqx5PlacedDragStart(e, placedId); };
-        wordEl.ondragend = dqx5DragEnd;
+        dqx5Dnd.attachSource(wordEl, placedId);   /* מילה מוצבת נגררת חזרה / לתיבה אחרת */
       }
       zone.appendChild(iconEl);
       zone.appendChild(wordEl);
@@ -891,117 +927,7 @@ function dqx5Render() {
   if (btn && !dqx5Done) btn.disabled = !allFilled || dqx5Sig() === dqx5LastWrong; // Retry gate (rule 9)
 }
 
-/* תצוגת-גרירה: "גלולה" אמיתית (רקע לבן, גבול כחול, טקסט במרכז). בלי זה
-   הדפדפן מצלם רק את ה-<span> של המילה (בגרירה מתוך תיבה) או עותק שקוף של
-   כרטיס הבנק. refEl = האלמנט שממנו נגזרים הגודל/הסקאלה (הכרטיס או תיבת
-   היעד), cls = מחלקת הגלולה. */
-function dragPillPreview(event, refEl, label, cls) {
-  if (!event.dataTransfer || !event.dataTransfer.setDragImage || !refEl) return;
-  const rect = refEl.getBoundingClientRect();
-  const scale = refEl.offsetWidth ? rect.width / refEl.offsetWidth : 1;
-  const pill = document.createElement('div');
-  pill.className = cls + ' drag-pill-preview';
-  pill.textContent = label;
-  pill.style.width = refEl.offsetWidth + 'px';
-  pill.style.height = refEl.offsetHeight + 'px';
-  pill.style.transform = 'scale(' + scale + ')';
-  document.body.appendChild(pill);
-  event.dataTransfer.setDragImage(
-    pill,
-    Math.min(Math.max(event.clientX - rect.left, 0), rect.width),
-    Math.min(Math.max(event.clientY - rect.top, 0), rect.height)
-  );
-  setTimeout(function () { pill.remove(); }, 0);
-}
 
-function dqx5DragStart(event, dragId) {
-  if (dqx5Checked) { event.preventDefault(); return; }
-  gestureHintHide('s5-drag'); /* נעלם ברגע שהלומד מתחיל לגרור */
-  /* תוקן (2026-08-05): First-attempt retry feedback dismissal — ראו
-     ddq13DragStart בסיין 1 לפירוט המלא. */
-  if (dqx5Attempts > 0) document.getElementById('dqx5-popup').classList.remove('visible');
-  dqx5DragActive = dragId;
-  dqx5DropHandled = false;
-  event.dataTransfer.setData('text/plain', dragId);
-  event.dataTransfer.effectAllowed = 'move';
-  dragPillPreview(event, event.currentTarget || event.target, DQX5_LABELS[dragId], 'dqx-drag-card');
-  setTimeout(function () {
-    const card = document.getElementById(dragId);
-    if (card) card.classList.add('dragging');
-  }, 0);
-}
-
-function dqx5PlacedDragStart(event, dragId) {
-  if (dqx5Checked) { event.preventDefault(); return; }
-  if (dqx5Attempts > 0) document.getElementById('dqx5-popup').classList.remove('visible');
-  dqx5DragActive = dragId;
-  dqx5DropHandled = false;
-  event.dataTransfer.setData('text/plain', dragId);
-  event.dataTransfer.effectAllowed = 'move';
-  const wordEl = event.currentTarget || event.target;
-  const oldZone = document.getElementById(dqx5Placement[dragId]);
-  dragPillPreview(event, oldZone || wordEl, DQX5_LABELS[dragId], 'dqx-drag-card');
-  /* תוקן (2026-10-04): אין עוד dqx5Render() סינכרוני כאן — הוא ניתק את
-     המילה הנגררת מה-DOM באמצע הגרירה, ולכן dragend לא הופעל, והכרטיס
-     שבבנק נתקע בשקיפות אחרי החזרה. ה-DOM נשאר יציב עד drop/dragend;
-     התיבה רק "מתרוקנת" חזותית (.drag-origin) והכרטיס בבנק נשאר ghost. */
-  if (oldZone) oldZone.classList.remove('correct', 'incorrect', 'filled');
-  setTimeout(function () {
-    if (dqx5DragActive === dragId && oldZone) oldZone.classList.add('drag-origin');
-  }, 0);
-}
-
-function dqx5DragEnd() {
-  if (!dqx5DropHandled && dqx5DragActive) {
-    dqx5Placement[dqx5DragActive] = 'source';
-  }
-  dqx5Render();
-  dqx5DragActive = null;
-  dqx5DropHandled = false;
-  document.querySelectorAll('#s5 .drag-hover').forEach(function (z) { z.classList.remove('drag-hover'); });
-}
-
-function dqx5DragOver(event, targetId) {
-  if (dqx5Checked) return;
-  event.preventDefault();
-  event.dataTransfer.dropEffect = 'move';
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.add('drag-hover');
-}
-
-function dqx5DragEnter(event, targetId) {
-  event.preventDefault();
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.add('drag-hover');
-}
-
-function dqx5DragLeave(event, targetId) {
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.remove('drag-hover');
-}
-
-function dqx5Drop(event, targetId) {
-  event.preventDefault();
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.remove('drag-hover', 'correct', 'incorrect');
-  if (dqx5Checked || !dqx5DragActive) return;
-  dqx5DropHandled = true;
-  DQX5_DRAG_IDS.forEach(function (dId) {
-    if (dqx5Placement[dId] === targetId && dId !== dqx5DragActive) dqx5Placement[dId] = 'source';
-  });
-  dqx5Placement[dqx5DragActive] = targetId;
-  dqx5DragActive = null;
-  dqx5Render();
-}
-
-function dqx5DropToBank(event) {
-  event.preventDefault();
-  if (dqx5Checked || !dqx5DragActive) return;
-  dqx5DropHandled = true;
-  dqx5Placement[dqx5DragActive] = 'source';
-  dqx5DragActive = null;
-  dqx5Render();
-}
 
 function dqx5ShowFeedback(title, body, kind) {
   const box = document.getElementById('dqx5-popup');
@@ -1139,7 +1065,7 @@ function resetScreenState5() {
   DQX5_DRAG_IDS.forEach(function (id) { dqx5Placement[id] = 'source'; });
   DQX5_TARGET_IDS.forEach(function (tId) {
     const zone = document.getElementById(tId);
-    if (zone) zone.classList.remove('correct', 'incorrect', 'filled', 'drag-hover');
+    if (zone) zone.classList.remove('correct', 'incorrect', 'filled', 'drag-hover', 'drag-over');
   });
   document.getElementById('dqx5-popup').classList.remove('visible');
   const btn = document.getElementById('dqx5-check');
@@ -1380,14 +1306,53 @@ const ODDQ_TARGET_LABELS = {
 
 let oddqPlacement = {};
 ODDQ_DRAG_IDS.forEach(function (id) { oddqPlacement[id] = 'source'; });
-let oddqDragActive = null;
-let oddqDropHandled = false;
 let oddqChecked = false;
 let oddqAttempts = 0;
 let oddqDone = false;
 let oddqAnswerSnapshot = null;
 let oddqShowingCorrect = false; // true = board currently shows the §9 reveal (correct answers)
 let oddqLastWrong = null; // Retry gate (guide §8.8 rule 9): oddqSig() of the non-final wrong submission
+
+/* גרירת Pointer Events (עכבר + מגע) — ../unit-js/30-pointer-dnd.js (תוקן 2026-11-03, MOE
+   "גרירה לא עובדת בטאבלט"). oddqRender בונה את הכרטיסים/המילים מחדש בכל רינדור ומצמיד כל
+   אחד מהם (attachSource); האזורים והמאגר מוצמדים פעם אחת כאן. oddqPlacement נשאר המודל היחיד. */
+const oddqDnd = createPointerDnd({
+  canDrag: function () { return !oddqChecked && !oddqDone; },
+  onPick: function (dragId, src) {                      /* הלחיצה הפכה לגרירה (מעבר ל-6px) */
+    gestureHintHide('s7-drag');                         /* נעלם ברגע שהלומד מתחיל לגרור */
+    if (oddqAttempts > 0) document.getElementById('oddq-popup').classList.remove('visible');
+    if (src.classList.contains('oddq-zone-word')) {     /* מילה מוצבת: התיבה "מתרוקנת" חזותית עד ההטלה */
+      const oldZone = document.getElementById(oddqPlacement[dragId]);
+      if (oldZone) { oldZone.classList.remove('correct', 'incorrect', 'filled'); oldZone.classList.add('drag-origin'); }
+    }
+  },
+  onGhost: function (ghost, src) {                      /* רוח אחיד: גלולת oddq-card, גם כשגוררים מילה מוצבת */
+    const dragId = src.dataset.pdragId;
+    if (src.classList.contains('oddq-zone-word')) {
+      const ref = document.getElementById(dragId) || document.getElementById(oddqPlacement[dragId]);
+      ghost.className = 'oddq-card pointer-drag-ghost';
+      ghost.textContent = ODDQ_LABELS[dragId];
+      if (ref) { ghost.style.width = ref.offsetWidth + 'px'; ghost.style.height = ref.offsetHeight + 'px'; }
+    }
+  },
+  onDrop: function (dragId, targetId) {
+    if (targetId === 'bank') {
+      oddqPlacement[dragId] = 'source';
+    } else {
+      const zone = document.getElementById(targetId);
+      if (zone) zone.classList.remove('correct', 'incorrect');
+      ODDQ_DRAG_IDS.forEach(function (dId) { if (oddqPlacement[dId] === targetId && dId !== dragId) oddqPlacement[dId] = 'source'; });
+      oddqPlacement[dragId] = targetId;
+    }
+    oddqRender();
+  },
+  onCancel: function (dragId) {                         /* הטלה מחוץ ליעד: כמו dragend בלי drop — חזרה למאגר */
+    oddqPlacement[dragId] = 'source';
+    oddqRender();
+  }
+});
+ODDQ_TARGET_IDS.forEach(function (tId) { oddqDnd.attachTarget(document.getElementById(tId), tId); });
+oddqDnd.attachTarget(document.getElementById('oddq-pool'), 'bank');
 
 /* The feedback texts, hoisted so the resume painter shows exactly what oddqCheck showed. */
 const ODDQ_FB = {
@@ -1428,9 +1393,7 @@ function oddqRender() {
     if (oddqPlacement[dragId] === 'source') {
       card.textContent = ODDQ_LABELS[dragId];
       if (!oddqChecked) {
-        card.draggable = true;
-        card.ondragstart = function (e) { oddqDragStart(e, dragId); };
-        card.ondragend = oddqDragEnd;
+        oddqDnd.attachSource(card, dragId);   /* Pointer DnD (30-pointer-dnd.js) */
       } else {
         card.classList.add('locked');
       }
@@ -1460,10 +1423,8 @@ function oddqRender() {
       wordEl.className = 'oddq-zone-word';
       wordEl.textContent = ODDQ_LABELS[placedId];
       if (!oddqChecked) {
-        wordEl.draggable = true;
         wordEl.style.cursor = 'grab';
-        wordEl.ondragstart = function (e) { oddqPlacedDragStart(e, placedId); };
-        wordEl.ondragend = oddqDragEnd;
+        oddqDnd.attachSource(wordEl, placedId);   /* מילה מוצבת נגררת חזרה / לתיבה אחרת */
       }
       zone.appendChild(iconEl);
       zone.appendChild(wordEl);
@@ -1477,92 +1438,6 @@ function oddqRender() {
   if (btn && !oddqDone) btn.disabled = !allFilled || oddqSig() === oddqLastWrong; // Retry gate (rule 9)
 }
 
-function oddqDragStart(event, dragId) {
-  if (oddqChecked) { event.preventDefault(); return; }
-  gestureHintHide('s7-drag'); /* נעלם ברגע שהלומד מתחיל לגרור */
-  /* תוקן (2026-08-05): First-attempt retry feedback dismissal — ראו
-     ddq13DragStart בסיין 1 לפירוט המלא. */
-  if (oddqAttempts > 0) document.getElementById('oddq-popup').classList.remove('visible');
-  oddqDragActive = dragId;
-  oddqDropHandled = false;
-  event.dataTransfer.setData('text/plain', dragId);
-  event.dataTransfer.effectAllowed = 'move';
-  dragPillPreview(event, event.currentTarget || event.target, ODDQ_LABELS[dragId], 'oddq-card');
-  setTimeout(function () {
-    const card = document.getElementById(dragId);
-    if (card) card.classList.add('dragging');
-  }, 0);
-}
-
-function oddqPlacedDragStart(event, dragId) {
-  if (oddqChecked) { event.preventDefault(); return; }
-  if (oddqAttempts > 0) document.getElementById('oddq-popup').classList.remove('visible');
-  oddqDragActive = dragId;
-  oddqDropHandled = false;
-  event.dataTransfer.setData('text/plain', dragId);
-  event.dataTransfer.effectAllowed = 'move';
-  const oldZone = document.getElementById(oddqPlacement[dragId]);
-  dragPillPreview(event, oldZone || event.currentTarget || event.target, ODDQ_LABELS[dragId], 'oddq-card');
-  /* תוקן (2026-10-04): במקום רינדור (גם הנדחה) שמנתק את המילה הנגררת מה-DOM,
-     ה-DOM נשאר יציב עד drop/dragend — התיבה רק "מתרוקנת" חזותית
-     (.drag-origin) והכרטיס בבנק נשאר ghost. */
-  if (oldZone) oldZone.classList.remove('correct', 'incorrect', 'filled');
-  setTimeout(function () {
-    if (oddqDragActive === dragId && oldZone) oldZone.classList.add('drag-origin');
-  }, 0);
-}
-
-function oddqDragEnd() {
-  if (!oddqDropHandled && oddqDragActive) {
-    oddqPlacement[oddqDragActive] = 'source';
-  }
-  oddqDragActive = null;
-  oddqDropHandled = false;
-  oddqRender();
-  document.querySelectorAll('#s7 .drag-hover').forEach(function (z) { z.classList.remove('drag-hover'); });
-}
-
-function oddqDragOver(event, targetId) {
-  if (oddqChecked) return;
-  event.preventDefault();
-  event.dataTransfer.dropEffect = 'move';
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.add('drag-hover');
-}
-
-function oddqDragEnter(event, targetId) {
-  event.preventDefault();
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.add('drag-hover');
-}
-
-function oddqDragLeave(event, targetId) {
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.remove('drag-hover');
-}
-
-function oddqDrop(event, targetId) {
-  event.preventDefault();
-  const zone = document.getElementById(targetId);
-  if (zone) zone.classList.remove('drag-hover', 'correct', 'incorrect');
-  if (oddqChecked || !oddqDragActive) return;
-  oddqDropHandled = true;
-  ODDQ_DRAG_IDS.forEach(function (dId) {
-    if (oddqPlacement[dId] === targetId && dId !== oddqDragActive) oddqPlacement[dId] = 'source';
-  });
-  oddqPlacement[oddqDragActive] = targetId;
-  oddqDragActive = null;
-  oddqRender();
-}
-
-function oddqDropToBank(event) {
-  event.preventDefault();
-  if (oddqChecked || !oddqDragActive) return;
-  oddqDropHandled = true;
-  oddqPlacement[oddqDragActive] = 'source';
-  oddqDragActive = null;
-  oddqRender();
-}
 
 function oddqShowFeedback(title, body, kind) {
   const box = document.getElementById('oddq-popup');
@@ -1716,7 +1591,7 @@ function resetScreenState7() {
   ODDQ_DRAG_IDS.forEach(function (id) { oddqPlacement[id] = 'source'; });
   ODDQ_TARGET_IDS.forEach(function (tId) {
     const zone = document.getElementById(tId);
-    if (zone) zone.classList.remove('correct', 'incorrect', 'filled', 'drag-hover');
+    if (zone) zone.classList.remove('correct', 'incorrect', 'filled', 'drag-hover', 'drag-over');
   });
   document.getElementById('oddq-popup').classList.remove('visible');
   const hintBtn = document.getElementById('oddq-hint');
@@ -2028,7 +1903,6 @@ function applyResumeVars(st) {
     dqx5Checked = !!q.chk; dqx5Attempts = q.att || 0; dqx5Done = !!q.done;
     dqx5AnswerSnapshot = q.snap ? resumePlacementFrom(q.snap, DQX5_DRAG_IDS, DQX5_TARGET_IDS) : null;
     dqx5ShowingCorrect = !!q.sc; dqx5LastWrong = q.lw || null;
-    dqx5DragActive = null; dqx5DropHandled = false;
   }
   if ((q = sc.oddq)) {
     oddqPlacement = resumePlacementFrom(q.pl, ODDQ_DRAG_IDS, ODDQ_TARGET_IDS);
@@ -2036,7 +1910,6 @@ function applyResumeVars(st) {
     oddqChecked = !!q.chk; oddqAttempts = q.att || 0; oddqDone = !!q.done;
     oddqAnswerSnapshot = q.snap ? resumePlacementFrom(q.snap, ODDQ_DRAG_IDS, ODDQ_TARGET_IDS) : null;
     oddqShowingCorrect = !!q.sc; oddqLastWrong = q.lw || null;
-    oddqDragActive = null; oddqDropHandled = false;
   }
 }
 

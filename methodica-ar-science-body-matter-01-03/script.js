@@ -1835,7 +1835,6 @@ const S8B_TEXTS = {
 
 let s8bDone = false;
 let s8bAttempts = 0;
-let s8bDragId = null;
 let s8bAnswerSnapshot = null;
 let s8bShowingCorrect = false; // true = board currently shows the §9 reveal (correct answers)
 let s8bLastWrong = null; // Retry gate (guide §8.8 rule 9): s8bSig() of the non-final wrong submission
@@ -1891,88 +1890,42 @@ function s8bRefreshItemStates() {
   });
 }
 
-function s8bDragStart(event, itemId) {
-  if (s8bDone) { event.preventDefault(); return; }
-  gestureHintHide('s8-drag'); /* נעלם ברגע שהלומד מתחיל לגרור */
-  /* תוקן (2026-08-05): First-attempt retry feedback dismissal —
-     720-templates skill (_global-components.md → "Feedback popup
-     system"). התחלת גרירה חדשה מסלקת את משוב-הניסיון-הלא-אחרון. */
-  if (s8bAttempts > 0) document.getElementById('s8b-popup').classList.remove('visible');
-  s8bDragId = itemId;
-  event.dataTransfer.effectAllowed = 'move';
-  event.dataTransfer.setData('text/plain', itemId);
-  setTimeout(function () {
-    const el = document.getElementById(itemId);
-    if (el) el.classList.add('is-dragging');
-  }, 0);
-}
-
-function s8bDragEnd(itemId) {
-  const el = document.getElementById(itemId);
-  if (el) el.classList.remove('is-dragging');
-  s8bDragId = null;
-}
-
-function s8bDragOver(event) {
-  event.preventDefault();
-  event.dataTransfer.dropEffect = 'move';
-}
-
-function s8bDragEnter(event, zoneId) {
-  event.preventDefault();
-  const zone = document.getElementById(zoneId);
-  if (zone) zone.classList.add('drag-over');
-}
-
-function s8bDragLeave(event, zoneId) {
-  const zone = document.getElementById(zoneId);
-  if (zone && !zone.contains(event.relatedTarget)) zone.classList.remove('drag-over');
-}
-
-function s8bDrop(event, targetZone) {
-  event.preventDefault();
+/* הנחת פריט באזור או החזרתו למאגר (zoneKey=null). משותף ל-onDrop/onTap של גרירת
+   ה-Pointer (../unit-js/30-pointer-dnd.js, תוקן 2026-11-03 — MOE "גרירה לא עובדת בטאבלט");
+   RevealCorrect/RestoreMine/applyResumeDom ממשיכים עם appendChild משלהם. */
+function s8bPlaceItem(itemId, zoneKey) {
   if (s8bDone) return;
-  const itemId = event.dataTransfer.getData('text/plain') || s8bDragId;
-  if (!itemId) return;
-  const zoneEl = document.getElementById('s8b-zone-' + targetZone);
   const itemEl = document.getElementById(itemId);
-  if (zoneEl && itemEl) {
-    zoneEl.classList.remove('drag-over');
-    if (itemEl.parentElement) itemEl.parentElement.removeChild(itemEl);
-    zoneEl.appendChild(itemEl);
-  }
+  const dest = document.getElementById(zoneKey ? 's8b-zone-' + zoneKey : 's8b-source-bank');
+  if (!itemEl || !dest) return;
+  if (itemEl.parentElement !== dest) dest.appendChild(itemEl);
   s8bUpdateCheckBtn();
   s8bClearZoneStates();
   s8bRefreshItemStates();
 }
 
-function s8bDropToSource(event) {
-  event.preventDefault();
-  if (s8bDone) return;
-  const itemId = event.dataTransfer.getData('text/plain') || s8bDragId;
-  if (!itemId) return;
-  const bank = document.getElementById('s8b-source-bank');
-  const itemEl = document.getElementById(itemId);
-  if (itemEl && bank && itemEl.parentElement !== bank) {
-    if (itemEl.parentElement) itemEl.parentElement.removeChild(itemEl);
-    bank.appendChild(itemEl);
-  }
-  s8bUpdateCheckBtn();
-  s8bClearZoneStates();
-  s8bRefreshItemStates();
-}
-
-function s8bItemClick(itemId) {
-  if (s8bDone) return;
-  const el = document.getElementById(itemId);
-  const bank = document.getElementById('s8b-source-bank');
-  if (!el || !bank || el.parentElement === bank) return;
-  el.parentElement.removeChild(el);
-  bank.appendChild(el);
-  s8bClearZoneStates();
-  s8bUpdateCheckBtn();
-  s8bRefreshItemStates();
-}
+/* גרירת Pointer Events (עכבר + מגע). המאזינים יושבים על הפריטים עצמם, ולכן שורדים
+   appendChild (הטלה, חשיפה, resume, reset). הקשה קצרה על פריט מוצב = החזרה למאגר
+   (ההתנהגות הישנה של s8bItemClick). */
+const s8bDnd = createPointerDnd({
+  canDrag: function () { return !s8bDone; },
+  onPick: function () {                         /* הלחיצה הפכה לגרירה (מעבר ל-6px) */
+    gestureHintHide('s8-drag');               /* נעלם ברגע שהלומד מתחיל לגרור */
+    /* First-attempt retry feedback dismissal — 720-templates "Feedback popup system". */
+    if (s8bAttempts > 0) document.getElementById('s8b-popup').classList.remove('visible');
+  },
+  onGhost: function (ghost) { ghost.classList.remove('correct', 'wrong', 'filled'); },
+  onTap: function (dragId) {
+    const el = document.getElementById(dragId);
+    if (el && el.parentElement && el.parentElement.id !== 's8b-source-bank') s8bPlaceItem(dragId, null);
+  },
+  onDrop: function (dragId, targetId) { s8bPlaceItem(dragId, targetId === 'bank' ? null : targetId); }
+  /* אין onCancel: ה-helper מסיר את הרוח ואת .dragging; הפריט נשאר היכן שהיה */
+});
+S8B_ITEM_IDS.forEach(function (id) { s8bDnd.attachSource(document.getElementById(id), id); });
+s8bDnd.attachTarget(document.getElementById('s8b-zone-body'), 'body');
+s8bDnd.attachTarget(document.getElementById('s8b-zone-material'), 'material');
+s8bDnd.attachTarget(document.getElementById('s8b-source-bank'), 'bank');
 
 function s8bShowFeedback(kind, isCorrect) {
   const box = document.getElementById('s8b-popup');
@@ -2124,7 +2077,6 @@ function resetScreenState8() {
   })) { s8bRefreshItemStates(); return; }
 
   s8bAttempts = 0;
-  s8bDragId = null;
   s8bAnswerSnapshot = null;
   s8bShowingCorrect = false;
   s8bLastWrong = null;
