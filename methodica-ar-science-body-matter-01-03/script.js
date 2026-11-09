@@ -1500,7 +1500,18 @@ function s5UnlockCards() {
   });
 }
 
+/* השער (2026-11-09, תיקון 5 בגיליון 08.11 — הדפוס של נמרוד מ-16.09.26, mass-measure-02-02 sq6Continue):
+   מסך s0 מבטיח "ענו נכון על 4 שאלות ומעלה כדי להתקדם". פחות מ-4/5 → completed עם success:false
+   מיד, הכפתור מושבת, ושני התרגילים הקשים (s6–s8) לא מוצגים. ללומד לא מוצג טקסט חדש; Kata מנתבת
+   (recommendedAfterFail). הספירה מ-stationProgress, שמשוחזר ב-resume, ולכן השער נכון גם אחרי טעינה. */
+function xapiGateStopped() {
+  return xapiBasicCorrect() < XAPI_PASS_K;
+}
 function s5Continue() {
+  if (xapiGateStopped()) {
+    partFinish(document.getElementById('s5-check'));
+    return;
+  }
   goTo(6);
 }
 
@@ -2155,13 +2166,17 @@ var XAPI_EVAL_ITEMS = { '001': 1, '002': 1, '003': 1, '004': 1, '005': 1, '006':
 var XAPI_METADATA_FILE = '../metadata/methodica-ar-science-body-matter-01-03.json';
 var XAPI_END_BTN = 's8b-check';                               /* the part's last button (D-8, restoreEndedButton) */
 
-/* תוצאת הרכיב ל-completed (§6.4 — המכנה הוא מה שהלומד הובטח). */
+/* תוצאת הרכיב ל-completed (§6.4 — המכנה הוא מה שהלומד הובטח).
+   מסך s0 מבטיח 5 שאלות וסף של 4 מתוך 5 (stationProgress). 2026-11-09 (תיקונים 1, 2 בגיליון 08.11):
+   success ו-score מאותה ספירה — 5 השאלות הבסיסיות בלבד. שני התרגילים ברמת קושי גבוהה (סט ב',
+   stationProgressSetB) מדווחים answered משלהם ואינם נכנסים לתוצאת הרכיב (עד כה: (okA+okB)/7). */
+var XAPI_PASS_K = 4, XAPI_PASS_N = 5;
+function xapiBasicCorrect() {
+  return [1, 2, 3, 4, 5].filter(function (k) { return stationProgress[k] === 'success'; }).length;
+}
 function xapiPartResult() {
-  /* מסך s0 מבטיח 5 שאלות וסף של 4 מתוך 5 (stationProgress); סט ב' (2 שאלות) נכנס לציון אך לא לשער
-     (§6.4 — המכנה רחב מקבוצת השער, מתועד כאן). */
-  var okA = [1, 2, 3, 4, 5].filter(function (k) { return stationProgress[k] === 'success'; }).length;
-  var okB = [1, 2].filter(function (k) { return stationProgressSetB[k] === 'success'; }).length;
-  return { success: okA >= 4, score: { scaled: (okA + okB) / 7 } };
+  var ok = xapiBasicCorrect();
+  return { success: ok >= XAPI_PASS_K, score: { scaled: ok / XAPI_PASS_N } };
 }
 
 /* הלחיצה האחרונה של הסין: מדווח completed ועוצר. Kata מסירה את הרכיב ומנתבת (§6.5, §8.12).
@@ -2509,7 +2524,15 @@ function restoreScreenUI(n) {
     else if (n === 2) paintMcq(resumeCfgS2());
     else if (n === 3) paintScq(resumeCfgS3());
     else if (n === 4) paintDropdown(resumeCfgS4());
-    else if (n === 5) paintScq(resumeCfgS5());
+    else if (n === 5) {
+      paintScq(resumeCfgS5());
+      /* s5 is the part's end when the gate stopped it: once completed was sent, its button stays disabled
+         (restoreEndedButton only knows XAPI_END_BTN, the s8b end). */
+      if (s5Done && xapiGateStopped() && xapiComponentEnded()) {
+        const b5 = document.getElementById('s5-check');
+        if (b5) { b5.disabled = true; b5.setAttribute('aria-disabled', 'true'); }
+      }
+    }
     else if (n === 7) paintScq(resumeCfgS7());
     else if (n === 8) paintDragZones(resumeCfgS8b());
   } catch (e) { console.error('[resume] restoreScreenUI ' + n, e); }
