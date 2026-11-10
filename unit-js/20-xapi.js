@@ -263,10 +263,15 @@ function xapiQMeta(suffix, qKey) {
 var XAPI_SEP_LIST = '[,]', XAPI_SEP_PAIR = '[.]';
 var _XAPI_DELIMS = /\[,\]|\[\.\]|\[:\]/g;
 
+/* Invisible marks — LRM / RLM / ALM, embeddings, isolates, zero-width space — are layout hints: the
+   Arabic labels carry them around numbers, the metadata does not (MOE runbook checks 10.11.26, class
+   F). Dropped for the lookup and from learner-typed text; what is emitted for a metadata entry is
+   always the metadata string. Escaped, so the source stays free of invisible characters. */
+var _XAPI_BIDI = /[\u200B\u200E\u200F\u061C\u202A-\u202E\u2066-\u2069]/g;
 function _xapiNorm(s) {
   s = String(s == null ? '' : s);
   if (s.normalize) s = s.normalize('NFC');
-  return s.replace(/[׳’ʼ]/g, "'").replace(/\s+/g, ' ').trim();
+  return s.replace(_XAPI_BIDI, '').replace(/[\u05F3\u2019\u02BC]/g, "'").replace(/\s+/g, ' ').trim();
 }
 /* learner-typed text: the delimiters cannot be escaped in xAPI, so they are blanked */
 function _xapiFree(s) { return _xapiNorm(s).replace(_XAPI_DELIMS, ' ').replace(/\s+/g, ' ').trim(); }
@@ -296,13 +301,18 @@ function xapiChoiceResponse(item, qKey, selected) {
   return { response: texts.join(XAPI_SEP_LIST), readable: texts.join(', ') };
 }
 
-/* matching: pairs → [{source, target}] (strings or indexes). One pair per answers.source, in
-   answers.source order; a source the learner left unmatched → 'S[.]'. */
+/* matching: pairs → [{source, target}] (strings or indexes). Only the pairs the learner PLACED are
+   emitted — a card left in the bank (target '' / null) is not a pair. Order: the pairs that are in
+   correctAnswers first, in correctAnswers order — the order Kata builds correctXapiResponsesPattern
+   in, so a right answer is byte-identical to it — then the wrong pairs in answers.source,
+   answers.target order. Re-copied from methodica-science-mass-density-01 on 2026-11-10 (MOE runbook
+   checks: 02-005 sent its pairs in answers.source order, Kata's pattern follows correctAnswers). */
 function xapiMatchingResponse(item, qKey, pairs) {
   var m = xapiQMeta(item, qKey);
   var src = (m.answers && m.answers.source) || [], tgt = (m.answers && m.answers.target) || [];
-  var bySource = {};
+  var placed = [];   // [{s: {text, idx}, t: {text, idx}}]
   (pairs || []).forEach(function (p) {
+    if (p.target == null || p.target === '') return;   // a card still in the bank is not a pair
     var s = _xapiPick(p.source, src, item, qKey, 'answers.source');
     var t = _xapiPick(p.target, tgt, item, qKey, 'answers.target');
     /* direction guard: the call site handed us the pair target-first */
@@ -310,15 +320,21 @@ function xapiMatchingResponse(item, qKey, pairs) {
       var s2 = _xapiPick(p.target, src, item, qKey, 'answers.source'), t2 = _xapiPick(p.source, tgt, item, qKey, 'answers.target');
       if (s2.idx !== 1e9 && t2.idx !== 1e9) { console.warn('[xAPI] matching pair reversed — swapped', item, qKey); s = s2; t = t2; }
     }
-    bySource[s.text] = t.text;
+    if (s.text !== '') placed.push({ s: s, t: t });
   });
+  /* rank = position in correctAnswers (each entry claimed once); wrong pairs rank after every right one */
+  var ca = Array.isArray(m.correctAnswers) ? m.correctAnswers : [], claimed = {};
+  placed.forEach(function (p) {
+    p.rank = 1e9;
+    for (var j = 0; j < ca.length; j++) {
+      if (claimed[j] || !ca[j] || String(ca[j].source) !== p.s.text || String(ca[j].target) !== p.t.text) continue;
+      claimed[j] = true; p.rank = j; break;
+    }
+  });
+  /* a pair whose source is not in the metadata (idx 1e9) sorts last, so nothing the learner did is lost */
+  placed.sort(function (a, b) { return (a.rank - b.rank) || (a.s.idx - b.s.idx) || (a.t.idx - b.t.idx); });
   var out = [], readable = [];
-  for (var i = 0; i < src.length; i++) {
-    var s0 = String(src[i]), t0 = bySource[s0] == null ? '' : bySource[s0];
-    out.push(s0 + XAPI_SEP_PAIR + t0); readable.push(s0 + ' → ' + (t0 || '—'));
-  }
-  /* pairs whose source is not in the metadata are appended, so nothing the learner did is lost */
-  Object.keys(bySource).forEach(function (s) { if (src.indexOf(s) < 0 && s !== '') out.push(s + XAPI_SEP_PAIR + bySource[s]); });
+  placed.forEach(function (p) { out.push(p.s.text + XAPI_SEP_PAIR + p.t.text); readable.push((p.s.text || '—') + ' → ' + (p.t.text || '—')); });
   return { response: out.join(XAPI_SEP_LIST), readable: readable.join(' | ') };
 }
 

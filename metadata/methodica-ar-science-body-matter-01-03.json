@@ -43,7 +43,9 @@
           "correctAnswers": [
             "الصلابة",
             "اللون"
-          ]
+          ],
+          "correctXapiResponsesPattern": ["الصلابة[,]اللون"],
+          "xapiInteractionComponents": {"choices": [{"id": "البلاستيك", "description": "البلاستيك"}, {"id": "الصلابة", "description": "الصلابة"}, {"id": "الهاتف نفسه", "description": "الهاتف نفسه"}, {"id": "اللون", "description": "اللون"}]}
         }
       ]
     },
@@ -69,7 +71,9 @@
             "شفافية",
             "صلابة",
             "الموصلية الكهربائية"
-          ]
+          ],
+          "correctXapiResponsesPattern": ["شفافية[,]صلابة[,]الموصلية الكهربائية"],
+          "xapiInteractionComponents": {"choices": [{"id": "شفافية", "description": "شفافية"}, {"id": "صلابة", "description": "صلابة"}, {"id": "الموصلية الكهربائية", "description": "الموصلية الكهربائية"}, {"id": "كتلة", "description": "كتلة"}, {"id": "حجم", "description": "حجم"}]}
         }
       ]
     },
@@ -92,7 +96,9 @@
           ],
           "correctAnswers": [
             "بلاستيك"
-          ]
+          ],
+          "correctXapiResponsesPattern": ["بلاستيك"],
+          "xapiInteractionComponents": {"choices": [{"id": "سيليكون", "description": "سيليكون"}, {"id": "بلاستيك", "description": "بلاستيك"}, {"id": "إسفنج الذاكرة", "description": "إسفنج الذاكرة"}, {"id": "معدن", "description": "معدن"}]}
         }
       ]
     },
@@ -117,7 +123,9 @@
               "stepId": "القائمة 2",
               "response": "وظيفة"
             }
-          ]
+          ],
+          "correctXapiResponsesPattern": ["القائمة 1[.]خصائص[,]القائمة 2[.]وظيفة"],
+          "xapiInteractionComponents": {"steps": [{"id": "القائمة 1", "description": null}, {"id": "القائمة 2", "description": null}]}
         }
       ]
     },
@@ -140,7 +148,9 @@
           ],
           "correctAnswers": [
             "مكعب بلاستيكي"
-          ]
+          ],
+          "correctXapiResponsesPattern": ["مكعب بلاستيكي"],
+          "xapiInteractionComponents": {"choices": [{"id": "جذع شجرة", "description": "جذع شجرة"}, {"id": "صوف مجزوز", "description": "صوف مجزوز"}, {"id": "مكعب بلاستيكي", "description": "مكعب بلاستيكي"}, {"id": "حصاة نهر", "description": "حصاة نهر"}]}
         }
       ]
     },
@@ -163,7 +173,9 @@
           ],
           "correctAnswers": [
             "لا، يجب البحث عن أدلة إضافية تؤكّد أنَّ الإنسان قد صنعهُ (أو غيَّر شكلهُ)."
-          ]
+          ],
+          "correctXapiResponsesPattern": ["لا، يجب البحث عن أدلة إضافية تؤكّد أنَّ الإنسان قد صنعهُ (أو غيَّر شكلهُ)."],
+          "xapiInteractionComponents": {"choices": [{"id": "نعم، لأن سبيكة الذهب هي دائمًا جسم مُصنع.", "description": "نعم، لأن سبيكة الذهب هي دائمًا جسم مُصنع."}, {"id": "نعم، لأن الجسم الأملس هو دائمًا جسم مُصنع.", "description": "نعم، لأن الجسم الأملس هو دائمًا جسم مُصنع."}, {"id": "لا، يجب البحث عن أدلة إضافية تؤكّد أنَّ الإنسان قد صنعهُ (أو غيَّر شكلهُ).", "description": "لا، يجب البحث عن أدلة إضافية تؤكّد أنَّ الإنسان قد صنعهُ (أو غيَّر شكلهُ)."}, {"id": "لا. يجب فقط فحص المادة المصنوع منها.", "description": "لا. يجب فقط فحص المادة المصنوع منها."}]}
         }
       ]
     },
@@ -207,7 +219,9 @@
               "source": "ليونة",
               "target": "خصائص المادة"
             }
-          ]
+          ],
+          "correctXapiResponsesPattern": ["كتلة[.]خصائص الجسم[,]حجم[.]خصائص الجسم[,]لون[.]خصائص المادة[,]ليونة[.]خصائص المادة"],
+          "xapiInteractionComponents": {"source": [{"id": "كتلة", "description": "كتلة"}, {"id": "حجم", "description": "حجم"}, {"id": "لون", "description": "لون"}, {"id": "ليونة", "description": "ليونة"}], "target": [{"id": "خصائص الجسم", "description": "خصائص الجسم"}, {"id": "خصائص المادة", "description": "خصائص المادة"}]}
         }
       ]
     }

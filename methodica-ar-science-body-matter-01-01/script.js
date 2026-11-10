@@ -938,10 +938,20 @@ function ytMountIframe(id, videoId, title, w, h) {
 function s10CreatePlayer() {
   const frame = ytMountIframe('s10-yt-player', S10_VIDEO_ID, 'التمييز بين الجسم والمادة', 646, 363);
   if (!frame) return;
+  /* The IFrame API replaces the iframe title with the video's own YouTube title, localised to the
+     browser (seen live 10.11.26 on the Arabic page: "Distinguishing Between an Object and a
+     Material"). Put ours back on ready and on every state change, as percent-08 does
+     (unit-js/70-platform.js ytWirePlayers). MOE runbook checks, class G. */
+  const title = frame.title;
+  const keepTitle = function () {
+    const f = document.getElementById('s10-yt-player');
+    try { if (f && title && f.title !== title) f.title = title; } catch (_) {}
+  };
   s10Player = new YT.Player(frame, {
     events: {
-      onReady: function (e) { e.target.playVideo(); },
+      onReady: function (e) { keepTitle(); e.target.playVideo(); },
       onStateChange: function (e) {
+        keepTitle();
         /* played/paused per guide §6.9.2 — one flag per player, the ITEM as object. */
         try { if (typeof xapiYouTubeState === 'function') xapiYouTubeState(e, S10_XAPI_ITEM); } catch (_) {}
         if (e.data === YT.PlayerState.ENDED) s10MarkWatched();
