@@ -86,6 +86,40 @@ ok('loader', 'library letter is k with resume (i without)', lib[1] === 'k' && li
 ok('loader', 'the loaded letters are inside the XAPI_USING_G gate', gate.includes('k') && gate.includes('i'), gate);
 ok('loader', 'the stub carries a gated letter', /xapi-720-[ghijk]\.js$/.test('_test/xapi-720-k.js'));
 
+/* Kata, read 10.11.26 (retrieve-metadata.ps1 -OutDir <scratch>, read only): correctXapiResponsesPattern per question. */
+const KATA = {
+  "01/001/q1": [],   // other
+  "01/005/q1": ["خصائص الجسم[.]تغيرت[,]خصائص المادة[.]لم تتغير"],   // matching
+  "01/007/q1": ["سبيكة ذهب[.]أجسام طبيعية[,]حصاة نهر[.]أجسام طبيعية[,]صندوق خشبي[.]أجسام مُصَنَّعة[,]وعاء حجري[.]أجسام مُصَنَّعة"],   // matching
+  "01/010/q1": ["قوس سماعات الرأس، لأنه جزء محدد يمكن الإشارة إليه."],   // choice
+  "01/011/q1": ["جسم[.]السماعات هي[,]مادة[.]البلاستيك الذي يصنع منه جسم السماعة هو[,]خاصية[.]ليونة القوس هي"],   // matching
+  "02/001/q1": ["مرونة"],   // choice
+  "02/001/q2": ["قماش شبكي من البوليستر"],   // choice
+  "02/002/q1": ["الحجم الذي يشغله السلك داخل السماعة."],   // choice
+  "02/003/q1": ["الجسم 2 يحتوي على كمية أكبر من النحاس مقارنة بالجسم 1.[,]الجسمان مصنوعان من نفس المادة، وبالتالي خصائص المادة الخاصة بهما متطابقة."],   // choice
+  "02/004/q1": ["حجر صوان[.]لا توجد أدلة كافية لتحديد أن القطعة الأثرية مُصنعة (من صُنع الإنسان).[,]شظية عظم[.]لا توجد أدلة كافية لتحديد أن القطعة الأثرية مُصنعة (من صُنع الإنسان).[,]قطعة فخار مكسورة[.]توجد أدلة كافية لتحديد أن القطعة الأثرية مُصنعة (من صُنع الإنسان).[,]لوحة نحاسية[.]توجد أدلة كافية لتحديد أن القطعة الأثرية مُصنعة (من صُنع الإنسان)."],   // matching
+  "02/005/q1": ["مشاهدة[.]لون[,]مشاهدة أمام الضوء[.]شفافية[,]فحص الخدش المضبوط[.]صلابة[,]ثني خفيف[.]ليونة[,]ملاحظة ما إذا كان سطح المادة يعكس الضوء ويبدو لامعًا[.]لمعان[,]تقريب المغناطيس[.]مغناطيسية[,]لمس حذر[.]ملمس"],   // matching
+  "03/001/q1": ["الصلابة[,]اللون"],   // choice
+  "03/002/q1": ["شفافية[,]صلابة[,]الموصلية الكهربائية"],   // choice
+  "03/003/q1": ["بلاستيك"],   // choice
+  "03/004/q1": ["القائمة 1[.]خصائص[,]القائمة 2[.]وظيفة"],   // performance
+  "03/005/q1": ["مكعب بلاستيكي"],   // choice
+  "03/006/q1": ["لا، يجب البحث عن أدلة إضافية تؤكّد أنَّ الإنسان قد صنعهُ (أو غيَّر شكلهُ)."],   // choice
+  "03/007/q1": ["كتلة[.]خصائص الجسم[,]حجم[.]خصائص الجسم[,]لون[.]خصائص المادة[,]ليونة[.]خصائص المادة"],   // matching
+  "05/001/q1": ["بلاستيك شفاف"],   // choice
+  "05/002/q1": ["معدن"],   // choice
+  "05/002/q2": ["قابلية الكسر[.]الخاصية الوحيدة المهمة للقنينة هي[,]منخفضة[.]على مستوى[,]معدن[.]الأنسب لإنتاج قنينة المكتب هو"],   // matching
+  "05/003/q1": ["بلاستيك صلب - لأنه مقاوم للماء وقابلية كسره منخفضة."],   // choice
+  "05/004/q1": ["عيّنة أ[.]نافذة شفافة[,]عيّنة ب[.]معدن مغناطيسي[,]عيّنة ج[.]مادة قابلة للذوبان في الماء"],   // matching
+  "06/001/q1": ["طبقة بلاستيكية بيضاء"],   // choice
+  "06/001/q2": ["سطح المدرسة هو[.]جسم[,]البلاستيك الذي ستصنع منه الطبقة هو[.]مادة[,]الموصلية الحرارية المنخفضة هي[.]خاصية"],   // matching
+  "06/001/q3": ["الادّعاء غير كاف، لأنه تجاهل الموصلية الحرارية وانعكاس الضوء."],   // choice
+  "06/001/q4": ["طبقة بلاستيكية بيضاء[.]المادة المناسبة لتغطية السطح هي[,]سيقلّل ارتفاع الحرارة[.](موصلية حرارية منخفضة وانعكاس ضوء عال)[,]سيكون مقاومًا للمطر[.](مقاومة عالية للماء)[,]لن يتفتت بسهولة[.](قابلية كسر منخفضة)"],   // matching
+  "07/001/q1": ["مسحوق ج"],   // choice
+  "07/001/q2": ["يلزم إجراء فحص إضافي للتمييز بينهما."],   // choice
+  "07/001/q3": ["خلط المسحوق بالماء[.]قابلية الذوبان في الماء[,]تقريب المغناطيس من المسحوق[.]مغناطيسية[,]فحص ما إذا كان المزيج صافيًا أم عكرًا[.]مشاهدة مظهر المحلول بعد الخلط"],   // matching
+  "07/001/q4": ["لا أوافق. للتعرّف على مادة يجب مقارنة عدة خصائص وليس الاعتماد على واحدة أو اثنتين فقط."],   // choice
+};
 const META = {};
 for (const c of COMPONENTS) {
   META[c] = readJson(path.join(BASE, 'metadata', compSlug(c) + '.json'));
@@ -224,6 +258,15 @@ ok('shared', 'retired builders not defined', !/function xapi(Zone|Fields|Multi)A
 ok('shared', 'definition-only files have no top-level side effects (except 90-boot)',
    SHARED.slice(0, -1).every((s) => !/^\(function|^[a-zA-Z_$][\w$]*\(.*\);\s*$/m.test(stripComments(read(path.join(BASE, 'unit-js', s + '.js'))).replace(/^(?:var|let|const|function)[\s\S]*?\n(?=\S)/gm, ''))));
 ok('shared', '90-boot calls bootXAPI last', /initReportModal\(\);[\s\S]*bootXAPI\(\);\n\}\)\(\);/.test(read(path.join(BASE, 'unit-js', '90-boot.js'))));
+/* MOE runbook checks 10.11.26, class G: no Hebrew letter on the Arabic pages. Every index.html, every
+   part script.js and 20-xapi.js, outside comments (the developer console messages in 25-report.js /
+   50-loader.js are Hebrew and never shown on the page). */
+for (const f of [...COMPONENTS.flatMap((c) => [path.join(compDir(c), 'index.html'), path.join(compDir(c), 'script.js')]), path.join(BASE, 'unit-js', '20-xapi.js')]) {
+  const t = read(f), src = /\.html$/.test(f) ? t.replace(/<!--[\s\S]*?-->/g, '')
+    : t.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"\\])\/\/.*$/gm, '$1');   // block and end-of-line comments
+  const hit = /[א-ת][^\n]{0,40}/.exec(src);
+  ok('shared', 'no Hebrew in ' + path.relative(BASE, f).replace(/\\/g, '/'), !hit, hit && hit[0]);
+}
 
 /* ══════════════════ 4. runtime (jsdom) ══════════════════ */
 section('4. runtime (jsdom)');
@@ -371,10 +414,12 @@ if (JSDOM) for (const c of COMPONENTS) {
         ok(c, 'H12 no DOM-id syntax in response ' + suf + '/' + k, !/=|\s\|\s/.test(resp));
       } else if (q.questionType === 'matching') {
         const resp = w.xapiResponse(suf, k, { pairs: q.correctAnswers.slice().reverse() }).response;
-        const canon = q.answers.source.map((s) => s + '[.]' + (q.correctAnswers.find((p) => p.source === s) || {}).target).join('[,]');
-        ok(c, 'H10 matching canonical (source order) ' + suf + '/' + k, resp === canon, resp + ' vs ' + canon);
+        const canon = q.correctAnswers.map((p) => p.source + '[.]' + p.target).join('[,]');
+        ok(c, 'H10 matching canonical (correctAnswers order, placed pairs only) ' + suf + '/' + k, resp === canon, resp + ' vs ' + canon);
         const partial = w.xapiResponse(suf, k, { pairs: [] }).response;
-        ok(c, 'H9 matching with nothing placed yields S[.] per source ' + suf + '/' + k, partial === q.answers.source.map((s) => s + '[.]').join('[,]'));
+        ok(c, 'H9 matching with nothing placed yields an empty response ' + suf + '/' + k, partial === '', partial);
+        const inBank = w.xapiResponse(suf, k, { pairs: q.correctAnswers.map((p, i) => ({ source: p.source, target: i ? p.target : '' })) }).response;
+        ok(c, 'H9 a card left in the bank is not a pair ' + suf + '/' + k, inBank === q.correctAnswers.slice(1).map((p) => p.source + '[.]' + p.target).join('[,]'), inBank);
         const _warn = w.console.warn; w.console.warn = () => {};   // the guard warns by design
         const rev = w.xapiResponse(suf, k, { pairs: [{ source: q.correctAnswers[0].target, target: q.correctAnswers[0].source }] }).response;
         w.console.warn = _warn;
@@ -385,6 +430,36 @@ if (JSDOM) for (const c of COMPONENTS) {
         ok(c, 'H10 performance canonical ' + suf + '/' + k, resp === canon, resp + ' vs ' + canon);
       }
     }
+  }
+  /* 4c-K — Kata's correctXapiResponsesPattern (MOE runbook checks, 10.11.26). KATA is a read of Kata
+     (retrieve-metadata.ps1 -OutDir <scratch>, read only). metadata/ must carry it, and the right answer,
+     handed to the builder in reverse order and with bidi marks around every piece, formats to it byte
+     for byte. 02-005 is also played through the screen (dqx28Check): its pairs went out in
+     answers.source order until 10.11, Kata's pattern follows correctAnswers. */
+  for (const it of META[c].subContent || []) {
+    const suf = it.id.replace(/\/$/, '').slice(-3);
+    for (const q of it.questions || []) {
+      const k = q.questionId.split('/').pop(), key = c + '/' + suf + '/' + k, want = KATA[key];
+      ok(c, 'K1 metadata/ carries Kata\'s pattern ' + key, want && JSON.stringify(q.correctXapiResponsesPattern) === JSON.stringify(want),
+        JSON.stringify(q.correctXapiResponsesPattern) + ' vs ' + JSON.stringify(want));
+      if (!want || !want.length) continue;
+      const m = w.xapiQMeta(suf, k), mark = (x) => '\u200F' + x + '\u200E';
+      let spec = null;
+      if (q.questionType === 'choice') spec = { choices: q.correctAnswers.slice().reverse().map(mark) };
+      else if (q.questionType === 'matching') spec = { pairs: q.correctAnswers.slice().reverse().map((p) => ({ source: mark(p.source), target: mark(p.target) })) };
+      else if (q.questionType === 'performance') spec = { steps: m.steps.map((st) => mark(st.correctAnswer)) };
+      ok(c, 'K2 the right answer formats to Kata\'s pattern ' + key, spec && w.xapiResponse(suf, k, spec).response === want[0],
+        spec ? JSON.stringify(w.xapiResponse(suf, k, spec).response) + ' vs ' + JSON.stringify(want[0]) : 'no spec for ' + q.questionType);
+    }
+  }
+  if (c === '02') {
+    const rk = loadPart(c), wk = rk.w, sentK = [];
+    wk.METADATA = META[c]; wk.XAPI_USING_G = true;
+    wk.sendStatement720 = (verb, type, result, ctx) => { sentK.push({ verb, result, ctx }); return true; };
+    wk.eval("Object.keys(DQX28_CORRECT_MAP).forEach(function (t) { dqx28Placement[DQX28_CORRECT_MAP[t]] = t; }); dqx28Check();");
+    const a = sentK.filter((x) => /^answered/.test(x.verb));
+    ok(c, 'K3 02-005 played right: one answered with Kata\'s pattern', a.length === 1 && a[0].result.response === KATA['02/005/q1'][0] && a[0].result.success === true,
+      a.length ? JSON.stringify(a[0].result.response) : 'no answered');
   }
   const warned = []; w.console.warn = (...a) => warned.push(a.join(' '));
   const h13 = (META[c].subContent || []).find((it) => (it.questions || []).some((q) => q.questionType === 'choice'));

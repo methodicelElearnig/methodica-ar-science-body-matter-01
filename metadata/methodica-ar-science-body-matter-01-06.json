@@ -42,7 +42,9 @@
           ],
           "correctAnswers": [
             "طبقة بلاستيكية بيضاء"
-          ]
+          ],
+          "correctXapiResponsesPattern": ["طبقة بلاستيكية بيضاء"],
+          "xapiInteractionComponents": {"choices": [{"id": "طبقة بلاستيكية بيضاء", "description": "طبقة بلاستيكية بيضاء"}, {"id": "لوح زجاجي شفاف", "description": "لوح زجاجي شفاف"}, {"id": "لوح معدني داكن", "description": "لوح معدني داكن"}, {"id": "جميع المواد بنفس القدر", "description": "جميع المواد بنفس القدر"}]}
         },
         {
           "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-06/methodica-ar-science-body-matter-01-06-001/q2",
@@ -73,7 +75,9 @@
               "source": "الموصلية الحرارية المنخفضة هي",
               "target": "خاصية"
             }
-          ]
+          ],
+          "correctXapiResponsesPattern": ["سطح المدرسة هو[.]جسم[,]البلاستيك الذي ستصنع منه الطبقة هو[.]مادة[,]الموصلية الحرارية المنخفضة هي[.]خاصية"],
+          "xapiInteractionComponents": {"source": [{"id": "سطح المدرسة هو", "description": "سطح المدرسة هو"}, {"id": "البلاستيك الذي ستصنع منه الطبقة هو", "description": "البلاستيك الذي ستصنع منه الطبقة هو"}, {"id": "الموصلية الحرارية المنخفضة هي", "description": "الموصلية الحرارية المنخفضة هي"}], "target": [{"id": "مادة", "description": "مادة"}, {"id": "جسم", "description": "جسم"}, {"id": "خاصية", "description": "خاصية"}]}
         },
         {
           "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-06/methodica-ar-science-body-matter-01-06-001/q3",
@@ -87,7 +91,9 @@
           ],
           "correctAnswers": [
             "الادّعاء غير كاف، لأنه تجاهل الموصلية الحرارية وانعكاس الضوء."
-          ]
+          ],
+          "correctXapiResponsesPattern": ["الادّعاء غير كاف، لأنه تجاهل الموصلية الحرارية وانعكاس الضوء."],
+          "xapiInteractionComponents": {"choices": [{"id": "الادّعاء كاف، لأن مقاومة الماء هي الخاصية الوحيدة المهمة للسطح.", "description": "الادّعاء كاف، لأن مقاومة الماء هي الخاصية الوحيدة المهمة للسطح."}, {"id": "الادّعاء خاطئ، لأن المعدن الداكن يتفتت دائمًا أسرع من البلاستيك.", "description": "الادّعاء خاطئ، لأن المعدن الداكن يتفتت دائمًا أسرع من البلاستيك."}, {"id": "الادّعاء غير كاف، لأنه تجاهل الموصلية الحرارية وانعكاس الضوء.", "description": "الادّعاء غير كاف، لأنه تجاهل الموصلية الحرارية وانعكاس الضوء."}, {"id": "الادّعاء غير علمي، لأنه لا يمكن فحص مقاومة الماء في المختبر.", "description": "الادّعاء غير علمي، لأنه لا يمكن فحص مقاومة الماء في المختبر."}]}
         },
         {
           "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-06/methodica-ar-science-body-matter-01-06-001/q4",
@@ -124,7 +130,9 @@
               "source": "لن يتفتت بسهولة",
               "target": "(قابلية كسر منخفضة)"
             }
-          ]
+          ],
+          "correctXapiResponsesPattern": ["طبقة بلاستيكية بيضاء[.]المادة المناسبة لتغطية السطح هي[,]سيقلّل ارتفاع الحرارة[.](موصلية حرارية منخفضة وانعكاس ضوء عال)[,]سيكون مقاومًا للمطر[.](مقاومة عالية للماء)[,]لن يتفتت بسهولة[.](قابلية كسر منخفضة)"],
+          "xapiInteractionComponents": {"source": [{"id": "طبقة بلاستيكية بيضاء", "description": "طبقة بلاستيكية بيضاء"}, {"id": "سيقلّل ارتفاع الحرارة", "description": "سيقلّل ارتفاع الحرارة"}, {"id": "سيكون مقاومًا للمطر", "description": "سيكون مقاومًا للمطر"}, {"id": "لن يتفتت بسهولة", "description": "لن يتفتت بسهولة"}], "target": [{"id": "المادة المناسبة لتغطية السطح هي", "description": "المادة المناسبة لتغطية السطح هي"}, {"id": "(موصلية حرارية منخفضة وانعكاس ضوء عال)", "description": "(موصلية حرارية منخفضة وانعكاس ضوء عال)"}, {"id": "(مقاومة عالية للماء)", "description": "(مقاومة عالية للماء)"}, {"id": "(قابلية كسر منخفضة)", "description": "(قابلية كسر منخفضة)"}]}
         }
       ]
     }

@@ -39,7 +39,9 @@
           ],
           "correctAnswers": [
             "بلاستيك شفاف"
-          ]
+          ],
+          "correctXapiResponsesPattern": ["بلاستيك شفاف"],
+          "xapiInteractionComponents": {"choices": [{"id": "زجاج", "description": "زجاج"}, {"id": "بلاستيك شفاف", "description": "بلاستيك شفاف"}, {"id": "معدن", "description": "معدن"}]}
         }
       ]
     },
@@ -61,7 +63,9 @@
           ],
           "correctAnswers": [
             "معدن"
-          ]
+          ],
+          "correctXapiResponsesPattern": ["معدن"],
+          "xapiInteractionComponents": {"choices": [{"id": "زجاج", "description": "زجاج"}, {"id": "بلاستيك شفاف", "description": "بلاستيك شفاف"}, {"id": "معدن", "description": "معدن"}]}
         },
         {
           "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/body-matter/01/methodica-ar-science-body-matter-01-05/methodica-ar-science-body-matter-01-05-002/q2",
@@ -92,7 +96,9 @@
               "source": "معدن",
               "target": "الأنسب لإنتاج قنينة المكتب هو"
             }
-          ]
+          ],
+          "correctXapiResponsesPattern": ["قابلية الكسر[.]الخاصية الوحيدة المهمة للقنينة هي[,]منخفضة[.]على مستوى[,]معدن[.]الأنسب لإنتاج قنينة المكتب هو"],
+          "xapiInteractionComponents": {"source": [{"id": "قابلية الكسر", "description": "قابلية الكسر"}, {"id": "منخفضة", "description": "منخفضة"}, {"id": "معدن", "description": "معدن"}], "target": [{"id": "الخاصية الوحيدة المهمة للقنينة هي", "description": "الخاصية الوحيدة المهمة للقنينة هي"}, {"id": "على مستوى", "description": "على مستوى"}, {"id": "الأنسب لإنتاج قنينة المكتب هو", "description": "الأنسب لإنتاج قنينة المكتب هو"}]}
         }
       ]
     },
@@ -115,7 +121,9 @@
           ],
           "correctAnswers": [
             "بلاستيك صلب - لأنه مقاوم للماء وقابلية كسره منخفضة."
-          ]
+          ],
+          "correctXapiResponsesPattern": ["بلاستيك صلب - لأنه مقاوم للماء وقابلية كسره منخفضة."],
+          "xapiInteractionComponents": {"choices": [{"id": "زجاج - لأنه شفاف ومقاوم للماء.", "description": "زجاج - لأنه شفاف ومقاوم للماء."}, {"id": "بلاستيك صلب - لأنه مقاوم للماء وقابلية كسره منخفضة.", "description": "بلاستيك صلب - لأنه مقاوم للماء وقابلية كسره منخفضة."}, {"id": "جميع المواد مناسبة بنفس القدر، لأن كل واحدة منها لها ميزة مختلفة.", "description": "جميع المواد مناسبة بنفس القدر، لأن كل واحدة منها لها ميزة مختلفة."}, {"id": "كرتون مطلي - لأنه أقل شفافية من المواد الأخرى.", "description": "كرتون مطلي - لأنه أقل شفافية من المواد الأخرى."}]}
         }
       ]
     },
@@ -155,7 +163,9 @@
               "source": "عيّنة ج",
               "target": "مادة قابلة للذوبان في الماء"
             }
-          ]
+          ],
+          "correctXapiResponsesPattern": ["عيّنة أ[.]نافذة شفافة[,]عيّنة ب[.]معدن مغناطيسي[,]عيّنة ج[.]مادة قابلة للذوبان في الماء"],
+          "xapiInteractionComponents": {"source": [{"id": "عيّنة أ", "description": "عيّنة أ"}, {"id": "عيّنة ب", "description": "عيّنة ب"}, {"id": "عيّنة ج", "description": "عيّنة ج"}], "target": [{"id": "معدن مغناطيسي", "description": "معدن مغناطيسي"}, {"id": "نافذة شفافة", "description": "نافذة شفافة"}, {"id": "مادة قابلة للذوبان في الماء", "description": "مادة قابلة للذوبان في الماء"}]}
         }
       ]
     },
