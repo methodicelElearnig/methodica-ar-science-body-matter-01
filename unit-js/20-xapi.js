@@ -159,14 +159,42 @@ function _xapiCloseItem(item) {
   try { sendCompletedOnce('doneItems', itemLedgerKey(item), 'question', xapiItemResult(item), { objectId: xapiItemId(item), expectsAnswer: _xapiIsEval(item) }); } catch (e) {}
 }
 
+/* ── B-2 (monday 13454123722, 2026-11-12): Back never closes an item ──
+   The item closes only on a FORWARD move. A move is backward when the target screen ranks lower than the
+   screen being left. A Back from a half-answered item used to send its 'completed' with the failed result
+   at that moment, and the ledger then swallowed the real one after the learner came back and answered.
+   The forward button is blocked until a question is finished, so the first forward close carries the final
+   result. Rank: a numeric id is its number; a string id is its index in SCREEN_ORDER when the unit has one,
+   else in SCREEN_TO_SUBCONTENT's key order. Screens in a part's XAPI_HUB_SCREENS are never backward — in
+   part 01 the first reading screen, which the video screen's path toggle jumps back to: a path switch still
+   closes the item it leaves. The item comparison is the fallback for the first call. */
+var _xapiLastScreen = null;
+function _xapiScreenRank(s) {
+  if (s == null) return null;
+  if (typeof s === 'number' || /^\d+$/.test(String(s))) return Number(s);
+  var order = (typeof SCREEN_ORDER !== 'undefined' && Array.isArray(SCREEN_ORDER)) ? SCREEN_ORDER
+    : (typeof SCREEN_TO_SUBCONTENT !== 'undefined' && SCREEN_TO_SUBCONTENT) ? Object.keys(SCREEN_TO_SUBCONTENT) : [];
+  var i = order.indexOf(s);
+  return i < 0 ? null : i;
+}
+function _xapiIsBackward(fromItem, toItem, toScreen, fromScreen) {
+  if (typeof XAPI_HUB_SCREENS !== 'undefined' && XAPI_HUB_SCREENS && XAPI_HUB_SCREENS[toScreen]) return false;
+  var a = _xapiScreenRank(fromScreen), b = _xapiScreenRank(toScreen);
+  if (a != null && b != null) return b < a;
+  return !!(fromItem && toItem && Number(toItem) < Number(fromItem));
+}
+
 /* זוגות initialized/completed ברמת הפריט, מונעים מ-goTo(). דפדוף בתוך אותו
-   פריט לא משדר כלום; הפריט נסגר כשהלומד נכנס למסך ששייך לפריט אחר. */
+   פריט לא משדר כלום; הפריט נסגר כשהלומד נכנס קדימה למסך ששייך לפריט אחר
+   (חזרה אחורה לא סוגרת — B-2 למעלה). */
 function xapiOnScreen(screen) {
+  var fromScreen = _xapiLastScreen;
+  _xapiLastScreen = screen;
   if (!window.XAPI_USING_G || typeof sendStatement720 !== 'function') return;
   var map = (typeof SCREEN_TO_SUBCONTENT !== 'undefined') ? SCREEN_TO_SUBCONTENT[screen] : null;
   var item = map ? map[0] : null;
   if (item === xapiCurrentItem) return;
-  if (xapiCurrentItem) _xapiCloseItem(xapiCurrentItem);
+  if (xapiCurrentItem && !_xapiIsBackward(xapiCurrentItem, item, screen, fromScreen)) _xapiCloseItem(xapiCurrentItem);
   xapiCurrentItem = item;
   if (item) {
     try { sendStatement720('initialized', 'question', null, { objectId: xapiItemId(item), isEvaluationItem: _xapiIsEval(item) }); } catch (e) {}
@@ -473,18 +501,19 @@ function xapiRequestedHint(item, qKey) {
 /* The learning-path choice — MOE v2.7 'selected', category learning-type (2026-11-02, monday.com 28.10.26:
    the choice was never reported). object = the component; result.response = the mediaFormat of the
    chosen path's item, from the part's XAPI_LEARNING_PATHS (agreed deviation from v2.7's contentType,
-   which cannot tell video from reading). Once per distinct path through the 'picks' ledger: re-picking
-   the same path, a resume or a reload stay silent; switching path reports again. Silent while a
-   painter runs, and behind the XAPI_USING_G guard so the ledger never records a statement that never
-   left. Guide: ADDING-REPORTING-AND-RESUME.md §6.3a. */
+   which cannot tell video from reading). EVERY confirmed choice and every path switch reports
+   (2026-11-12, monday 13451706244; as mass-weight-01 since 04.11): with the old once-per-path 'picks'
+   ledger, video -> read -> video sent two statements and the platform could not tell which path the
+   learner ended on. Only the actions that call this report — בחרתי on the choice screen and a switch on
+   the path toggle; a card click does not, and the active tab is disabled. Silent while a painter runs
+   (a resume or a reload is not a choice) and behind the XAPI_USING_G guard.
+   Guide: ADDING-REPORTING-AND-RESUME.md §6.3a. */
 function xapiSelectedLearningType(path) {
   var p = (typeof XAPI_LEARNING_PATHS !== 'undefined') && XAPI_LEARNING_PATHS[path];
   if (!p || (typeof resumeIsPainting === 'function' && resumeIsPainting())) return;
   if (!window.XAPI_USING_G || typeof sendStatement720 !== 'function') return;
-  var res = { response: p.mediaFormat }, opts = { category: 'learning-type' };
   try {
-    if (typeof sendStatementOnce === 'function') sendStatementOnce('picks', 'learning-type/' + path, 'selected', 'onlinelesson', res, opts);
-    else sendStatement720('selected', 'onlinelesson', res, opts);
+    sendStatement720('selected', 'onlinelesson', { response: p.mediaFormat }, { category: 'learning-type' });
   } catch (e) { console.error('[xAPI] selected learning-type', e); }
 }
 

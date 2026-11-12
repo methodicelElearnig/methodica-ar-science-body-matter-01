@@ -2237,6 +2237,9 @@ var XAPI_EVAL_ITEMS = { '005': 1, '007': 1, '010': 1, '011': 1 };   /* items who
 /* The s3 learning-path choice ('selected', learning-type — unit-js/20-xapi.js xapiSelectedLearningType):
    s3SelectedPath -> the path's first item and its catalogue mediaFormat (the statement's response). */
 var XAPI_LEARNING_PATHS = { video: { item: '003', mediaFormat: 'video' }, read: { item: '004', mediaFormat: 'text' } };
+/* B-2 hub (20-xapi.js _xapiIsBackward, 2026-11-12): screen 4, the first reading screen. The video screen's
+   toggle (rvGoToRead, 10 -> 4) is a lower screen but a path switch, not a Back: it still closes 003. */
+var XAPI_HUB_SCREENS = { 4: 1 };
 var XAPI_METADATA_FILE = '../metadata/methodica-ar-science-body-matter-01-01.json';
 var XAPI_END_BTN = 'dqx20-check';                               /* the part's last button (D-8, restoreEndedButton) */
 
