@@ -338,6 +338,42 @@ if (JSDOM) for (const c of COMPONENTS) {
   ok(c, 'flow: unanswered evaluated items are never closed (B-1), ungraded ones are', closes.every((it) => !evalItems.includes(it)) &&
      expectedItems.filter(Boolean).slice(0, -1).filter((it) => !evalItems.includes(it)).every((it) => closes.includes(it)), closes.join(','));
   ok(c, 'flow: initialized carries isEvaluationItem for graded items', sent.filter((s) => s.verb === 'initialized' && s.ctx && s.ctx.objectId).every((s) => s.ctx.isEvaluationItem === evalItems.includes(s.ctx.objectId.replace(/\/$/, '').slice(-3))));
+  /* B-2 (monday 13454123722, 2026-11-12): a wrong answer, then Back, sends nothing for the item; coming
+     back and answering right, then moving forward, sends exactly one completed — with the final result */
+  {
+    const suffixOf = (id) => id.replace(/\/$/, '').slice(-3);
+    const itemOf = (n) => cfg.SCREEN_TO_SUBCONTENT[n] ? cfg.SCREEN_TO_SUBCONTENT[n][0] : null;
+    const iE = screens.findIndex((n, i) => i > 0 && evalItems.includes(itemOf(n)) && itemOf(screens[i - 1]) !== itemOf(n) &&
+      screens.slice(i + 1).some((m) => itemOf(m) !== itemOf(n)));
+    if (iE > 0) {
+      const E = itemOf(screens[iE]);
+      const after = screens.slice(iE + 1).find((m) => itemOf(m) !== E);
+      const rb = loadPart(c); const wb = rb.w; const sb = [];
+      wb.METADATA = META[c]; wb.XAPI_USING_G = true; wb.xapiItemAnswered = {}; wb.xapiCompletedObjects = {};
+      wb.sendStatement720 = (verb, type, result, ctx) => sb.push({ verb, result: result || null, ctx: ctx || null });
+      let db = null;
+      wb.loadState720 = () => db; wb.saveState720 = (id, o) => { db = JSON.parse(JSON.stringify(o)); return true; };
+      wb.saveState720Debounced = (id, o) => { db = JSON.parse(JSON.stringify(o)); };
+      wb.readUnitState(); wb._resumeReady = true;
+      wb.xapiOnScreen(wb.eval('currentScreen'));
+      for (const n of screens.slice(1, iE + 1)) wb.goTo(n);
+      const it = (META[c].subContent || []).find((s) => suffixOf(s.id) === E);
+      const qs = ((it && it.questions) || []).filter((q) => q.correctAnswers && q.correctAnswers.length).map((q) => E + '/' + q.questionId.split('/').pop());
+      const setAll = (v) => { for (const k of qs) wb.XAPI_Q_RESULTS[k] = v; wb.xapiItemAnswered[wb.xapiItemId(E)] = true; };
+      const closesOf = () => sb.filter((s) => s.verb === 'completed' && s.ctx && s.ctx.objectId && suffixOf(s.ctx.objectId) === E);
+      setAll(false);
+      wb.goTo(screens[iE - 1], true);
+      ok(c, 'B-2: Back from answered item ' + E + ' (wrong) sends no completed', closesOf().length === 0, JSON.stringify(closesOf()));
+      wb.goTo(screens[iE]);
+      setAll(true);
+      wb.goTo(after);
+      const cl = closesOf();
+      ok(c, 'B-2: the forward move out of ' + E + ' sends exactly one completed', cl.length === 1, cl.length);
+      /* this unit sets no XAPI_ITEM_RESULT: an item completed carries no result (Kata scores from the answered) */
+      ok(c, 'B-2: that completed carries the item result of the moment it closes', !!cl[0] && JSON.stringify(cl[0].result) === JSON.stringify(wb.xapiItemResult(E)), JSON.stringify(cl[0] && cl[0].result));
+      ok(c, 'B-2: no console.error', rb.errors.length === 0, rb.errors.slice(0, 2).join(' | '));
+    }
+  }
   /* the last click: one component completed, explicit success, button disabled, no navigation */
   const hrefBefore = w.location.href;
   const btn = w.document.getElementById(cfg.XAPI_END_BTN);
@@ -362,7 +398,9 @@ if (JSDOM) for (const c of COMPONENTS) {
 
   /* 4b' — the s3 learning-path choice (monday.com 28.10.26, guide §6.3a): 'selected', category
      learning-type, object = the component, response = the chosen path item's catalogue mediaFormat;
-     once per distinct path, on the confirmed choice and the toggles; silent while a restore paints. */
+     on EVERY confirmed choice and every toggle switch (2026-11-12, monday 13451706244 — was once per
+     distinct path); the switch to reading (10 -> 4, a hub) closes the video item 003; silent while a
+     restore paints. */
   if (c === '01') {
     const paths = r.w.eval('XAPI_LEARNING_PATHS');
     const sub = Object.fromEntries((META[c].subContent || []).map((s) => [s.id.replace(/\/$/, '').slice(-3), s]));
@@ -375,15 +413,20 @@ if (JSDOM) for (const c of COMPONENTS) {
     w6.METADATA = META[c]; w6.XAPI_USING_G = true; let doc6 = null;
     w6.loadState720 = () => doc6; w6.saveState720 = (id, o) => { doc6 = JSON.parse(JSON.stringify(o)); return true; };
     w6.saveState720Debounced = (id, o) => { doc6 = JSON.parse(JSON.stringify(o)); };
-    w6.sendStatement720 = function (verb, type, result, ctx) { if (verb === 'selected') sel.push({ type, result, ctx }); };
+    const done6 = [];
+    w6.xapiItemAnswered = {}; w6.xapiCompletedObjects = {};
+    w6.sendStatement720 = function (verb, type, result, ctx) {
+      if (verb === 'selected') sel.push({ type, result, ctx });
+      if (verb === 'completed' && ctx && ctx.objectId) done6.push(ctx.objectId.replace(/\/$/, '').slice(-3));
+    };
     w6.readUnitState(); w6._resumeReady = true;
     const card = (v) => w6.document.querySelector('#s3 .option-card[data-value="' + v + '"]');
     w6.goTo(3); w6.s3SelectPath(card('read')); w6.s3SelectPath(card('video'));
     const onClick = sel.length;
     w6.advanceFromS3(); const first = sel.slice(); const landed = w6.eval('currentScreen');
-    w6.goTo(3); w6.s3SelectPath(card('video')); w6.advanceFromS3(); const repick = sel.length;
-    w6.rvGoToRead(); const toRead = sel.slice(1); const readScreen = w6.eval('currentScreen');
-    w6.rvGoToVideo(); const back = sel.length;
+    w6.goTo(3); w6.s3SelectPath(card('video')); w6.advanceFromS3(); const repick = sel.slice(1);
+    w6.rvGoToRead(); const toRead = sel.slice(2); const readScreen = w6.eval('currentScreen'); const closed003 = done6.includes('003');
+    w6.rvGoToVideo(); const back = sel.slice(3);
     w6._unitState = w6.emptyUnitState(); sel.length = 0;
     w6._restoring = true; w6.goTo(3); w6.advanceFromS3(); w6._restoring = false; const restoring = sel.length;
     const one = (l, f) => l.length === 1 && l[0].type === 'onlinelesson' && l[0].ctx && l[0].ctx.category === 'learning-type'
@@ -391,10 +434,12 @@ if (JSDOM) for (const c of COMPONENTS) {
     ok(c, 'choice: a card click sends nothing (only the confirmed choice reports)', onClick === 0, String(onClick));
     ok(c, 'choice: the s3 continue on video sends one selected — learning-type, component object, response "' + paths.video.mediaFormat + '"',
        one(first, paths.video.mediaFormat) && landed === 10, JSON.stringify(first) + ' landed ' + landed);
-    ok(c, 'choice: re-picking the same path sends nothing', repick === 1, String(repick));
+    ok(c, 'choice: confirming the same path again reports again (every confirmed choice)', one(repick, paths.video.mediaFormat), JSON.stringify(repick));
     ok(c, 'choice: switching to reading from the toggle sends one selected, response "' + paths.read.mediaFormat + '"',
        one(toRead, paths.read.mediaFormat) && readScreen === 4, JSON.stringify(toRead));
-    ok(c, 'choice: switching back to an already-reported path sends nothing', back === 2, String(back));
+    ok(c, 'choice: the switch to reading (10 -> 4, B-2 hub) closes the video item 003', closed003, done6.join(','));
+    ok(c, 'choice: switching back to an already-reported path reports again, response "' + paths.video.mediaFormat + '"',
+       one(back, paths.video.mediaFormat), JSON.stringify(back));
     ok(c, 'choice: nothing is sent while a restore paints', restoring === 0, String(restoring));
     ok(c, 'choice: no console.error', r6.errors.length === 0, r6.errors.slice(0, 2).join(' | '));
   }
