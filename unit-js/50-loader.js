@@ -81,10 +81,16 @@ function bootXAPI() {
      ‎-j נשאר ללא שינוי ב-CDN, כך שהיחידות האחרות שטוענות אותו אינן מושפעות.
 
      ב-localhost בלבד, ?xapiLib=<נתיב same-origin> יכול לעקוף לבדיקת בילד מקומי
-     — כך נבדק ה-resume מול _test/xapi-720-k.js בלי LRS אמיתי.
+     — כך נבדק ה-resume מול _test/xapi-720-l.js בלי LRS אמיתי.
+
+     -l (2026-11-05, from methodica-math-percent-03 8b63a4f) is -k plus one additive function,
+     saveState720OnLeave: the leave save that still reaches Kata when Chrome refuses the synchronous
+     PUT during page dismissal (keepalive fallback). -k is untouched on the CDN. 40-resume.js
+     typeof-guards the new function, so the unit still runs on -k (rollback = this letter, the
+     regex and the preload links).
 
      ⚠️ שם הקובץ של ה-stub חייב להסתיים באות ספרייה שה-regex למטה מכיר
-     (xapi-720-k.js): ה-regex הוא מה שקובע את XAPI_USING_G, ושם שלא תואם משתיק
+     (xapi-720-l.js): ה-regex הוא מה שקובע את XAPI_USING_G, ושם שלא תואם משתיק
      את כל ה-statements ברמת הפריט בלי שום שגיאה.
 
      ⚠️ window.XAPI_USING_G אומר לסינים אם statements ברמת פריט זמינים בכלל.
@@ -92,14 +98,14 @@ function bootXAPI() {
      משתיקה את xapiOnScreen ואת דיווח הווידאו בלי שום שגיאה.** לכן שינוי
      ה-LIB720 ושינוי ה-regex חייבים לקרות באותו commit; זה הכשל השקט של המעבר
      בין אותיות. */
-  var LIB720 = CDN + (RESUME_ENABLED ? 'xapi-720-k.js' : 'xapi-720-i.js');
+  var LIB720 = CDN + (RESUME_ENABLED ? 'xapi-720-l.js' : 'xapi-720-i.js');
   try {
     if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
       var _ovr = new URLSearchParams(location.search).get('xapiLib');
       if (_ovr && /^(\.\.?\/|\/)[^:]*$/.test(_ovr)) LIB720 = _ovr;   // same-origin יחסי בלבד
     }
   } catch (e) {}
-  window.XAPI_USING_G = /xapi-720-[ghijk]\.js/.test(LIB720);
+  window.XAPI_USING_G = /xapi-720-[ghijkl]\.js/.test(LIB720);
 
   loadScript(CDN + 'xapiwrapper.min.js', function () {
     loadScript(LIB720, function () {
@@ -156,7 +162,10 @@ function bootXAPI() {
                dropBootCover מכבה גם את __resumeInFlight שהודלק בראש
                bootXAPI, ולכן רשת הביטחון חוזרת להתנהגות ה-800ms הרגילה.
                ויש payload → הדגל נשאר דלוק, והכיסוי מוחזק עד שלב ב'. */
-            if (!_payload) dropBootCover();
+            /* …unless the read FAILED (401/5xx/network — 40-resume.js sets
+               _resumeReadFailed): then "no payload" means nothing yet. Keep the cover
+               for the retry in stage B; the markup's net caps it at 6 s. (2026-11-03) */
+            if (!_payload && !_resumeReadFailed) dropBootCover();
           } catch (e) {
             console.error('[resume] read', e);
             dropBootCover();
@@ -215,10 +224,35 @@ function bootXAPI() {
                    _resumeReady נדלק רק כאן, ולא בשלב א': הוא השער של כל
                    נתיבי הכתיבה, וכתיבה שנפתחת לפני השחזור דורסת את
                    doc.payload ב-payload טרי. */
+                /* A read that failed in stage A (not a 404) gets ONE retry here, a
+                   few seconds later. If it fails again, this session never opens the
+                   writes: the document on Kata is left exactly as it was, statements
+                   still go out, and the ledger reads empty (fail-open — a duplicate
+                   'completed' is possible, which is the lesser evil). Two guards on a
+                   successful retry: a card picked meanwhile (_pendingProfile) beats the
+                   document's character, so no adoption; and resetScreenState is only
+                   safe on screen 0 — on any other screen it is the generic enter hook
+                   and would wipe in-progress UI. (2026-11-03, B3) */
+                if (_resumeReadFailed) {
+                  _saved = readUnitState();
+                  if (_resumeReadFailed) {
+                    console.error('[resume] state read failed twice — saving is OFF for this session; progress on Kata is preserved',
+                      typeof window.stateLastResult720 === 'function' ? window.stateLastResult720() : null);
+                  } else {
+                    if (!_pendingProfile && adoptUnitCharacter(_saved) && currentScreen === 0) {
+                      try { resetScreenState(0); } catch (e) {}
+                    }
+                    _payload = _saved.payload;
+                  }
+                }
+                if (!_resumeReadFailed) {
                 _resumeReady = true;
                 if (!_unitState) _unitState = emptyUnitState();
                 /* בחירה שנעשתה בחלון שבין השלבים ממתינה בתור. מנוקזת **לפני**
-                   השחזור, כי היא חדשה יותר ממה שכתוב במסמך ולכן מנצחת אותו. */
+                   השחזור, כי היא חדשה יותר ממה שכתוב במסמך ולכן מנצחת אותו.
+                   The drain writes the document AS READ (payload untouched) — a live
+                   capture here would replace the saved payload before
+                   applyExecutionState runs (2026-11-03). */
                 drainPendingUnitState();
                 /* ה-hash מנצח את המסמך בבחירת **המסך** — '#screen=N' מגיע
                    מלחיצה על "חזרה", כלומר מכוונה מפורשת של הלומד עכשיו, בעוד
@@ -240,9 +274,10 @@ function bootXAPI() {
                   applyExecutionState(_payload, _hm ? parseInt(_hm[1], 10) : undefined);
                   _resumed = true;
                 }
+                }   /* if (!_resumeReadFailed) */
               } catch (e) {
                 console.error('[resume] init', e);
-                _resumeReady = true;
+                _resumeReady = !_resumeReadFailed;
                 if (!_unitState) _unitState = emptyUnitState();
               }
             }
@@ -262,6 +297,14 @@ function bootXAPI() {
                שפותחת את הפריט של המסך הראשון.
                ב-resume, applyExecutionState כבר שלח אותו בעצמו. */
             if (!_resumed) { try { xapiOnScreen(currentScreen); } catch (e) {} }
+
+            /* Nothing restored, but the learner may have moved past the landing
+               screen while the stages were still loading (the drain no longer
+               captures the live page, and markSent no longer persists before
+               _resumeReady). One debounced save — gated on _resumeReady inside, so
+               inert after a failed read — carries that screen and any ledger key
+               marked in memory. Saved LAST, after xapiOnScreen, as goTo does. (B5) */
+            if (!_resumed && currentScreen !== 0) { try { scheduleResumeSave(); } catch (e) {} }
             if (typeof onXapiReady === 'function') {
               try { onXapiReady(); } catch (e) { console.error('[xAPI] ready hook', e); }
             }

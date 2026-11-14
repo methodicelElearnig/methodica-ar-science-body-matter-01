@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>وحدة تعليمية 720 | الهدف 11 | وحدة 4</title>
+<!-- The shared xAPI library is fetched by unit-js/50-loader.js at the END of the body, i.e. after
+     the parser has already queued every image below; measured live (mass-measure-01), its request
+     did not go out until the last image had finished, which put the resume restore 20-45 s behind
+     a slow line (2026-11-03). Preloading it from the head puts it FIRST in the queue. The href must
+     equal what 50-loader.js builds (no ?v=, no crossorigin) or the browser fetches it twice;
+     the library letter here changes together with LIB720 there (the harness asserts it). -->
+<link rel="preload" as="script" fetchpriority="high" href="https://lomdot.education.gov.il/metodica/720active/common/xapiwrapper.min.js">
+<link rel="preload" as="script" fetchpriority="high" href="https://lomdot.education.gov.il/metodica/720active/common/xapi-720-l.js">
+<link rel="preconnect" href="https://kata.cet.ac.il">
 <link rel="stylesheet" href="styles.css?v=20261103b">
 <link rel="stylesheet" href="../unit-css/25-report.css?v=20261019">
 </head>
@@ -18,6 +27,12 @@
 <div id="boot-cover" style="position:fixed;inset:0;z-index:9999;background:#fff"></div>
 <script>
 (function () {
+  /* A Kata launch (registration in the query) may have a document to restore: raise the
+     flag HERE, before any script is fetched. bootXAPI raises it too, but it runs from the
+     last script tag, and on a cold cache those scripts arrive after the cover's ceiling — so
+     the cover used to drop before the flag existed, exposing screen 0 for the whole wait
+     (2026-11-03). Without a registration (local, dev) the behaviour is unchanged. */
+  if (/[?&]registration=/.test(location.search)) window.__resumeInFlight = true;
   var t0 = Date.now();
   function tick() {
     var c = document.getElementById('boot-cover');
@@ -214,8 +229,8 @@
 <script src="../unit-js/20-xapi.js?v=20261112"></script>
 <script src="../unit-js/25-report.js?v=20261019"></script>
 <script src="../unit-js/30-pointer-dnd.js?v=20261103"></script>
-<script src="../unit-js/40-resume.js?v=20261019"></script>
-<script src="../unit-js/50-loader.js?v=20261019"></script>
+<script src="../unit-js/40-resume.js?v=20261114"></script>
+<script src="../unit-js/50-loader.js?v=20261114"></script>
 <script src="script.js?v=20261112"></script>
 <script src="../unit-js/90-boot.js?v=20261019"></script>
 </body>

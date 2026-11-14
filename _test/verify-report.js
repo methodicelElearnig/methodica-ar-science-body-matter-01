@@ -82,9 +82,16 @@ ok('identity', 'RESULT_KEYS lists the part-06 verdict key', /var RESULT_KEYS = \
 const loader = read(path.join(BASE, 'unit-js', '50-loader.js'));
 const lib = (/\(RESUME_ENABLED \? 'xapi-720-(\w)\.js' : 'xapi-720-(\w)\.js'\)/.exec(loader) || []);
 const gate = (/xapi-720-\[([a-z]+)\]\\\.js/.exec(loader) || [])[1] || '';
-ok('loader', 'library letter is k with resume (i without)', lib[1] === 'k' && lib[2] === 'i', lib.join('/'));
-ok('loader', 'the loaded letters are inside the XAPI_USING_G gate', gate.includes('k') && gate.includes('i'), gate);
-ok('loader', 'the stub carries a gated letter', /xapi-720-[ghijk]\.js$/.test('_test/xapi-720-k.js'));
+ok('loader', 'library letter is l with resume (i without) — leave save, 14.11.26', lib[1] === 'l' && lib[2] === 'i', lib.join('/'));
+ok('loader', 'the loaded letters are inside the XAPI_USING_G gate', gate.includes('l') && gate.includes('i'), gate);
+ok('loader', 'the stub carries a gated letter', /xapi-720-[ghijkl]\.js$/.test('_test/xapi-720-l.js') && fs.existsSync(path.join(REPO, '_test', 'xapi-720-l.js')));
+/* Hardening C1/C2 (14.11.26): every part raises __resumeInFlight inline on a registration= launch, and
+   preloads exactly the URLs 50-loader.js builds (the library letter moves with LIB720). */
+for (const p of COMPONENTS) {
+  const h = indexHtml(p);
+  ok('loader', p + ': inline __resumeInFlight on registration=', /if \(\/\[\?&\]registration=\/\.test\(location\.search\)\) window\.__resumeInFlight = true;/.test(h));
+  ok('loader', p + ': preload of xapiwrapper + xapi-720-' + lib[1] + ' + Kata preconnect', h.includes('href="https://lomdot.education.gov.il/metodica/720active/common/xapiwrapper.min.js"') && h.includes('href="https://lomdot.education.gov.il/metodica/720active/common/xapi-720-' + lib[1] + '.js"') && h.includes('<link rel="preconnect" href="https://kata.cet.ac.il">'));
+}
 
 /* Kata, read 10.11.26 (retrieve-metadata.ps1 -OutDir <scratch>, read only): correctXapiResponsesPattern per question. */
 const KATA = {

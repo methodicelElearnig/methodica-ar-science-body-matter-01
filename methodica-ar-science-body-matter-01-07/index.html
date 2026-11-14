@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>وحدة تعليمية 720 | الهدف 11 | وحدة 7</title>
+<!-- The shared xAPI library is fetched by unit-js/50-loader.js at the END of the body, i.e. after
+     the parser has already queued every image below; measured live (mass-measure-01), its request
+     did not go out until the last image had finished, which put the resume restore 20-45 s behind
+     a slow line (2026-11-03). Preloading it from the head puts it FIRST in the queue. The href must
+     equal what 50-loader.js builds (no ?v=, no crossorigin) or the browser fetches it twice;
+     the library letter here changes together with LIB720 there (the harness asserts it). -->
+<link rel="preload" as="script" fetchpriority="high" href="https://lomdot.education.gov.il/metodica/720active/common/xapiwrapper.min.js">
+<link rel="preload" as="script" fetchpriority="high" href="https://lomdot.education.gov.il/metodica/720active/common/xapi-720-l.js">
+<link rel="preconnect" href="https://kata.cet.ac.il">
 <link rel="stylesheet" href="styles.css?v=20261103b">
 <link rel="stylesheet" href="../unit-css/25-report.css?v=20261019">
 </head>
@@ -18,6 +27,12 @@
 <div id="boot-cover" style="position:fixed;inset:0;z-index:9999;background:#fff"></div>
 <script>
 (function () {
+  /* A Kata launch (registration in the query) may have a document to restore: raise the
+     flag HERE, before any script is fetched. bootXAPI raises it too, but it runs from the
+     last script tag, and on a cold cache those scripts arrive after the cover's ceiling — so
+     the cover used to drop before the flag existed, exposing screen 0 for the whole wait
+     (2026-11-03). Without a registration (local, dev) the behaviour is unchanged. */
+  if (/[?&]registration=/.test(location.search)) window.__resumeInFlight = true;
   var t0 = Date.now();
   function tick() {
     var c = document.getElementById('boot-cover');
@@ -131,7 +146,7 @@
                 data-zoom-src="assets/images/three-powders.png" data-zoom-alt="ثلاثة مساحيق بيضاء في صحون زجاجية، مع نتائج الفحوصات">
           <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
         </button>
-        <img id="s1-img" src="assets/images/three-powders.png" alt="ثلاثة مساحيق بيضاء في صحون زجاجية، مع نتائج الفحوصات"></div></div>
+        <img loading="lazy" id="s1-img" src="assets/images/three-powders.png" alt="ثلاثة مساحيق بيضاء في صحون زجاجية، مع نتائج الفحوصات"></div></div>
     </div>
 
     <div id="s1-popup" class="scq-fb-box">
@@ -219,7 +234,7 @@
                 data-zoom-src="assets/images/three-powders.png" data-zoom-alt="ثلاثة مساحيق بيضاء في صحون زجاجية، مع نتائج الفحوصات">
           <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
         </button>
-        <img id="s2-img" src="assets/images/three-powders.png" alt="ثلاثة مساحيق بيضاء في صحون زجاجية، مع نتائج الفحوصات"></div></div>
+        <img loading="lazy" id="s2-img" src="assets/images/three-powders.png" alt="ثلاثة مساحيق بيضاء في صحون زجاجية، مع نتائج الفحوصات"></div></div>
     </div>
 
     <div id="s2-popup" class="scq-fb-box">
@@ -322,7 +337,7 @@
                 data-zoom-src="assets/images/magnet-and-water-test.png" data-zoom-alt="مغناطيس مقرّب من مسحوق في صحن، وكوب ماء مع خلّاط وميزان">
           <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
         </button>
-        <img id="s3-img" src="assets/images/magnet-and-water-test.png" alt="مغناطيس مقرّب من مسحوق في صحن، وكوب ماء مع خلّاط وميزان"></div></div>
+        <img loading="lazy" id="s3-img" src="assets/images/magnet-and-water-test.png" alt="مغناطيس مقرّب من مسحوق في صحن، وكوب ماء مع خلّاط وميزان"></div></div>
     </div>
 
     <div id="s3-popup" class="scq-fb-box">
@@ -431,7 +446,7 @@
                 data-zoom-src="assets/images/spoon-powder-in-water.png" data-zoom-alt="ملعقة صغيرة تحتوي على مسحوق أبيض تسكب في كوب ماء">
           <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
         </button>
-        <img id="s4-img" src="assets/images/spoon-powder-in-water.png" alt="ملعقة صغيرة تحتوي على مسحوق أبيض تسكب في كوب ماء"></div></div>
+        <img loading="lazy" id="s4-img" src="assets/images/spoon-powder-in-water.png" alt="ملعقة صغيرة تحتوي على مسحوق أبيض تسكب في كوب ماء"></div></div>
     </div>
 
     <div id="s4-popup" class="scq-fb-box">
@@ -569,8 +584,8 @@
 <script src="../unit-js/20-xapi.js?v=20261112"></script>
 <script src="../unit-js/25-report.js?v=20261019"></script>
 <script src="../unit-js/30-pointer-dnd.js?v=20261103"></script>
-<script src="../unit-js/40-resume.js?v=20261019"></script>
-<script src="../unit-js/50-loader.js?v=20261019"></script>
+<script src="../unit-js/40-resume.js?v=20261114"></script>
+<script src="../unit-js/50-loader.js?v=20261114"></script>
 <script src="script.js?v=20261112"></script>
 <script src="../unit-js/90-boot.js?v=20261019"></script>
 </body>
