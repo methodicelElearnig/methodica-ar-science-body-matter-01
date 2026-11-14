@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>وحدة تعليمية 720 | الهدف 11 | وحدة 1</title>
+<!-- The shared xAPI library is fetched by unit-js/50-loader.js at the END of the body, i.e. after
+     the parser has already queued every image below; measured live (mass-measure-01), its request
+     did not go out until the last image had finished, which put the resume restore 20-45 s behind
+     a slow line (2026-11-03). Preloading it from the head puts it FIRST in the queue. The href must
+     equal what 50-loader.js builds (no ?v=, no crossorigin) or the browser fetches it twice;
+     the library letter here changes together with LIB720 there (the harness asserts it). -->
+<link rel="preload" as="script" fetchpriority="high" href="https://lomdot.education.gov.il/metodica/720active/common/xapiwrapper.min.js">
+<link rel="preload" as="script" fetchpriority="high" href="https://lomdot.education.gov.il/metodica/720active/common/xapi-720-l.js">
+<link rel="preconnect" href="https://kata.cet.ac.il">
 <link rel="stylesheet" href="styles.css?v=20261103b">
 <link rel="stylesheet" href="../unit-css/25-report.css?v=20261019">
 </head>
@@ -18,6 +27,12 @@
 <div id="boot-cover" style="position:fixed;inset:0;z-index:9999;background:#fff"></div>
 <script>
 (function () {
+  /* A Kata launch (registration in the query) may have a document to restore: raise the
+     flag HERE, before any script is fetched. bootXAPI raises it too, but it runs from the
+     last script tag, and on a cold cache those scripts arrive after the cover's ceiling — so
+     the cover used to drop before the flag existed, exposing screen 0 for the whole wait
+     (2026-11-03). Without a registration (local, dev) the behaviour is unchanged. */
+  if (/[?&]registration=/.test(location.search)) window.__resumeInFlight = true;
   var t0 = Date.now();
   function tick() {
     var c = document.getElementById('boot-cover');
@@ -171,7 +186,7 @@
            נכון" (s1StartImageLoop, script.js). ללא כפתור הגדלה (הוסר
            לפי בקשה — התמונה בלולאה בלבד, בלי zoom). -->
       <div class="scq-img"><div class="scq-img-inner">
-        <img id="scq-img" src="assets/images/hook-cartoon-chair.png" alt="كرسي مصنوع من الكرتون">
+        <img loading="lazy" id="scq-img" src="assets/images/hook-cartoon-chair.png" alt="كرسي مصنوع من الكرتون">
       </div></div>
     </div>
 
@@ -250,7 +265,7 @@
              onkeydown="handleS3CardKey(event, this)">
           <div class="option-card-frame">
             <div class="option-card-img">
-              <img id="s3-video-img" alt="مشاهدة فيديو قصير" draggable="false">
+              <img loading="lazy" id="s3-video-img" alt="مشاهدة فيديو قصير" draggable="false">
             </div>
           </div>
           <p class="option-card-label">مشاهدة فيديو قصير</p>
@@ -265,7 +280,7 @@
              onkeydown="handleS3CardKey(event, this)">
           <div class="option-card-frame">
             <div class="option-card-img">
-              <img id="s3-read-img" alt="أقرأ بنفسي" draggable="false">
+              <img loading="lazy" id="s3-read-img" alt="أقرأ بنفسي" draggable="false">
             </div>
           </div>
           <p class="option-card-label">أقرأ بنفسي</p>
@@ -315,7 +330,7 @@
              onkeydown="s4CardKey(event, 'flip-card-chair')">
           <div class="flip-card-inner">
             <div class="flip-card-face flip-card-front">
-              <img src="assets/images/chair.png" alt="كرسي" class="flip-card-img">
+              <img loading="lazy" src="assets/images/chair.png" alt="كرسي" class="flip-card-img">
             </div>
             <div class="flip-card-face flip-card-back">
               <p>الكرسي هو جسم.<br/>
@@ -336,7 +351,7 @@
              onkeydown="s4CardKey(event, 'flip-card-wood')">
           <div class="flip-card-inner">
             <div class="flip-card-face flip-card-front">
-              <img src="assets/images/wood-log.png" alt="جذع خشب" class="flip-card-img">
+              <img loading="lazy" src="assets/images/wood-log.png" alt="جذع خشب" class="flip-card-img">
             </div>
             <div class="flip-card-face flip-card-back">
               <p>الخشب هو مادة.<br/>
@@ -406,19 +421,19 @@
 
       <div class="tcl-cards">
         <div class="tcl-card">
-          <div class="tcl-card-img"><img src="assets/images/chair-wood.png" alt="كرسي خشبي"></div>
+          <div class="tcl-card-img"><img loading="lazy" src="assets/images/chair-wood.png" alt="كرسي خشبي"></div>
           <div class="tcl-card-label">
             <p class="tcl-card-name">كرسي خشبي</p>
           </div>
         </div>
         <div class="tcl-card">
-          <div class="tcl-card-img"><img src="assets/images/chair-plastic.png" alt="كرسي بلاستيكي"></div>
+          <div class="tcl-card-img"><img loading="lazy" src="assets/images/chair-plastic.png" alt="كرسي بلاستيكي"></div>
           <div class="tcl-card-label">
             <p class="tcl-card-name">كرسي بلاستيكي</p>
           </div>
         </div>
         <div class="tcl-card">
-          <div class="tcl-card-img"><img src="assets/images/chair-iron.png" alt="كرسي من الحديد"></div>
+          <div class="tcl-card-img"><img loading="lazy" src="assets/images/chair-iron.png" alt="كرسي من الحديد"></div>
           <div class="tcl-card-label">
             <p class="tcl-card-name">كرسي من الحديد</p>
           </div>
@@ -557,11 +572,11 @@
 
       <div class="wire-cards-row">
         <div class="wire-card">
-          <div class="wire-card-img"><img src="assets/images/wire-a.png" alt="سلك نحاسي أ"></div>
+          <div class="wire-card-img"><img loading="lazy" src="assets/images/wire-a.png" alt="سلك نحاسي أ"></div>
           <p class="wire-card-label">سلك نحاسي أ</p>
         </div>
         <div class="wire-card">
-          <div class="wire-card-img"><img src="assets/images/wire-b.png" alt="سلك نحاسي ب"></div>
+          <div class="wire-card-img"><img loading="lazy" src="assets/images/wire-b.png" alt="سلك نحاسي ب"></div>
           <p class="wire-card-label">سلك نحاسي ب</p>
         </div>
       </div>
@@ -670,7 +685,7 @@
                 data-zoom-src="assets/images/boy-holding-copper-wire.png" data-zoom-alt="طفل يمسك سلكًا نحاسيًا">
           <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
         </button>
-        <img id="s8-img" src="assets/images/boy-holding-copper-wire.png" alt="طفل يمسك سلكًا نحاسيًا">
+        <img loading="lazy" id="s8-img" src="assets/images/boy-holding-copper-wire.png" alt="طفل يمسك سلكًا نحاسيًا">
       </div></div>
     </div>
 
@@ -824,7 +839,7 @@
       
         <h1 class="vid-title">المادة نفسها - ما الذي يختلف مع ذلك؟</h1>
       </div>
-      <img class="conv-media" src="assets/images/stone-and-ring.png" alt="حجر كريم خام بجانب خاتم جاهز من نفس الحجر">
+      <img loading="lazy" class="conv-media" src="assets/images/stone-and-ring.png" alt="حجر كريم خام بجانب خاتم جاهز من نفس الحجر">
     </div>
     <div class="bottom-bar">
       <div class="bottom-bar-inner">
@@ -857,7 +872,7 @@
 
       <div class="tf-cards">
         <div class="tf-card tf-card--with-image">
-          <img class="tf-card-img" src="assets/images/gemstone-jewel.png" alt="مجوهرات مرصعة بحجر كريم">
+          <img loading="lazy" class="tf-card-img" src="assets/images/gemstone-jewel.png" alt="مجوهرات مرصعة بحجر كريم">
           <p class="tf-card-text">
             <b>جسم مُصَنَّع</b><br/>
             جسم غيّر الإنسان شكله أو بنيته أو خصائصه، لتكييفه مع استخدام معيّن أو لإنتاج منتج منه
@@ -866,7 +881,7 @@
           </p>
         </div>
         <div class="tf-card tf-card--with-image">
-          <img class="tf-card-img" src="assets/images/gemstone.png" alt="حجر كريم">
+          <img loading="lazy" class="tf-card-img" src="assets/images/gemstone.png" alt="حجر كريم">
           <p class="tf-card-text">
             <b>جسم طبيعي</b><br/>
             جسم لم يطرأ عليه تغيير على يد الإنسان.
@@ -935,28 +950,28 @@
         <div class="ddq13-drag-item" id="ddq13-gold" data-correct="unprocessed">
           <div class="ddq13-item-frame">
             <span class="ddq13-item-badge"></span>
-            <div class="ddq13-item-imgwrap"><img src="assets/images/gold-nugget.png" alt="سبيكة ذهب" draggable="false"></div>
+            <div class="ddq13-item-imgwrap"><img loading="lazy" src="assets/images/gold-nugget.png" alt="سبيكة ذهب" draggable="false"></div>
             <p class="ddq13-item-label">سبيكة ذهب</p>
           </div>
         </div>
         <div class="ddq13-drag-item" id="ddq13-pebble" data-correct="unprocessed">
           <div class="ddq13-item-frame">
             <span class="ddq13-item-badge"></span>
-            <div class="ddq13-item-imgwrap"><img src="../unit-assets/img/river-pebble.png" alt="حصاة نهر" draggable="false"></div>
+            <div class="ddq13-item-imgwrap"><img loading="lazy" src="../unit-assets/img/river-pebble.png" alt="حصاة نهر" draggable="false"></div>
             <p class="ddq13-item-label">حصاة نهر</p>
           </div>
         </div>
         <div class="ddq13-drag-item" id="ddq13-box" data-correct="processed">
           <div class="ddq13-item-frame">
             <span class="ddq13-item-badge"></span>
-            <div class="ddq13-item-imgwrap"><img src="assets/images/wooden-box.png" alt="صندوق خشبي" draggable="false"></div>
+            <div class="ddq13-item-imgwrap"><img loading="lazy" src="assets/images/wooden-box.png" alt="صندوق خشبي" draggable="false"></div>
             <p class="ddq13-item-label">صندوق خشبي</p>
           </div>
         </div>
         <div class="ddq13-drag-item" id="ddq13-bowl" data-correct="processed">
           <div class="ddq13-item-frame">
             <span class="ddq13-item-badge"></span>
-            <div class="ddq13-item-imgwrap"><img src="assets/images/stone-bowl.png" alt="وعاء حجري" draggable="false"></div>
+            <div class="ddq13-item-imgwrap"><img loading="lazy" src="assets/images/stone-bowl.png" alt="وعاء حجري" draggable="false"></div>
             <p class="ddq13-item-label">وعاء حجري</p>
           </div>
         </div>
@@ -1116,11 +1131,11 @@
       <div class="scq-img">
         <div class="tw17-img-stack" data-tw17-level="3">
           <div class="tw17-image-card">
-            <div class="tw17-image-frame"><img src="assets/images/wire-b.png" alt="سلك أ"></div>
+            <div class="tw17-image-frame"><img loading="lazy" src="assets/images/wire-b.png" alt="سلك أ"></div>
             <p class="tw17-image-label">سلك أ</p>
           </div>
           <div class="tw17-image-card">
-            <div class="tw17-image-frame"><img src="assets/images/wire-a.png" alt="سلك ب"></div>
+            <div class="tw17-image-frame"><img loading="lazy" src="assets/images/wire-a.png" alt="سلك ب"></div>
             <p class="tw17-image-label">سلك ب</p>
           </div>
         </div>
@@ -1334,7 +1349,7 @@
                 data-zoom-src="assets/images/headphones.png" data-zoom-alt="سماعات الرأس">
           <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
         </button>
-        <img id="s19-img" src="assets/images/headphones.png" alt="سماعات الرأس"></div></div>
+        <img loading="lazy" id="s19-img" src="assets/images/headphones.png" alt="سماعات الرأس"></div></div>
     </div>
 
     <div id="s19-popup" class="scq-fb-box">
@@ -1419,7 +1434,7 @@
                 data-zoom-src="assets/images/man-with-headphones.png" data-zoom-alt="رجل يستمع إلى الموسيقى بسماعات الرأس">
           <svg class="img-zoom-btn__icon" viewBox="0 0 20.7149 20.9231" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle class="zi-ring" cx="8" cy="8" r="7" stroke-width="2"/><path class="zi-handle zi-handle--default" d="M12.6221 14.188L14.2657 12.6141L19.928 18.5274C20.3626 18.9813 20.347 19.7016 19.8931 20.1362V20.1362C19.4392 20.5708 18.7189 20.5552 18.2843 20.1013L12.6221 14.188Z"/><path class="zi-handle zi-handle--hover" d="M14.2502 13.3213L19.5669 18.8737C19.8103 19.1282 19.8017 19.5318 19.5474 19.7754C19.293 20.0188 18.8894 20.0099 18.6457 19.7558L13.329 14.2033L14.2502 13.3213Z" stroke-width="1"/></svg>
         </button>
-        <img id="dqx20-img" src="assets/images/man-with-headphones.png" alt="رجل يستمع إلى الموسيقى بسماعات الرأس"></div></div>
+        <img loading="lazy" id="dqx20-img" src="assets/images/man-with-headphones.png" alt="رجل يستمع إلى الموسيقى بسماعات الرأس"></div></div>
     </div>
 
     <div id="dqx20-popup" class="scq-fb-box">
@@ -1582,8 +1597,8 @@
 <script src="../unit-js/20-xapi.js?v=20261112"></script>
 <script src="../unit-js/25-report.js?v=20261019"></script>
 <script src="../unit-js/30-pointer-dnd.js?v=20261103"></script>
-<script src="../unit-js/40-resume.js?v=20261019"></script>
-<script src="../unit-js/50-loader.js?v=20261019"></script>
+<script src="../unit-js/40-resume.js?v=20261114"></script>
+<script src="../unit-js/50-loader.js?v=20261114"></script>
 <script src="script.js?v=20261112"></script>
 <script src="../unit-js/90-boot.js?v=20261019"></script>
 </body>
