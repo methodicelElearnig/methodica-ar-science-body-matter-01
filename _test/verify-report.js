@@ -432,8 +432,11 @@ if (JSDOM) for (const c of COMPONENTS) {
     const onClick = sel.length;
     w6.advanceFromS3(); const first = sel.slice(); const landed = w6.eval('currentScreen');
     w6.goTo(3); w6.s3SelectPath(card('video')); w6.advanceFromS3(); const repick = sel.slice(1);
-    w6.rvGoToRead(); const toRead = sel.slice(2); const readScreen = w6.eval('currentScreen'); const closed003 = done6.includes('003');
-    w6.rvGoToVideo(); const back = sel.slice(3);
+    done6.length = 0;                                             // from here: only what the switches and the exit close
+    w6.rvGoToRead(); const toRead = sel.slice(2); const readScreen = w6.eval('currentScreen'); const afterToRead = done6.slice();
+    w6.rvGoToVideo(); const back = sel.slice(3); const videoScreen = w6.eval('currentScreen'); const afterBack = done6.slice();
+    w6.goTo(11); const afterExit = done6.slice();                 // the video screen's Continue target
+    const hubs6 = w6.eval('typeof XAPI_HUB_SCREENS === "undefined" ? null : JSON.stringify(XAPI_HUB_SCREENS)');
     w6._unitState = w6.emptyUnitState(); sel.length = 0;
     w6._restoring = true; w6.goTo(3); w6.advanceFromS3(); w6._restoring = false; const restoring = sel.length;
     const one = (l, f) => l.length === 1 && l[0].type === 'onlinelesson' && l[0].ctx && l[0].ctx.category === 'learning-type'
@@ -444,7 +447,13 @@ if (JSDOM) for (const c of COMPONENTS) {
     ok(c, 'choice: confirming the same path again reports again (every confirmed choice)', one(repick, paths.video.mediaFormat), JSON.stringify(repick));
     ok(c, 'choice: switching to reading from the toggle sends one selected, response "' + paths.read.mediaFormat + '"',
        one(toRead, paths.read.mediaFormat) && readScreen === 4, JSON.stringify(toRead));
-    ok(c, 'choice: the switch to reading (10 -> 4, B-2 hub) closes the video item 003', closed003, done6.join(','));
+    /* monday 13451740972 (2026-11-17): a switch on the path toggle sends no item 'completed' */
+    ok(c, 'switch: the toggle to reading (10 -> 4) sends no completed', afterToRead.length === 0, afterToRead.join(','));
+    ok(c, 'switch: the toggle back to the video (4 -> 10, a higher screen) lands on 10 and sends no completed',
+       videoScreen === 10 && afterBack.length === 0, afterBack.join(','));
+    ok(c, 'switch: the forward move out of the video screen (10 -> 11) closes the video item 003 once, and only it',
+       JSON.stringify(afterExit) === JSON.stringify(['003']), afterExit.join(','));
+    ok(c, 'switch: screen 4 is not a B-2 hub any more', hubs6 === null, String(hubs6));
     ok(c, 'choice: switching back to an already-reported path reports again, response "' + paths.video.mediaFormat + '"',
        one(back, paths.video.mediaFormat), JSON.stringify(back));
     ok(c, 'choice: nothing is sent while a restore paints', restoring === 0, String(restoring));

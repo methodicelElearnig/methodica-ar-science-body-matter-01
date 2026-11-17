@@ -184,17 +184,26 @@ function _xapiIsBackward(fromItem, toItem, toScreen, fromScreen) {
   return !!(fromItem && toItem && Number(toItem) < Number(fromItem));
 }
 
+/* monday 13451740972 (2026-11-17): a learning-path switch never closes the item it leaves.
+   The path toggle's handler calls xapiPathSwitch() right before its goTo; the next xapiOnScreen skips the
+   close. A path item closes like any other item: on a forward move out of it, or in xapiFinishItems. Until
+   17.11 a switch closed the item it left, so "switch and back" sent 'completed' for both path items without
+   either being used. */
+var _xapiPathSwitching = false;
+function xapiPathSwitch() { _xapiPathSwitching = true; }
+
 /* זוגות initialized/completed ברמת הפריט, מונעים מ-goTo(). דפדוף בתוך אותו
    פריט לא משדר כלום; הפריט נסגר כשהלומד נכנס קדימה למסך ששייך לפריט אחר
-   (חזרה אחורה לא סוגרת — B-2 למעלה). */
+   (חזרה אחורה לא סוגרת — B-2 למעלה; מעבר במתג מסלולי הלמידה לא סוגר — למעלה). */
 function xapiOnScreen(screen) {
   var fromScreen = _xapiLastScreen;
   _xapiLastScreen = screen;
+  var switching = _xapiPathSwitching; _xapiPathSwitching = false;
   if (!window.XAPI_USING_G || typeof sendStatement720 !== 'function') return;
   var map = (typeof SCREEN_TO_SUBCONTENT !== 'undefined') ? SCREEN_TO_SUBCONTENT[screen] : null;
   var item = map ? map[0] : null;
   if (item === xapiCurrentItem) return;
-  if (xapiCurrentItem && !_xapiIsBackward(xapiCurrentItem, item, screen, fromScreen)) _xapiCloseItem(xapiCurrentItem);
+  if (xapiCurrentItem && !switching && !_xapiIsBackward(xapiCurrentItem, item, screen, fromScreen)) _xapiCloseItem(xapiCurrentItem);
   xapiCurrentItem = item;
   if (item) {
     try { sendStatement720('initialized', 'question', null, { objectId: xapiItemId(item), isEvaluationItem: _xapiIsEval(item) }); } catch (e) {}

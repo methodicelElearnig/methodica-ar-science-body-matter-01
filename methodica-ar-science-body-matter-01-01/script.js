@@ -876,6 +876,7 @@ function resetScreenState4() {
    לוידאו כמו שהונח בטעות קודם). */
 function rvGoToVideo() {
   xapiSelectedLearningType('video');   // switching path from the toggle is a choice too
+  xapiPathSwitch();                    // ...but not a forward move: no 'completed' for the item left (monday 13451740972)
   goTo(10);
 }
 
@@ -883,6 +884,7 @@ function rvGoToVideo() {
    שביקרתי בו" נשמר; אם יידרש בעתיד resume למקום המדויק, להוסיף כאן. */
 function rvGoToRead() {
   xapiSelectedLearningType('read');    // switching path from the toggle is a choice too
+  xapiPathSwitch();                    // ...but not a forward move: no 'completed' for the item left (monday 13451740972)
   goTo(4);
 }
 
@@ -2237,9 +2239,8 @@ var XAPI_EVAL_ITEMS = { '005': 1, '007': 1, '010': 1, '011': 1 };   /* items who
 /* The s3 learning-path choice ('selected', learning-type — unit-js/20-xapi.js xapiSelectedLearningType):
    s3SelectedPath -> the path's first item and its catalogue mediaFormat (the statement's response). */
 var XAPI_LEARNING_PATHS = { video: { item: '003', mediaFormat: 'video' }, read: { item: '004', mediaFormat: 'text' } };
-/* B-2 hub (20-xapi.js _xapiIsBackward, 2026-11-12): screen 4, the first reading screen. The video screen's
-   toggle (rvGoToRead, 10 -> 4) is a lower screen but a path switch, not a Back: it still closes 003. */
-var XAPI_HUB_SCREENS = { 4: 1 };
+/* No B-2 hub here (monday 13451740972, 2026-11-17): a switch on the path toggle (rvGoToVideo / rvGoToRead) is
+   marked with xapiPathSwitch() and closes nothing; the path item closes on the forward move out of it. */
 var XAPI_METADATA_FILE = '../metadata/methodica-ar-science-body-matter-01-01.json';
 var XAPI_END_BTN = 'dqx20-check';                               /* the part's last button (D-8, restoreEndedButton) */
 
