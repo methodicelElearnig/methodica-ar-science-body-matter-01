@@ -1293,7 +1293,7 @@
       </trans-unit>
       <trans-unit id="01-01-13-001" xml:space="preserve">
         <source xml:lang="he">למעבדת שימור במוזיאון הגיעו ארבעה ממצאים מחפירה ארכאולוגית: גוש זהב, חלוק אבן, קערת אבן ותיבת עץ מעוטרת.&lt;br/&gt;אוצרת המוזיאון:&lt;br/&gt;"שניים מן הממצאים הם גופים שהאדם עיבד, ושניים לא. אני יכולה לדעת זאת גם בלי לדעת מאיזה חומר כל גוף עשוי".</source>
-        <target>وصلت إلى مختبر الترميم في المتحف أربع قطع أثرية من حفرية أثرية: سبيكة ذهب، حصاة حجرية، وعاء حجري، وصندوق خشبي مزخرف.&lt;br/&gt;أمينة المتحف:&lt;br/&gt;"اثنتان من القطع هما جسمان مُصَنَّعان (من صُنْع الإنسان)، واثنتان لم يعالجهما. يمكنني معرفة ذلك حتى دون معرفة من أي مادة صنع كل جسم".</target>
+        <target>وصلت إلى مختبر الترميم في المتحف أربع قطع أثرية من حفرية أثرية: قطعة ذهب، حصاة حجرية، وعاء حجري، وصندوق خشبي مزخرف.&lt;br/&gt;أمينة المتحف:&lt;br/&gt;"اثنتان من القطع هما جسمان مُصَنَّعان (من صُنْع الإنسان)، واثنتان لم يعالجهما. يمكنني معرفة ذلك حتى دون معرفة من أي مادة صنع كل جسم".</target>
         <note from="screen-id">01-01-13</note>
         <note from="screen-title">שאלת גרירה: גוף מעובד/לא מעובד (DragAndDropQuestion)</note>
         <note from="screen-type">DragAndDropQuestion</note>
@@ -1309,7 +1309,7 @@
       </trans-unit>
       <trans-unit id="01-01-13-003" xml:space="preserve">
         <source xml:lang="he">גוש זהב</source>
-        <target>سبيكة ذهب</target>
+        <target>قطعة ذهب</target>
         <note from="screen-id">01-01-13</note>
         <note from="screen-title">שאלת גרירה: גוף מעובד/לא מעובד (DragAndDropQuestion)</note>
         <note from="screen-type">DragAndDropQuestion</note>
@@ -1319,7 +1319,7 @@
       </trans-unit>
       <trans-unit id="01-01-13-004" xml:space="preserve">
         <source xml:lang="he">גוש זהב</source>
-        <target>سبيكة ذهب</target>
+        <target>قطعة ذهب</target>
         <note from="screen-id">01-01-13</note>
         <note from="screen-title">שאלת גרירה: גוף מעובד/לא מעובד (DragAndDropQuestion)</note>
         <note from="screen-type">DragAndDropQuestion</note>
@@ -7836,7 +7836,7 @@
       </trans-unit>
       <trans-unit id="01-03-07-003" xml:space="preserve">
         <source xml:lang="he">דמיינו גוש זהב שנראה עגול וחלק מאוד.</source>
-        <target>تخيّلوا سبيكة ذهب تبدو مستديرة وملساء جدًا.</target>
+        <target>تخيّلوا قطعة ذهب تبدو مستديرة وملساء جدًا.</target>
         <note from="screen-id">01-03-07</note>
         <note from="screen-title">שאלה 1 מתוך 2 (בחירה יחידה + תמונה, שקף 51)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -7845,7 +7845,7 @@
       </trans-unit>
       <trans-unit id="01-03-07-004" xml:space="preserve">
         <source xml:lang="he">&lt;b&gt;האם אפשר לקבוע מיד שהוא עבר עיבוד?&lt;/b&gt;</source>
-        <target>&lt;b&gt;هل يمكن أن نحدد فورًا أنه خضع للمعالجة؟&lt;/b&gt;</target>
+        <target>&lt;b&gt;هل يمكن أن نحدد فورًا أنها خضعت للمعالجة؟&lt;/b&gt;</target>
         <note from="screen-id">01-03-07</note>
         <note from="screen-title">שאלה 1 מתוך 2 (בחירה יחידה + תמונה, שקף 51)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -7864,7 +7864,7 @@
       </trans-unit>
       <trans-unit id="01-03-07-006" xml:space="preserve">
         <source xml:lang="he">כן, כי גוש זהב הוא תמיד גוף מעובד.</source>
-        <target>نعم، لأن سبيكة الذهب هي دائمًا جسم مُصنع.</target>
+        <target>نعم، لأن قطعة الذهب هي دائمًا جسم مُصنع.</target>
         <note from="screen-id">01-03-07</note>
         <note from="screen-title">שאלה 1 מתוך 2 (בחירה יחידה + תמונה, שקף 51)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -7910,7 +7910,7 @@
       </trans-unit>
       <trans-unit id="01-03-07-011" xml:space="preserve">
         <source xml:lang="he">גוש זהב עגול</source>
-        <target>سبيكة ذهب مستديرة</target>
+        <target>قطعة ذهب مستديرة</target>
         <note from="screen-id">01-03-07</note>
         <note from="screen-title">שאלה 1 מתוך 2 (בחירה יחידה + תמונה, שקף 51)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
@@ -7920,7 +7920,7 @@
       </trans-unit>
       <trans-unit id="01-03-07-012" xml:space="preserve">
         <source xml:lang="he">גוש זהב עגול</source>
-        <target>سبيكة ذهب مستديرة</target>
+        <target>قطعة ذهب مستديرة</target>
         <note from="screen-id">01-03-07</note>
         <note from="screen-title">שאלה 1 מתוך 2 (בחירה יחידה + תמונה, שקף 51)</note>
         <note from="screen-type">SingleChoiceQuestion</note>
